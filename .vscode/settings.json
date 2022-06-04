@@ -1,0 +1,9 @@
+{
+  "files.exclude": {
+    "node_modules": true,
+    "*/node_modules": true,
+    "*/artifacts": true,
+    "*/cache": true
+  },
+  "editor.defaultFormatter": "esbenp.prettier-vscode"
+}
