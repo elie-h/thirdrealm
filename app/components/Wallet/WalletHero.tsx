@@ -1,7 +1,5 @@
 import Jazzicon, { jsNumberForAddress } from "react-jazzicon";
 import { truncateEthAddress } from "../../utils";
-import { MailIcon, PhoneIcon } from "@heroicons/react/solid";
-import { MenuIcon, XIcon } from "@heroicons/react/outline";
 interface WalletHeroProps extends React.ComponentPropsWithoutRef<"div"> {
   loading: boolean;
   address: string;
