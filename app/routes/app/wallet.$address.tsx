@@ -24,7 +24,7 @@ export default function Wallet() {
         ens={walletData?.ens}
         nftCount={walletData?.nftCount}
       />
-      <div className="relative">
+      {/* <div className="relative mt-10">
         <div className="absolute inset-0 flex items-center" aria-hidden="true">
           <div className="w-full border-t border-gray-300" />
         </div>
@@ -33,7 +33,7 @@ export default function Wallet() {
             NFTs
           </span>
         </div>
-      </div>
+      </div> */}
       <NftGrid loading={loading} nfts={walletData?.nfts} />
     </div>
   );

@@ -1,7 +1,10 @@
+type Network = "eth" | "polygon" | "unknown";
+
 interface Nft {
   title: string | undefined;
   description: string | undefined;
   coverImg: string | undefined;
+  network: Network;
 }
 
 interface NftsGridProps extends React.ComponentPropsWithoutRef<"div"> {
@@ -41,9 +44,26 @@ export default function NftGrid({ loading = true, nfts = [] }: NftsGridProps) {
                     />
                   </div>
                   <div className="flex flex-1 flex-col space-y-2 p-4">
-                    <h3 className="text-sm font-medium text-gray-900">
-                      {nft.title}
-                    </h3>
+                    <div className="flex flex-wrap items-center justify-between sm:flex-nowrap">
+                      <h3 className="text-sm font-medium text-gray-900">
+                        {nft.title}
+                      </h3>
+                      {
+                        {
+                          eth: (
+                            <span className="inline-flex items-center rounded-full bg-blue-100 px-2.5 py-0.5 text-xs font-medium text-blue-800">
+                              ETH
+                            </span>
+                          ),
+                          polygon: (
+                            <span className="inline-flex items-center rounded-full bg-purple-100 px-2.5 py-0.5 text-xs font-medium text-purple-800">
+                              POLYGON
+                            </span>
+                          ),
+                          unknown: <></>,
+                        }[nft.network]
+                      }
+                    </div>
                     <p className="text-sm text-gray-500">{nft.description}</p>
                   </div>
                 </div>
