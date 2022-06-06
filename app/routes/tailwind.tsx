@@ -9,10 +9,10 @@ export default function TailwindPage() {
             src="/beach-work.jpeg"
             alt="women woking"
           />
-          <h1 className="mt-6 text-2xl font-bold text-gray-900 sm:mt-8 sm:text-4xl lg:text-3xl xl:text-4xl">
+          <h1 className="mt-6 font-headline text-2xl font-bold text-gray-900 sm:mt-8 sm:text-4xl lg:text-3xl xl:text-4xl">
             You can work from anywhere.
             <br className="hidden lg:inline" />
-            <span className="text-indigo-500"> Take advantage of it.</span>
+            <span className="brand"> Take advantage of it.</span>
           </h1>
           <p className="mt-2 text-gray-600 sm:mt-3 sm:text-xl">
             Workcation helps you find work-friendly rentals in beautiful

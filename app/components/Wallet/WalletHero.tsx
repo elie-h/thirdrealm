@@ -15,55 +15,44 @@ export default function WalletHero({
 }: WalletHeroProps) {
   return (
     <div>
-      <div className="h-24 w-full bg-[#1da1f2] object-cover lg:h-32"></div>
-      <div className="mx-auto max-w-5xl px-4 sm:px-6 lg:px-8">
-        <div className="sm:-mt-18 -mt-12  sm:flex sm:items-end sm:space-x-5">
-          <div className="flex">
-            <Jazzicon diameter={100} seed={jsNumberForAddress(address)} />
-          </div>
-          <div className="mt-6 sm:flex sm:min-w-0 sm:flex-1 sm:items-center sm:justify-end sm:space-x-6 sm:pb-1">
-            <div className="mt-6 min-w-0 flex-1 md:block">
-              <h1 className="truncate text-2xl font-bold text-gray-900">
-                {loading ? (
-                  <div className="aspect-w-1 h-8 bg-gray-200 group-hover:opacity-75">
-                    <div className="animate-pulse rounded-xl bg-gray-200"></div>
-                  </div>
-                ) : ens ? (
-                  ens
-                ) : (
-                  truncateEthAddress(address)
-                )}
-              </h1>
-            </div>
-            <div className="justify-stretch mt-6 flex flex-col space-y-3 sm:flex-row sm:space-y-0 sm:space-x-4">
-              <div className="ml-4 flex flex-auto flex-col-reverse">
-                <h3 className="inline-flex justify-center  font-medium text-gray-900">
-                  NFTs
-                </h3>
-                <p className="inline-flex justify-center  text-sm text-gray-500">
+      <div className="border-b border-gray-200 bg-white px-4 py-5 sm:px-6">
+        <div className="-ml-4 -mt-4 flex flex-wrap items-center justify-between sm:flex-nowrap">
+          <div className="ml-4 mt-4 w-full">
+            <div className="flex items-center">
+              <div className="flex-shrink-0">
+                <div className="flex">
+                  <Jazzicon diameter={100} seed={jsNumberForAddress(address)} />
+                </div>
+              </div>
+              <div className="ml-4 w-full">
+                <h3 className="text-lg font-medium leading-6 text-gray-900">
                   {loading ? (
-                    <div className="aspect-w-1 h-8 bg-gray-200 group-hover:opacity-75">
+                    <div className="h-8 bg-gray-200 group-hover:opacity-75">
                       <div className="animate-pulse rounded-xl bg-gray-200"></div>
                     </div>
+                  ) : ens ? (
+                    ens
                   ) : (
-                    nftCount
+                    truncateEthAddress(address)
                   )}
-                </p>
-              </div>
-              {/* <div className="ml-4 flex flex-auto flex-col-reverse">
-                <h3 className="inline-flex justify-center  font-medium text-gray-900">
-                  NFTs
                 </h3>
-                <p className="inline-flex justify-center  text-sm text-gray-500">
-                  20
-                </p>
-              </div> */}
+                {/* <p className="text-sm text-gray-500">
+                  <a href="#">@tom_cook</a>
+                </p> */}
+              </div>
+            </div>
+          </div>
+          <div className="ml-4 mt-4 flex flex-shrink-0">
+            <div className="flex flex-col items-center">
+              <p className=" relative inline-flex items-center text-sm text-gray-700">
+                NFTs
+              </p>
+              <p className=" text-large relative inline-flex items-center text-gray-700">
+                {loading ? "..." : nftCount}
+              </p>
             </div>
           </div>
         </div>
-        {/* <div className="mt-6 hidden min-w-0 flex-1 sm:block md:hidden">
-          <h1 className="truncate text-2xl font-bold text-gray-900">{ens}</h1>
-        </div> */}
       </div>
     </div>
   );
