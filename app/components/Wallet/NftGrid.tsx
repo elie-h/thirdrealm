@@ -36,11 +36,11 @@ export default function NftGrid({ loading = true, nfts = [] }: NftsGridProps) {
                   key={nft.title}
                   className="group relative flex flex-col overflow-hidden rounded-lg border border-gray-200 bg-white"
                 >
-                  <div className="aspect-w-3 aspect-h-4 bg-gray-200 group-hover:opacity-75 sm:aspect-none sm:h-96">
+                  <div className="aspect-w-3 aspect-h-3 bg-gray-200 group-hover:opacity-75 sm:aspect-none sm:h-96">
                     <img
                       src={nft.coverImg}
                       alt={nft.title}
-                      className="h-full w-full object-cover object-center sm:h-full sm:w-full"
+                      className="h-full w-full object-contain sm:h-full sm:w-full"
                     />
                   </div>
                   <div className="flex flex-1 flex-col space-y-2 p-4">
