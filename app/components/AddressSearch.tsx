@@ -22,6 +22,7 @@ export default function AddressSearch() {
           placeholder="0x0000000000000000000"
           defaultValue={actionData?.values.address}
           disabled={transition.state === "submitting"}
+          required
         />
       </div>
       <div className="flex w-full justify-center">

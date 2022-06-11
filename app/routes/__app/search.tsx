@@ -12,7 +12,7 @@ export const action: ActionFunction = async ({ request }) => {
   if (!WAVlidator.validate(address, "ethereum")) {
     return json({ errors: { address: 404 }, values: { address } });
   }
-  return redirect(`/app/wallet/${address}`);
+  return redirect(`/wallet/${address}`);
 };
 
 export default function SearchPage() {
