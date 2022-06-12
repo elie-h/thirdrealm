@@ -24,7 +24,8 @@
     "pretest:e2e:run": "npm run build",
     "test:e2e:run": "cross-env PORT=8811 start-server-and-test start:mocks http://localhost:8811 \"npx cypress run\"",
     "typecheck": "tsc -b && tsc -b cypress",
-    "validate": "run-p \"test -- --run\" lint typecheck test:e2e:run"
+    "validate": "run-p \"test -- --run\" lint typecheck test:e2e:run",
+    "gq:shema": "gq http://localhost:8080/v1/graphql --introspect > app/schema.graphql"
   },
   "prettier": {},
   "eslintIgnore": [
@@ -34,6 +35,7 @@
   ],
   "dependencies": {
     "@alch/alchemy-web3": "^1.4.2",
+    "@apollo/client": "^3.6.7",
     "@headlessui/react": "^1.6.4",
     "@heroicons/react": "^1.0.6",
     "@prisma/client": "^3.14.0",
@@ -48,6 +50,7 @@
     "cross-env": "^7.0.3",
     "ethers": "^5.6.8",
     "express": "^4.18.1",
+    "graphql": "^16.5.0",
     "morgan": "^1.10.0",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
@@ -83,6 +86,7 @@
     "eslint": "^8.16.0",
     "eslint-config-prettier": "^8.5.0",
     "happy-dom": "^2.55.0",
+    "hasura-cli": "^2.7.0",
     "msw": "^0.40.2",
     "npm-run-all": "^4.1.5",
     "postcss": "^8.4.14",
