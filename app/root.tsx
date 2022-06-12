@@ -7,6 +7,8 @@ import {
   Scripts,
   ScrollRestoration,
 } from "@remix-run/react";
+import React from "react";
+import ApolloContext from "./context/apollo";
 
 import tailwindStylesheetUrl from "./styles/tailwind.css";
 
@@ -21,6 +23,8 @@ export const meta: MetaFunction = () => ({
 });
 
 export default function App() {
+  const initialState = React.useContext(ApolloContext);
+
   return (
     <html lang="en" className="h-full">
       <head>
@@ -33,6 +37,13 @@ export default function App() {
         <ScrollRestoration />
         <Scripts />
         <LiveReload />
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `window.__INITIAL_STATE__=${JSON.stringify(
+              initialState
+            ).replace(/</g, "\\u003c")};`,
+          }}
+        />
       </body>
     </html>
   );

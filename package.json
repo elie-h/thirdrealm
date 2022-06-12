@@ -51,6 +51,7 @@
     "ethers": "^5.6.8",
     "express": "^4.18.1",
     "graphql": "^16.5.0",
+    "graphql-ws": "^5.9.0",
     "morgan": "^1.10.0",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
