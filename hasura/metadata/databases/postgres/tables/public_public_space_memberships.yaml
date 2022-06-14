@@ -1,0 +1,10 @@
+table:
+  schema: public
+  name: public_space_memberships
+object_relationships:
+  - name: public_space
+    using:
+      foreign_key_constraint_on: contract_address
+  - name: user
+    using:
+      foreign_key_constraint_on: wallet_address

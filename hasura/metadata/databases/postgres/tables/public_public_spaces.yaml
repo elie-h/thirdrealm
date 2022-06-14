@@ -1,0 +1,11 @@
+table:
+  schema: public
+  name: public_spaces
+array_relationships:
+  - name: public_space_memberships
+    using:
+      foreign_key_constraint_on:
+        column: contract_address
+        table:
+          schema: public
+          name: public_space_memberships

@@ -1,0 +1,18 @@
+table:
+  schema: public
+  name: spaces
+array_relationships:
+  - name: channels
+    using:
+      foreign_key_constraint_on:
+        column: space_id
+        table:
+          schema: public
+          name: channels
+  - name: space_memberships
+    using:
+      foreign_key_constraint_on:
+        column: space_id
+        table:
+          schema: public
+          name: space_memberships

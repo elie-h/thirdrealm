@@ -3,13 +3,17 @@ import { split, HttpLink, ApolloClient, InMemoryCache } from "@apollo/client";
 import { createClient } from "graphql-ws";
 import { GraphQLWsLink } from "@apollo/client/link/subscriptions";
 import { getMainDefinition } from "@apollo/client/utilities";
+import invariant from "tiny-invariant";
+
 const domain = "localhost:8080/v1/graphql";
 const isBrowser = typeof window !== "undefined";
+// @ts-ignore
 const initialState = isBrowser ? window.__INITIAL_STATE__ : {};
 export function initApollo(ssrMode = true) {
   const httpLink = new HttpLink({
     uri: `http://${domain}`,
   });
+
   const wsLink = isBrowser
     ? new GraphQLWsLink(
         createClient({
@@ -17,6 +21,7 @@ export function initApollo(ssrMode = true) {
         })
       )
     : null;
+
   return new ApolloClient({
     link: isBrowser
       ? split(
@@ -27,6 +32,7 @@ export function initApollo(ssrMode = true) {
               definition.operation === "subscription"
             );
           },
+          // @ts-ignore
           wsLink,
           httpLink
         )
