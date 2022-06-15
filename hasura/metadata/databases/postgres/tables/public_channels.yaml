@@ -5,11 +5,3 @@ object_relationships:
   - name: space
     using:
       foreign_key_constraint_on: space_id
-array_relationships:
-  - name: messages
-    using:
-      foreign_key_constraint_on:
-        column: channel_id
-        table:
-          schema: public
-          name: messages

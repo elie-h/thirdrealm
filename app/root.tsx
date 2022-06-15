@@ -11,9 +11,13 @@ import React from "react";
 import ApolloContext from "./context/apollo";
 
 import tailwindStylesheetUrl from "./styles/tailwind.css";
+import rainbowKitStylesheetUrl from "@rainbow-me/rainbowkit/styles.css";
 
 export const links: LinksFunction = () => {
-  return [{ rel: "stylesheet", href: tailwindStylesheetUrl }];
+  return [
+    { rel: "stylesheet", href: tailwindStylesheetUrl },
+    { rel: "stylesheet", href: rainbowKitStylesheetUrl },
+  ];
 };
 
 export const meta: MetaFunction = () => ({
