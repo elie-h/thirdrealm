@@ -1,9 +1,8 @@
-import { createContext } from "react";
-import { split, HttpLink, ApolloClient, InMemoryCache } from "@apollo/client";
-import { createClient } from "graphql-ws";
+import { ApolloClient, HttpLink, InMemoryCache, split } from "@apollo/client";
 import { GraphQLWsLink } from "@apollo/client/link/subscriptions";
 import { getMainDefinition } from "@apollo/client/utilities";
-import invariant from "tiny-invariant";
+import { createClient } from "graphql-ws";
+import { createContext } from "react";
 
 const domain = "localhost:8080/v1/graphql";
 const isBrowser = typeof window !== "undefined";

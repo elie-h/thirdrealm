@@ -1,5 +1,8 @@
+import { gql } from "@apollo/client";
+import { redirect } from "@remix-run/server-runtime";
 import { SiweMessage } from "siwe";
 import invariant from "tiny-invariant";
+import serverClient from "~/hasura.server";
 import { createUserSession } from "~/session.server";
 import { safeRedirect } from "~/utils";
 
@@ -14,6 +17,25 @@ export async function action({ request }: { request: Request }) {
 
   try {
     await siweMessage.validate(signature.toString());
+    const res = await serverClient.mutate({
+      mutation: gql`
+        mutation WalletMutation {
+          insert_wallets_one(object: { address: "${siweMessage.address}" }) {
+            id
+          }
+        }
+      `,
+    });
+
+    if (res.errors) {
+      if (res.errors[0].extensions.code == "validation-failed") {
+        throw new Error("Malformed wallet");
+      }
+      if (res.errors[0].extensions.code == "constraint-violation") {
+        console.log("Wallet already registered");
+      }
+    }
+
     return createUserSession({
       request,
       userId: siweMessage.address,
@@ -24,4 +46,8 @@ export async function action({ request }: { request: Request }) {
     console.log(error);
     return false;
   }
+}
+
+export async function loader() {
+  return redirect("/");
 }

@@ -15,7 +15,7 @@ export const sessionStorage = createCookieSessionStorage({
   },
 });
 
-const USER_SESSION_KEY = "userId";
+const USER_SESSION_KEY = "wallet";
 
 export async function getSession(request: Request) {
   const cookie = request.headers.get("Cookie");
@@ -52,10 +52,8 @@ export async function requireUserId(
 
 export async function requireUser(request: Request) {
   const userId = await requireUserId(request);
-
-  const user = { id: userId, name: "user" };
+  const user = { id: userId, name: "user" }; // Fetch profile here
   if (user) return user;
-
   throw await logout(request);
 }
 
@@ -85,7 +83,7 @@ export async function createUserSession({
 
 export async function logout(request: Request) {
   const session = await getSession(request);
-  return redirect("/login", {
+  return redirect("/", {
     headers: {
       "Set-Cookie": await sessionStorage.destroySession(session),
     },

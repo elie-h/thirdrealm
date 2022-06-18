@@ -1,7 +1,6 @@
 import { ConnectButton } from "@rainbow-me/rainbowkit";
 import { Form, useSubmit } from "@remix-run/react";
 import { useEffect } from "react";
-import { useNavigate } from "react-router-dom";
 import { SiweMessage } from "siwe";
 import invariant from "tiny-invariant";
 import { useSigner } from "wagmi";
