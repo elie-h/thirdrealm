@@ -1,11 +1,7 @@
-/* This example requires Tailwind CSS v2.0+ */
-import { Fragment } from "react";
 import { Disclosure, Menu, Transition } from "@headlessui/react";
-import { BellIcon, MenuIcon, XIcon } from "@heroicons/react/outline";
-import { PlusSmIcon } from "@heroicons/react/solid";
-import { ConnectButton } from "@rainbow-me/rainbowkit";
+import User from "~/components/User";
 
-function classNames(...classes) {
+function classNames(...classes: string[]) {
   return classes.filter(Boolean).join(" ");
 }
 
@@ -70,7 +66,7 @@ export default function Example() {
               </div>
               <div className="flex items-center">
                 <div className="flex-shrink-0">
-                  <ConnectButton showBalance={false} chainStatus="none" />
+                  <User />
                 </div>
                 <div className="hidden md:ml-4 md:flex md:flex-shrink-0 md:items-center"></div>
               </div>

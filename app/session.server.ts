@@ -28,6 +28,16 @@ export async function getUserId(request: Request): Promise<string | undefined> {
   return userId;
 }
 
+export async function getUser(request: Request) {
+  const userId = await getUserId(request);
+  if (userId === undefined) return null;
+
+  const user = { address: userId }; // Get the user here from the DB
+  if (user) return user;
+
+  throw await logout(request);
+}
+
 export async function requireUserId(
   request: Request,
   redirectTo: string = new URL(request.url).pathname
@@ -43,7 +53,7 @@ export async function requireUserId(
 export async function requireUser(request: Request) {
   const userId = await requireUserId(request);
 
-  const user = await getUserById(userId);
+  const user = { id: userId, name: "user" };
   if (user) return user;
 
   throw await logout(request);
@@ -75,7 +85,7 @@ export async function createUserSession({
 
 export async function logout(request: Request) {
   const session = await getSession(request);
-  return redirect("/", {
+  return redirect("/login", {
     headers: {
       "Set-Cookie": await sessionStorage.destroySession(session),
     },
