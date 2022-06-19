@@ -47,7 +47,7 @@ export const action: ActionFunction = async ({ request, params }) => {
 
   const token_balance = Number(user_balance.tokenBalances[0].tokenBalance);
   invariant(!!!token_balance, "Expected token balance");
-  if (token_balance == 0) {
+  if (token_balance > 0) {
     const addToSpacePayload = await serverClient.mutate({
       mutation: gql`
         mutation AddUserToSpace {
