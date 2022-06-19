@@ -2,7 +2,7 @@ import { gql } from "@apollo/client";
 import { redirect } from "@remix-run/server-runtime";
 import { SiweMessage } from "siwe";
 import invariant from "tiny-invariant";
-import serverClient from "~/hasura.server";
+import { serverClient } from "~/apollo.server";
 import { createUserSession } from "~/session.server";
 import { safeRedirect } from "~/utils";
 

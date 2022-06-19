@@ -9,7 +9,7 @@ import type { LoaderFunction } from "@remix-run/node";
 import { requireUser } from "~/session.server";
 
 export const loader: LoaderFunction = async ({ request }) => {
-  const userId = await requireUser(request);
+  await requireUser(request);
   const client = new ApolloClient({
     ssrMode: true,
     link: createHttpLink({
@@ -21,7 +21,7 @@ export const loader: LoaderFunction = async ({ request }) => {
 
   const { data } = await client.query({
     query: gql`
-      query MyQuery {
+      query Feed {
         channels {
           description
           id
@@ -36,10 +36,9 @@ export const loader: LoaderFunction = async ({ request }) => {
 export default function () {
   const { data, loading, error } = useSubscription(gql`
     subscription MySubscription {
-      test {
+      spaces {
         description
         name
-        Id
       }
     }
   `);

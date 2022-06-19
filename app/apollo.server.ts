@@ -1,6 +1,6 @@
 import { ApolloClient, createHttpLink, InMemoryCache } from "@apollo/client";
 
-const serverClient = new ApolloClient({
+export const serverClient = new ApolloClient({
   ssrMode: true,
   link: createHttpLink({
     uri: "http://localhost:8080/v1/graphql",
@@ -12,5 +12,3 @@ const serverClient = new ApolloClient({
     mutate: { errorPolicy: "all" },
   },
 });
-
-export default serverClient;
