@@ -1,11 +1,10 @@
-import { gql } from '@apollo/client';
-import * as Apollo from '@apollo/client';
+import { DocumentNode } from 'graphql';
+import gql from 'graphql-tag';
 export type Maybe<T> = T | null;
 export type InputMaybe<T> = Maybe<T>;
 export type Exact<T extends { [key: string]: unknown }> = { [K in keyof T]: T[K] };
 export type MakeOptional<T, K extends keyof T> = Omit<T, K> & { [SubKey in K]?: Maybe<T[SubKey]> };
 export type MakeMaybe<T, K extends keyof T> = Omit<T, K> & { [SubKey in K]: Maybe<T[SubKey]> };
-const defaultOptions = {} as const;
 /** All built-in and custom scalars, mapped to their actual values */
 export type Scalars = {
   ID: string;
@@ -963,7 +962,7 @@ export type Spaces = {
   cover_image?: Maybe<Scalars['String']>;
   description?: Maybe<Scalars['String']>;
   id: Scalars['uuid'];
-  name?: Maybe<Scalars['String']>;
+  name: Scalars['String'];
   /** An array relationship */
   space_memberships: Array<Space_Memberships>;
   /** An aggregate relationship */
@@ -1495,95 +1494,9 @@ export enum Wallets_Update_Column {
   Id = 'id'
 }
 
-export type FeedQueryVariables = Exact<{ [key: string]: never; }>;
 
-
-export type FeedQuery = { __typename?: 'query_root', channels: Array<{ __typename?: 'channels', description?: string | null, id: any, name: string }> };
-
-export type MySubscriptionSubscriptionVariables = Exact<{ [key: string]: never; }>;
-
-
-export type MySubscriptionSubscription = { __typename?: 'subscription_root', spaces: Array<{ __typename?: 'spaces', description?: string | null, name?: string | null }> };
-
-export type SpacesQueryVariables = Exact<{ [key: string]: never; }>;
-
-
-export type SpacesQuery = { __typename?: 'query_root', spaces: Array<{ __typename?: 'spaces', id: any, name?: string | null, contract_address: string, blockchain: string, cover_image?: string | null, description?: string | null }> };
-
-export type WalletMutationMutationVariables = Exact<{ [key: string]: never; }>;
-
-
-export type WalletMutationMutation = { __typename?: 'mutation_root', insert_wallets_one?: { __typename?: 'wallets', id: any } | null };
-
-
-export const FeedDocument = gql`
-    query Feed {
-  channels {
-    description
-    id
-    name
-  }
-}
-    `;
-
-/**
- * __useFeedQuery__
- *
- * To run a query within a React component, call `useFeedQuery` and pass it any options that fit your needs.
- * When your component renders, `useFeedQuery` returns an object from Apollo Client that contains loading, error, and data properties
- * you can use to render your UI.
- *
- * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
- *
- * @example
- * const { data, loading, error } = useFeedQuery({
- *   variables: {
- *   },
- * });
- */
-export function useFeedQuery(baseOptions?: Apollo.QueryHookOptions<FeedQuery, FeedQueryVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useQuery<FeedQuery, FeedQueryVariables>(FeedDocument, options);
-      }
-export function useFeedLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<FeedQuery, FeedQueryVariables>) {
-          const options = {...defaultOptions, ...baseOptions}
-          return Apollo.useLazyQuery<FeedQuery, FeedQueryVariables>(FeedDocument, options);
-        }
-export type FeedQueryHookResult = ReturnType<typeof useFeedQuery>;
-export type FeedLazyQueryHookResult = ReturnType<typeof useFeedLazyQuery>;
-export type FeedQueryResult = Apollo.QueryResult<FeedQuery, FeedQueryVariables>;
-export const MySubscriptionDocument = gql`
-    subscription MySubscription {
-  spaces {
-    description
-    name
-  }
-}
-    `;
-
-/**
- * __useMySubscriptionSubscription__
- *
- * To run a query within a React component, call `useMySubscriptionSubscription` and pass it any options that fit your needs.
- * When your component renders, `useMySubscriptionSubscription` returns an object from Apollo Client that contains loading, error, and data properties
- * you can use to render your UI.
- *
- * @param baseOptions options that will be passed into the subscription, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
- *
- * @example
- * const { data, loading, error } = useMySubscriptionSubscription({
- *   variables: {
- *   },
- * });
- */
-export function useMySubscriptionSubscription(baseOptions?: Apollo.SubscriptionHookOptions<MySubscriptionSubscription, MySubscriptionSubscriptionVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useSubscription<MySubscriptionSubscription, MySubscriptionSubscriptionVariables>(MySubscriptionDocument, options);
-      }
-export type MySubscriptionSubscriptionHookResult = ReturnType<typeof useMySubscriptionSubscription>;
-export type MySubscriptionSubscriptionResult = Apollo.SubscriptionResult<MySubscriptionSubscription>;
-export const SpacesDocument = gql`
-    query Spaces {
+export const GetSpacesDocument = gql`
+    query getSpaces {
   spaces {
     id
     name
@@ -1594,62 +1507,45 @@ export const SpacesDocument = gql`
   }
 }
     `;
-
-/**
- * __useSpacesQuery__
- *
- * To run a query within a React component, call `useSpacesQuery` and pass it any options that fit your needs.
- * When your component renders, `useSpacesQuery` returns an object from Apollo Client that contains loading, error, and data properties
- * you can use to render your UI.
- *
- * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
- *
- * @example
- * const { data, loading, error } = useSpacesQuery({
- *   variables: {
- *   },
- * });
- */
-export function useSpacesQuery(baseOptions?: Apollo.QueryHookOptions<SpacesQuery, SpacesQueryVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useQuery<SpacesQuery, SpacesQueryVariables>(SpacesDocument, options);
-      }
-export function useSpacesLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<SpacesQuery, SpacesQueryVariables>) {
-          const options = {...defaultOptions, ...baseOptions}
-          return Apollo.useLazyQuery<SpacesQuery, SpacesQueryVariables>(SpacesDocument, options);
-        }
-export type SpacesQueryHookResult = ReturnType<typeof useSpacesQuery>;
-export type SpacesLazyQueryHookResult = ReturnType<typeof useSpacesLazyQuery>;
-export type SpacesQueryResult = Apollo.QueryResult<SpacesQuery, SpacesQueryVariables>;
-export const WalletMutationDocument = gql`
-    mutation WalletMutation {
-  insert_wallets_one(object: {address: ""}) {
+export const GetSpaceByIdDocument = gql`
+    query getSpaceById($id: uuid!) {
+  spaces_by_pk(id: $id) {
     id
+    name
+    blockchain
+    contract_address
+    cover_image
+    description
+    members: space_memberships_aggregate {
+      aggregate {
+        count(distinct: true, columns: space_id)
+      }
+    }
   }
 }
     `;
-export type WalletMutationMutationFn = Apollo.MutationFunction<WalletMutationMutation, WalletMutationMutationVariables>;
-
-/**
- * __useWalletMutationMutation__
- *
- * To run a mutation, you first call `useWalletMutationMutation` within a React component and pass it any options that fit your needs.
- * When your component renders, `useWalletMutationMutation` returns a tuple that includes:
- * - A mutate function that you can call at any time to execute the mutation
- * - An object with fields that represent the current status of the mutation's execution
- *
- * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
- *
- * @example
- * const [walletMutationMutation, { data, loading, error }] = useWalletMutationMutation({
- *   variables: {
- *   },
- * });
- */
-export function useWalletMutationMutation(baseOptions?: Apollo.MutationHookOptions<WalletMutationMutation, WalletMutationMutationVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useMutation<WalletMutationMutation, WalletMutationMutationVariables>(WalletMutationDocument, options);
-      }
-export type WalletMutationMutationHookResult = ReturnType<typeof useWalletMutationMutation>;
-export type WalletMutationMutationResult = Apollo.MutationResult<WalletMutationMutation>;
-export type WalletMutationMutationOptions = Apollo.BaseMutationOptions<WalletMutationMutation, WalletMutationMutationVariables>;
+export const GetSpaceAndCheckMembershipsDocument = gql`
+    query getSpaceAndCheckMemberships($id: uuid!, $address: String!) {
+  spaces_by_pk(id: $id) {
+    contract_address
+    space_memberships(where: {wallet: {address: {_eq: $address}}}) {
+      space_id
+    }
+  }
+}
+    `;
+export type Requester<C= {}> = <R, V>(doc: DocumentNode, vars?: V, options?: C) => Promise<R>
+export function getSdk<C>(requester: Requester<C>) {
+  return {
+    getSpaces(variables?: GetSpacesQueryVariables, options?: C): Promise<GetSpacesQuery> {
+      return requester<GetSpacesQuery, GetSpacesQueryVariables>(GetSpacesDocument, variables, options);
+    },
+    getSpaceById(variables: GetSpaceByIdQueryVariables, options?: C): Promise<GetSpaceByIdQuery> {
+      return requester<GetSpaceByIdQuery, GetSpaceByIdQueryVariables>(GetSpaceByIdDocument, variables, options);
+    },
+    getSpaceAndCheckMemberships(variables: GetSpaceAndCheckMembershipsQueryVariables, options?: C): Promise<GetSpaceAndCheckMembershipsQuery> {
+      return requester<GetSpaceAndCheckMembershipsQuery, GetSpaceAndCheckMembershipsQueryVariables>(GetSpaceAndCheckMembershipsDocument, variables, options);
+    }
+  };
+}
+export type Sdk = ReturnType<typeof getSdk>;

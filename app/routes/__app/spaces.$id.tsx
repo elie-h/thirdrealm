@@ -6,41 +6,15 @@ import { serverClient } from "~/apollo.server";
 import { requireUser } from "~/session.server";
 import { truncateEthAddress } from "~/utils";
 import { createAlchemyWeb3 } from "@alch/alchemy-web3";
+import { typedClient } from "~/apollo.server";
 
 export const loader: LoaderFunction = async ({ request, params }) => {
   await requireUser(request);
   invariant("id" in params, "id is required");
-  const { data } = await serverClient.query({
-    query: gql`
-      query SpaceById {
-        spaces_by_pk(id: "${params.id}") {
-          id
-          name
-          blockchain
-          contract_address
-          cover_image
-          description
-          space_memberships_aggregate {
-            aggregate {
-              count(distinct: true, columns: space_id)
-            }
-          }
-        }
-      }
-    `,
-  });
+  const { spaces_by_pk } = await typedClient.getSpaceById({ id: params.id });
 
-  if (data) {
-    return {
-      id: data.spaces_by_pk.id,
-      name: data.spaces_by_pk.name,
-      blockchain: data.spaces_by_pk.blockchain,
-      contract_address: data.spaces_by_pk.contract_address,
-      cover_image: data.spaces_by_pk.cover_image,
-      description: data.spaces_by_pk.description,
-      membersCount:
-        data.spaces_by_pk.space_memberships_aggregate.aggregate.count,
-    };
+  if (spaces_by_pk) {
+    return spaces_by_pk;
   }
 
   throw new Error("Space not found");
@@ -51,18 +25,11 @@ export const action: ActionFunction = async ({ request, params }) => {
   invariant(process.env.ALCHEMY_ETH_RPC, "Expected process.env.RPC_URL");
   invariant(params.id, "Expected params.id");
 
-  const { data: data } = await serverClient.query({
-    query: gql`
-      query SpaceIdQuery {
-        spaces_by_pk(id: "${params.id}") {
-          contract_address
-          space_memberships(where: {wallet: {address: {_eq: "${user.address}"}}}) {
-            space_id
-          }
-        }
-      }`,
+  const { spaces_by_pk } = await typedClient.getSpaceAndCheckMemberships({
+    id: params.id,
+    address: user.address,
   });
-  const { contract_address, space_memberships } = data.spaces_by_pk;
+  const { contract_address, space_memberships } = spaces_by_pk;
 
   if (space_memberships.length > 0) {
     // Already a member - redirect them
@@ -126,7 +93,7 @@ export default function () {
         <section aria-labelledby="information-heading" className="mt-4">
           <div className="flex items-center">
             <p className="text-lg text-gray-900 sm:text-xl">
-              {spaceData.membersCount} Members
+              {spaceData.members.aggregate.count} Members
             </p>
           </div>
           <div className="mt-2 flex items-center">

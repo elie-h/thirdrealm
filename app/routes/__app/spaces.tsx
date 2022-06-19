@@ -1,28 +1,13 @@
-import { gql } from "@apollo/client";
 import type { LoaderFunction } from "@remix-run/node";
 import { Link, useLoaderData } from "@remix-run/react";
-import { serverClient } from "~/apollo.server";
+import { typedClient } from "~/apollo.server";
+import { Spaces } from "~/data/sdk";
 import { requireUser } from "~/session.server";
-import { Space } from "~/data/types";
 
 export const loader: LoaderFunction = async ({ request }) => {
   await requireUser(request);
-  const { data: data } = await serverClient.query({
-    query: gql`
-      query Spaces {
-        spaces {
-          id
-          name
-          contract_address
-          blockchain
-          cover_image
-          description
-        }
-      }
-    `,
-  });
-
-  return data.spaces;
+  const { spaces } = await typedClient.getSpaces();
+  return spaces;
 };
 
 export default function () {
@@ -30,7 +15,7 @@ export default function () {
   return (
     <div className="mx-auto max-w-2xl py-16 px-4 sm:py-24 sm:px-6 lg:max-w-7xl lg:px-8">
       <div className="grid grid-cols-1 gap-y-4 sm:grid-cols-2 sm:gap-x-6 sm:gap-y-10 lg:grid-cols-3 lg:gap-x-8">
-        {data.map((space: Space) => (
+        {data.map((space: Spaces) => (
           <Link to={`/spaces/${space.id}`} key={space.id}>
             <div className="group relative flex flex-col overflow-hidden rounded-lg border border-gray-200 bg-white">
               <div className="aspect-w-3 aspect-h-3 bg-gray-200 group-hover:opacity-75 sm:aspect-none sm:h-96">
