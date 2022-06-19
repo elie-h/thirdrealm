@@ -104,4 +104,4 @@ export const serverClient = new ApolloClient({
   },
 });
 
-export const typedClient = getSdkApollo(serverClient);
+export const apolloServerClient = getSdkApollo(serverClient);

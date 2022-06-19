@@ -6,12 +6,14 @@ import { serverClient } from "~/apollo.server";
 import { requireUser } from "~/session.server";
 import { truncateEthAddress } from "~/utils";
 import { createAlchemyWeb3 } from "@alch/alchemy-web3";
-import { typedClient } from "~/apollo.server";
+import { apolloServerClient } from "~/apollo.server";
 
 export const loader: LoaderFunction = async ({ request, params }) => {
   await requireUser(request);
   invariant("id" in params, "id is required");
-  const { spaces_by_pk } = await typedClient.getSpaceById({ id: params.id });
+  const { spaces_by_pk } = await apolloServerClient.getSpaceById({
+    id: params.id,
+  });
 
   if (spaces_by_pk) {
     return spaces_by_pk;
@@ -25,10 +27,12 @@ export const action: ActionFunction = async ({ request, params }) => {
   invariant(process.env.ALCHEMY_ETH_RPC, "Expected process.env.RPC_URL");
   invariant(params.id, "Expected params.id");
 
-  const { spaces_by_pk } = await typedClient.getSpaceAndCheckMemberships({
-    id: params.id,
-    address: user.address,
-  });
+  const { spaces_by_pk } = await apolloServerClient.getSpaceAndCheckMemberships(
+    {
+      id: params.id,
+      address: user.address,
+    }
+  );
   const { contract_address, space_memberships } = spaces_by_pk;
 
   if (space_memberships.length > 0) {

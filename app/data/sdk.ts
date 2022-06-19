@@ -959,8 +959,8 @@ export type Spaces = {
   /** An aggregate relationship */
   channels_aggregate: Channels_Aggregate;
   contract_address: Scalars['String'];
-  cover_image?: Maybe<Scalars['String']>;
-  description?: Maybe<Scalars['String']>;
+  cover_image: Scalars['String'];
+  description: Scalars['String'];
   id: Scalars['uuid'];
   name: Scalars['String'];
   /** An array relationship */

@@ -12,6 +12,7 @@
     "dev:build": "cross-env NODE_ENV=development npm run build:server -- --watch",
     "dev:remix": "cross-env NODE_ENV=development remix watch",
     "dev:css": "cross-env NODE_ENV=development npm run generate:css -- --watch",
+    "dev:codegen": "cross-env NODE_ENV=development npm run codegen -- --watch",
     "docker": "docker-compose up -d",
     "format": "prettier --write .",
     "generate:css": "tailwindcss -i ./styles/tailwind.css -o ./app/styles/tailwind.css",
@@ -26,7 +27,6 @@
     "typecheck": "tsc -b && tsc -b cypress",
     "validate": "run-p \"test -- --run\" lint typecheck test:e2e:run",
     "gq:schema": "gq http://localhost:8080/v1/graphql --introspect > app/data/schema.graphql",
-    "install": "graphql-codegen init",
     "codegen": "graphql-codegen --config codegen.yml"
   },
   "prettier": {},

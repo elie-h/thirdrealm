@@ -1,12 +1,12 @@
 import type { LoaderFunction } from "@remix-run/node";
 import { Link, useLoaderData } from "@remix-run/react";
-import { typedClient } from "~/apollo.server";
+import { apolloServerClient } from "~/apollo.server";
 import { Spaces } from "~/data/sdk";
 import { requireUser } from "~/session.server";
 
 export const loader: LoaderFunction = async ({ request }) => {
   await requireUser(request);
-  const { spaces } = await typedClient.getSpaces();
+  const { spaces } = await apolloServerClient.getSpaces();
   return spaces;
 };
 
