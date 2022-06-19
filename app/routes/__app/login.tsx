@@ -10,7 +10,7 @@ export default function Login() {
 
   useEffect(() => {
     if (user && signer) {
-      navigate("/feed", { replace: true });
+      navigate("/spaces", { replace: true });
     }
   }, [signer, user]);
 
