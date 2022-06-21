@@ -1,12 +1,10 @@
-import { gql } from "@apollo/client";
+import { createAlchemyWeb3 } from "@alch/alchemy-web3";
 import { ActionFunction, LoaderFunction, redirect } from "@remix-run/node";
-import { Link, useFetcher, useLoaderData, useParams } from "@remix-run/react";
+import { Link, useFetcher, useLoaderData } from "@remix-run/react";
 import invariant from "tiny-invariant";
-import { serverClient } from "~/apollo.server";
+import { apolloServerClient } from "~/apollo.server";
 import { requireUser } from "~/session.server";
 import { truncateEthAddress } from "~/utils";
-import { createAlchemyWeb3 } from "@alch/alchemy-web3";
-import { apolloServerClient } from "~/apollo.server";
 
 export const loader: LoaderFunction = async ({ request, params }) => {
   await requireUser(request);
@@ -48,25 +46,24 @@ export const action: ActionFunction = async ({ request, params }) => {
   const token_balance = Number(user_balance.tokenBalances[0].tokenBalance);
   invariant(!!!token_balance, "Expected token balance");
   if (token_balance > 0) {
-    const addToSpacePayload = await serverClient.mutate({
-      mutation: gql`
-        mutation AddUserToSpace {
-          insert_space_memberships(objects: { space_id: "${params.id}", wallet_id: "${user.id}" }) {
-            affected_rows
-          }
-        }
-      `,
-    });
-    if (addToSpacePayload.errors) {
-      return redirect(`/spaces/error`);
+    console.log(params.id, user.id);
+    const { insert_space_memberships } =
+      await apolloServerClient.addUserToSpace({
+        space_id: params.id,
+        wallet_id: user.id,
+      });
+
+    if (insert_space_memberships.errors) {
+      console.log(insert_space_memberships.errors);
+      return redirect(`/spaces/error/${contract_address}`);
     }
-    if (addToSpacePayload.data.insert_space_memberships.affected_rows > 0) {
+    if (insert_space_memberships.affected_rows > 0) {
       // Successfully added to space
       return redirect(`/spaces/${params.id}/feed`);
     }
   } else {
     // Not enough tokens! Redirect to a space where a user can join other spaces
-    return redirect("/spaces/error");
+    return redirect(`/spaces/error/${contract_address}`);
   }
 
   return true;

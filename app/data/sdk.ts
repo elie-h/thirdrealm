@@ -1495,6 +1495,13 @@ export enum Wallets_Update_Column {
 }
 
 
+export const AddUserToSpaceDocument = gql`
+    mutation addUserToSpace($space_id: uuid!, $wallet_id: uuid!) {
+  insert_space_memberships(objects: {space_id: $space_id, wallet_id: $wallet_id}) {
+    affected_rows
+  }
+}
+    `;
 export const GetSpacesDocument = gql`
     query getSpaces {
   spaces {
@@ -1537,6 +1544,9 @@ export const GetSpaceAndCheckMembershipsDocument = gql`
 export type Requester<C= {}> = <R, V>(doc: DocumentNode, vars?: V, options?: C) => Promise<R>
 export function getSdk<C>(requester: Requester<C>) {
   return {
+    addUserToSpace(variables: AddUserToSpaceMutationVariables, options?: C): Promise<AddUserToSpaceMutation> {
+      return requester<AddUserToSpaceMutation, AddUserToSpaceMutationVariables>(AddUserToSpaceDocument, variables, options);
+    },
     getSpaces(variables?: GetSpacesQueryVariables, options?: C): Promise<GetSpacesQuery> {
       return requester<GetSpacesQuery, GetSpacesQueryVariables>(GetSpacesDocument, variables, options);
     },
