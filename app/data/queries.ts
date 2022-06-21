@@ -1,6 +1,6 @@
 import { gql } from "@apollo/client";
 
-export const GetSpaces = gql`
+export const getSpaces = gql`
   query getSpaces {
     spaces {
       id
@@ -13,7 +13,7 @@ export const GetSpaces = gql`
   }
 `;
 
-export const GetSpaceByPk = gql`
+export const getSpaceById = gql`
   query getSpaceById($id: uuid!) {
     spaces_by_pk(id: $id) {
       id
@@ -31,13 +31,22 @@ export const GetSpaceByPk = gql`
   }
 `;
 
-export const GetSpaceAndMemberships = gql`
+export const getSpaceAndCheckMemberships = gql`
   query getSpaceAndCheckMemberships($id: uuid!, $address: String!) {
     spaces_by_pk(id: $id) {
       contract_address
       space_memberships(where: { wallet: { address: { _eq: $address } } }) {
         space_id
       }
+    }
+  }
+`;
+
+export const getWalletByAddress = gql`
+  query getWalletByAddress($address: String!) {
+    wallets(where: { address: { _eq: $address } }) {
+      id
+      address
     }
   }
 `;

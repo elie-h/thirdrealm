@@ -5,6 +5,7 @@ import invariant from "tiny-invariant";
 import { serverClient } from "~/apollo.server";
 import { createUserSession } from "~/session.server";
 import { safeRedirect } from "~/utils";
+import { apolloServerClient } from "~/apollo.server";
 
 export const action: ActionFunction = async ({ request, params }) => {
   const form = await request.formData();
@@ -18,39 +19,31 @@ export const action: ActionFunction = async ({ request, params }) => {
 
   try {
     await siweMessage.validate(signature.toString());
-
-    const { data: userWallets } = await serverClient.query({
-      query: gql`
-      query UserWallet {
-        wallets(where: {address: {_eq: "${siweMessage.address}"}}) {
-          id
-          address
-        }
-      }`,
+    const { wallets } = await apolloServerClient.getWalletByAddress({
+      address: siweMessage.address,
     });
 
-    if (userWallets.wallets.length === 0) {
-      const { data: addUser } = await serverClient.mutate({
-        mutation: gql`
-          mutation WalletMutation {
-            insert_wallets_one(object: { address: "${siweMessage.address}" }) {
-              id
-            }
-          }`,
+    if (wallets.length === 0) {
+      const { insert_wallets_one } = await apolloServerClient.insertWallet({
+        address: siweMessage.address,
       });
 
-      userId = addUser.insert_wallets_one.id;
+      userId = insert_wallets_one.id;
 
-      if (addUser.errors) {
-        if (addUser.errors[0].extensions.code == "validation-failed") {
+      if (insert_wallets_one.errors) {
+        if (
+          insert_wallets_one.errors[0].extensions.code == "validation-failed"
+        ) {
           throw new Error("Malformed wallet");
         }
-        if (addUser.errors[0].extensions.code == "constraint-violation") {
+        if (
+          insert_wallets_one.errors[0].extensions.code == "constraint-violation"
+        ) {
           console.log("Wallet already registered");
         }
       }
     } else {
-      userId = userWallets.wallets[0].id;
+      userId = wallets[0].id;
     }
 
     return createUserSession({
@@ -61,7 +54,7 @@ export const action: ActionFunction = async ({ request, params }) => {
     });
   } catch (error) {
     console.log(error);
-    return false;
+    throw new Response("Error", { status: 400 });
   }
 };
 

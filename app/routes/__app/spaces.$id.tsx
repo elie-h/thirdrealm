@@ -44,7 +44,8 @@ export const action: ActionFunction = async ({ request, params }) => {
   ]);
 
   const token_balance = Number(user_balance.tokenBalances[0].tokenBalance);
-  invariant(token_balance, "Expected token balance");
+
+  invariant(Number.isInteger(token_balance), "Expected token balance");
   if (token_balance > 0) {
     console.log(params.id, user.id);
     const { insert_space_memberships } =

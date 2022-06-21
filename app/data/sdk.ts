@@ -12,6 +12,7 @@ export type Scalars = {
   Boolean: boolean;
   Int: number;
   Float: number;
+  timestamptz: any;
   timetz: any;
   uuid: any;
 };
@@ -803,9 +804,11 @@ export type Query_RootWallets_By_PkArgs = {
 /** A table to track user memberships to public spaces */
 export type Space_Memberships = {
   __typename?: 'space_memberships';
+  created_at?: Maybe<Scalars['timestamptz']>;
   /** An object relationship */
   space: Spaces;
   space_id: Scalars['uuid'];
+  updated_at?: Maybe<Scalars['timestamptz']>;
   /** An object relationship */
   wallet: Wallets;
   wallet_id: Scalars['uuid'];
@@ -852,8 +855,10 @@ export type Space_Memberships_Bool_Exp = {
   _and?: InputMaybe<Array<Space_Memberships_Bool_Exp>>;
   _not?: InputMaybe<Space_Memberships_Bool_Exp>;
   _or?: InputMaybe<Array<Space_Memberships_Bool_Exp>>;
+  created_at?: InputMaybe<Timestamptz_Comparison_Exp>;
   space?: InputMaybe<Spaces_Bool_Exp>;
   space_id?: InputMaybe<Uuid_Comparison_Exp>;
+  updated_at?: InputMaybe<Timestamptz_Comparison_Exp>;
   wallet?: InputMaybe<Wallets_Bool_Exp>;
   wallet_id?: InputMaybe<Uuid_Comparison_Exp>;
 };
@@ -866,8 +871,10 @@ export enum Space_Memberships_Constraint {
 
 /** input type for inserting data into table "space_memberships" */
 export type Space_Memberships_Insert_Input = {
+  created_at?: InputMaybe<Scalars['timestamptz']>;
   space?: InputMaybe<Spaces_Obj_Rel_Insert_Input>;
   space_id?: InputMaybe<Scalars['uuid']>;
+  updated_at?: InputMaybe<Scalars['timestamptz']>;
   wallet?: InputMaybe<Wallets_Obj_Rel_Insert_Input>;
   wallet_id?: InputMaybe<Scalars['uuid']>;
 };
@@ -875,26 +882,34 @@ export type Space_Memberships_Insert_Input = {
 /** aggregate max on columns */
 export type Space_Memberships_Max_Fields = {
   __typename?: 'space_memberships_max_fields';
+  created_at?: Maybe<Scalars['timestamptz']>;
   space_id?: Maybe<Scalars['uuid']>;
+  updated_at?: Maybe<Scalars['timestamptz']>;
   wallet_id?: Maybe<Scalars['uuid']>;
 };
 
 /** order by max() on columns of table "space_memberships" */
 export type Space_Memberships_Max_Order_By = {
+  created_at?: InputMaybe<Order_By>;
   space_id?: InputMaybe<Order_By>;
+  updated_at?: InputMaybe<Order_By>;
   wallet_id?: InputMaybe<Order_By>;
 };
 
 /** aggregate min on columns */
 export type Space_Memberships_Min_Fields = {
   __typename?: 'space_memberships_min_fields';
+  created_at?: Maybe<Scalars['timestamptz']>;
   space_id?: Maybe<Scalars['uuid']>;
+  updated_at?: Maybe<Scalars['timestamptz']>;
   wallet_id?: Maybe<Scalars['uuid']>;
 };
 
 /** order by min() on columns of table "space_memberships" */
 export type Space_Memberships_Min_Order_By = {
+  created_at?: InputMaybe<Order_By>;
   space_id?: InputMaybe<Order_By>;
+  updated_at?: InputMaybe<Order_By>;
   wallet_id?: InputMaybe<Order_By>;
 };
 
@@ -916,8 +931,10 @@ export type Space_Memberships_On_Conflict = {
 
 /** Ordering options when selecting data from "space_memberships". */
 export type Space_Memberships_Order_By = {
+  created_at?: InputMaybe<Order_By>;
   space?: InputMaybe<Spaces_Order_By>;
   space_id?: InputMaybe<Order_By>;
+  updated_at?: InputMaybe<Order_By>;
   wallet?: InputMaybe<Wallets_Order_By>;
   wallet_id?: InputMaybe<Order_By>;
 };
@@ -931,21 +948,31 @@ export type Space_Memberships_Pk_Columns_Input = {
 /** select columns of table "space_memberships" */
 export enum Space_Memberships_Select_Column {
   /** column name */
+  CreatedAt = 'created_at',
+  /** column name */
   SpaceId = 'space_id',
+  /** column name */
+  UpdatedAt = 'updated_at',
   /** column name */
   WalletId = 'wallet_id'
 }
 
 /** input type for updating data in table "space_memberships" */
 export type Space_Memberships_Set_Input = {
+  created_at?: InputMaybe<Scalars['timestamptz']>;
   space_id?: InputMaybe<Scalars['uuid']>;
+  updated_at?: InputMaybe<Scalars['timestamptz']>;
   wallet_id?: InputMaybe<Scalars['uuid']>;
 };
 
 /** update columns of table "space_memberships" */
 export enum Space_Memberships_Update_Column {
   /** column name */
+  CreatedAt = 'created_at',
+  /** column name */
   SpaceId = 'space_id',
+  /** column name */
+  UpdatedAt = 'updated_at',
   /** column name */
   WalletId = 'wallet_id'
 }
@@ -960,6 +987,7 @@ export type Spaces = {
   channels_aggregate: Channels_Aggregate;
   contract_address: Scalars['String'];
   cover_image: Scalars['String'];
+  created_at?: Maybe<Scalars['timestamptz']>;
   description: Scalars['String'];
   id: Scalars['uuid'];
   name: Scalars['String'];
@@ -967,6 +995,7 @@ export type Spaces = {
   space_memberships: Array<Space_Memberships>;
   /** An aggregate relationship */
   space_memberships_aggregate: Space_Memberships_Aggregate;
+  updated_at?: Maybe<Scalars['timestamptz']>;
 };
 
 
@@ -1040,10 +1069,12 @@ export type Spaces_Bool_Exp = {
   channels?: InputMaybe<Channels_Bool_Exp>;
   contract_address?: InputMaybe<String_Comparison_Exp>;
   cover_image?: InputMaybe<String_Comparison_Exp>;
+  created_at?: InputMaybe<Timestamptz_Comparison_Exp>;
   description?: InputMaybe<String_Comparison_Exp>;
   id?: InputMaybe<Uuid_Comparison_Exp>;
   name?: InputMaybe<String_Comparison_Exp>;
   space_memberships?: InputMaybe<Space_Memberships_Bool_Exp>;
+  updated_at?: InputMaybe<Timestamptz_Comparison_Exp>;
 };
 
 /** unique or primary key constraints on table "spaces" */
@@ -1058,10 +1089,12 @@ export type Spaces_Insert_Input = {
   channels?: InputMaybe<Channels_Arr_Rel_Insert_Input>;
   contract_address?: InputMaybe<Scalars['String']>;
   cover_image?: InputMaybe<Scalars['String']>;
+  created_at?: InputMaybe<Scalars['timestamptz']>;
   description?: InputMaybe<Scalars['String']>;
   id?: InputMaybe<Scalars['uuid']>;
   name?: InputMaybe<Scalars['String']>;
   space_memberships?: InputMaybe<Space_Memberships_Arr_Rel_Insert_Input>;
+  updated_at?: InputMaybe<Scalars['timestamptz']>;
 };
 
 /** aggregate max on columns */
@@ -1070,9 +1103,11 @@ export type Spaces_Max_Fields = {
   blockchain?: Maybe<Scalars['String']>;
   contract_address?: Maybe<Scalars['String']>;
   cover_image?: Maybe<Scalars['String']>;
+  created_at?: Maybe<Scalars['timestamptz']>;
   description?: Maybe<Scalars['String']>;
   id?: Maybe<Scalars['uuid']>;
   name?: Maybe<Scalars['String']>;
+  updated_at?: Maybe<Scalars['timestamptz']>;
 };
 
 /** aggregate min on columns */
@@ -1081,9 +1116,11 @@ export type Spaces_Min_Fields = {
   blockchain?: Maybe<Scalars['String']>;
   contract_address?: Maybe<Scalars['String']>;
   cover_image?: Maybe<Scalars['String']>;
+  created_at?: Maybe<Scalars['timestamptz']>;
   description?: Maybe<Scalars['String']>;
   id?: Maybe<Scalars['uuid']>;
   name?: Maybe<Scalars['String']>;
+  updated_at?: Maybe<Scalars['timestamptz']>;
 };
 
 /** response of any mutation on the table "spaces" */
@@ -1115,10 +1152,12 @@ export type Spaces_Order_By = {
   channels_aggregate?: InputMaybe<Channels_Aggregate_Order_By>;
   contract_address?: InputMaybe<Order_By>;
   cover_image?: InputMaybe<Order_By>;
+  created_at?: InputMaybe<Order_By>;
   description?: InputMaybe<Order_By>;
   id?: InputMaybe<Order_By>;
   name?: InputMaybe<Order_By>;
   space_memberships_aggregate?: InputMaybe<Space_Memberships_Aggregate_Order_By>;
+  updated_at?: InputMaybe<Order_By>;
 };
 
 /** primary key columns input for table: spaces */
@@ -1135,11 +1174,15 @@ export enum Spaces_Select_Column {
   /** column name */
   CoverImage = 'cover_image',
   /** column name */
+  CreatedAt = 'created_at',
+  /** column name */
   Description = 'description',
   /** column name */
   Id = 'id',
   /** column name */
-  Name = 'name'
+  Name = 'name',
+  /** column name */
+  UpdatedAt = 'updated_at'
 }
 
 /** input type for updating data in table "spaces" */
@@ -1147,9 +1190,11 @@ export type Spaces_Set_Input = {
   blockchain?: InputMaybe<Scalars['String']>;
   contract_address?: InputMaybe<Scalars['String']>;
   cover_image?: InputMaybe<Scalars['String']>;
+  created_at?: InputMaybe<Scalars['timestamptz']>;
   description?: InputMaybe<Scalars['String']>;
   id?: InputMaybe<Scalars['uuid']>;
   name?: InputMaybe<Scalars['String']>;
+  updated_at?: InputMaybe<Scalars['timestamptz']>;
 };
 
 /** update columns of table "spaces" */
@@ -1161,11 +1206,15 @@ export enum Spaces_Update_Column {
   /** column name */
   CoverImage = 'cover_image',
   /** column name */
+  CreatedAt = 'created_at',
+  /** column name */
   Description = 'description',
   /** column name */
   Id = 'id',
   /** column name */
-  Name = 'name'
+  Name = 'name',
+  /** column name */
+  UpdatedAt = 'updated_at'
 }
 
 export type Subscription_Root = {
@@ -1319,6 +1368,19 @@ export type Subscription_RootWallets_By_PkArgs = {
   id: Scalars['uuid'];
 };
 
+/** Boolean expression to compare columns of type "timestamptz". All fields are combined with logical 'AND'. */
+export type Timestamptz_Comparison_Exp = {
+  _eq?: InputMaybe<Scalars['timestamptz']>;
+  _gt?: InputMaybe<Scalars['timestamptz']>;
+  _gte?: InputMaybe<Scalars['timestamptz']>;
+  _in?: InputMaybe<Array<Scalars['timestamptz']>>;
+  _is_null?: InputMaybe<Scalars['Boolean']>;
+  _lt?: InputMaybe<Scalars['timestamptz']>;
+  _lte?: InputMaybe<Scalars['timestamptz']>;
+  _neq?: InputMaybe<Scalars['timestamptz']>;
+  _nin?: InputMaybe<Array<Scalars['timestamptz']>>;
+};
+
 /** Boolean expression to compare columns of type "timetz". All fields are combined with logical 'AND'. */
 export type Timetz_Comparison_Exp = {
   _eq?: InputMaybe<Scalars['timetz']>;
@@ -1349,11 +1411,14 @@ export type Uuid_Comparison_Exp = {
 export type Wallets = {
   __typename?: 'wallets';
   address: Scalars['String'];
+  created_at?: Maybe<Scalars['timestamptz']>;
   id: Scalars['uuid'];
+  last_login?: Maybe<Scalars['timestamptz']>;
   /** An array relationship */
   space_memberships: Array<Space_Memberships>;
   /** An aggregate relationship */
   space_memberships_aggregate: Space_Memberships_Aggregate;
+  updated_at?: Maybe<Scalars['timestamptz']>;
 };
 
 
@@ -1404,8 +1469,11 @@ export type Wallets_Bool_Exp = {
   _not?: InputMaybe<Wallets_Bool_Exp>;
   _or?: InputMaybe<Array<Wallets_Bool_Exp>>;
   address?: InputMaybe<String_Comparison_Exp>;
+  created_at?: InputMaybe<Timestamptz_Comparison_Exp>;
   id?: InputMaybe<Uuid_Comparison_Exp>;
+  last_login?: InputMaybe<Timestamptz_Comparison_Exp>;
   space_memberships?: InputMaybe<Space_Memberships_Bool_Exp>;
+  updated_at?: InputMaybe<Timestamptz_Comparison_Exp>;
 };
 
 /** unique or primary key constraints on table "wallets" */
@@ -1419,22 +1487,31 @@ export enum Wallets_Constraint {
 /** input type for inserting data into table "wallets" */
 export type Wallets_Insert_Input = {
   address?: InputMaybe<Scalars['String']>;
+  created_at?: InputMaybe<Scalars['timestamptz']>;
   id?: InputMaybe<Scalars['uuid']>;
+  last_login?: InputMaybe<Scalars['timestamptz']>;
   space_memberships?: InputMaybe<Space_Memberships_Arr_Rel_Insert_Input>;
+  updated_at?: InputMaybe<Scalars['timestamptz']>;
 };
 
 /** aggregate max on columns */
 export type Wallets_Max_Fields = {
   __typename?: 'wallets_max_fields';
   address?: Maybe<Scalars['String']>;
+  created_at?: Maybe<Scalars['timestamptz']>;
   id?: Maybe<Scalars['uuid']>;
+  last_login?: Maybe<Scalars['timestamptz']>;
+  updated_at?: Maybe<Scalars['timestamptz']>;
 };
 
 /** aggregate min on columns */
 export type Wallets_Min_Fields = {
   __typename?: 'wallets_min_fields';
   address?: Maybe<Scalars['String']>;
+  created_at?: Maybe<Scalars['timestamptz']>;
   id?: Maybe<Scalars['uuid']>;
+  last_login?: Maybe<Scalars['timestamptz']>;
+  updated_at?: Maybe<Scalars['timestamptz']>;
 };
 
 /** response of any mutation on the table "wallets" */
@@ -1463,8 +1540,11 @@ export type Wallets_On_Conflict = {
 /** Ordering options when selecting data from "wallets". */
 export type Wallets_Order_By = {
   address?: InputMaybe<Order_By>;
+  created_at?: InputMaybe<Order_By>;
   id?: InputMaybe<Order_By>;
+  last_login?: InputMaybe<Order_By>;
   space_memberships_aggregate?: InputMaybe<Space_Memberships_Aggregate_Order_By>;
+  updated_at?: InputMaybe<Order_By>;
 };
 
 /** primary key columns input for table: wallets */
@@ -1477,13 +1557,22 @@ export enum Wallets_Select_Column {
   /** column name */
   Address = 'address',
   /** column name */
-  Id = 'id'
+  CreatedAt = 'created_at',
+  /** column name */
+  Id = 'id',
+  /** column name */
+  LastLogin = 'last_login',
+  /** column name */
+  UpdatedAt = 'updated_at'
 }
 
 /** input type for updating data in table "wallets" */
 export type Wallets_Set_Input = {
   address?: InputMaybe<Scalars['String']>;
+  created_at?: InputMaybe<Scalars['timestamptz']>;
   id?: InputMaybe<Scalars['uuid']>;
+  last_login?: InputMaybe<Scalars['timestamptz']>;
+  updated_at?: InputMaybe<Scalars['timestamptz']>;
 };
 
 /** update columns of table "wallets" */
@@ -1491,10 +1580,23 @@ export enum Wallets_Update_Column {
   /** column name */
   Address = 'address',
   /** column name */
-  Id = 'id'
+  CreatedAt = 'created_at',
+  /** column name */
+  Id = 'id',
+  /** column name */
+  LastLogin = 'last_login',
+  /** column name */
+  UpdatedAt = 'updated_at'
 }
 
 
+export const InsertWalletDocument = gql`
+    mutation insertWallet($address: String!) {
+  insert_wallets_one(object: {address: $address}) {
+    id
+  }
+}
+    `;
 export const AddUserToSpaceDocument = gql`
     mutation addUserToSpace($space_id: uuid!, $wallet_id: uuid!) {
   insert_space_memberships(objects: {space_id: $space_id, wallet_id: $wallet_id}) {
@@ -1541,9 +1643,20 @@ export const GetSpaceAndCheckMembershipsDocument = gql`
   }
 }
     `;
+export const GetWalletByAddressDocument = gql`
+    query getWalletByAddress($address: String!) {
+  wallets(where: {address: {_eq: $address}}) {
+    id
+    address
+  }
+}
+    `;
 export type Requester<C= {}> = <R, V>(doc: DocumentNode, vars?: V, options?: C) => Promise<R>
 export function getSdk<C>(requester: Requester<C>) {
   return {
+    insertWallet(variables: InsertWalletMutationVariables, options?: C): Promise<InsertWalletMutation> {
+      return requester<InsertWalletMutation, InsertWalletMutationVariables>(InsertWalletDocument, variables, options);
+    },
     addUserToSpace(variables: AddUserToSpaceMutationVariables, options?: C): Promise<AddUserToSpaceMutation> {
       return requester<AddUserToSpaceMutation, AddUserToSpaceMutationVariables>(AddUserToSpaceDocument, variables, options);
     },
@@ -1555,6 +1668,9 @@ export function getSdk<C>(requester: Requester<C>) {
     },
     getSpaceAndCheckMemberships(variables: GetSpaceAndCheckMembershipsQueryVariables, options?: C): Promise<GetSpaceAndCheckMembershipsQuery> {
       return requester<GetSpaceAndCheckMembershipsQuery, GetSpaceAndCheckMembershipsQueryVariables>(GetSpaceAndCheckMembershipsDocument, variables, options);
+    },
+    getWalletByAddress(variables: GetWalletByAddressQueryVariables, options?: C): Promise<GetWalletByAddressQuery> {
+      return requester<GetWalletByAddressQuery, GetWalletByAddressQueryVariables>(GetWalletByAddressDocument, variables, options);
     }
   };
 }
