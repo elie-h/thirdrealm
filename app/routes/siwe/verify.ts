@@ -14,7 +14,7 @@ export const action: ActionFunction = async ({ request, params }) => {
   invariant(message, "Message is required");
   invariant(signature, "Signature is required");
   const siweMessage = new SiweMessage(message.toString());
-  const redirectTo = safeRedirect(form.get("redirectTo"), "/feed");
+  const redirectTo = safeRedirect(form.get("redirectTo"), "/spaces");
 
   try {
     await siweMessage.validate(signature.toString());

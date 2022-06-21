@@ -94,7 +94,7 @@ export function getSdkApollo<C>(client: ApolloClient<C>) {
 export const serverClient = new ApolloClient({
   ssrMode: true,
   link: createHttpLink({
-    uri: "http://localhost:8080/v1/graphql",
+    uri: process.env.HASURA_GRAPHQL_ENDPOINT,
     credentials: "same-origin",
   }),
   cache: new InMemoryCache(),

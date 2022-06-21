@@ -11,6 +11,7 @@ import {
   Outlet,
   Scripts,
   ScrollRestoration,
+  useCatch,
 } from "@remix-run/react";
 import React from "react";
 import ApolloContext from "./context/apollo";
@@ -41,6 +42,19 @@ export const loader: LoaderFunction = async ({ request }) => {
     user: await getUser(request),
   });
 };
+
+export function ErrorBoundary({ error }) {
+  return (
+    <html lang="en" className="h-full">
+      <head>
+        <meta name="description" content="W3B" />
+        <Meta />
+        <Links />
+      </head>
+      <body className="h-full">Somebody hurt!</body>
+    </html>
+  );
+}
 
 export default function App() {
   const initialState = React.useContext(ApolloContext);
