@@ -1,11 +1,13 @@
-import { gql } from "@apollo/client";
 import { ActionFunction, redirect } from "@remix-run/server-runtime";
 import { SiweMessage } from "siwe";
 import invariant from "tiny-invariant";
-import { serverClient } from "~/apollo.server";
+import {
+  createWallet,
+  getWalletByAddress,
+  updateLastSeen,
+} from "~/models/wallet.server";
 import { createUserSession } from "~/session.server";
 import { safeRedirect } from "~/utils";
-import { apolloServerClient } from "~/apollo.server";
 
 export const action: ActionFunction = async ({ request, params }) => {
   const form = await request.formData();
@@ -19,31 +21,14 @@ export const action: ActionFunction = async ({ request, params }) => {
 
   try {
     await siweMessage.validate(signature.toString());
-    const { wallets } = await apolloServerClient.getWalletByAddress({
-      address: siweMessage.address,
-    });
+    const existingWallet = await getWalletByAddress(siweMessage.address);
 
-    if (wallets.length === 0) {
-      const { insert_wallets_one } = await apolloServerClient.insertWallet({
-        address: siweMessage.address,
-      });
-
-      userId = insert_wallets_one.id;
-
-      if (insert_wallets_one.errors) {
-        if (
-          insert_wallets_one.errors[0].extensions.code == "validation-failed"
-        ) {
-          throw new Error("Malformed wallet");
-        }
-        if (
-          insert_wallets_one.errors[0].extensions.code == "constraint-violation"
-        ) {
-          console.log("Wallet already registered");
-        }
-      }
+    if (!!!existingWallet) {
+      const newWallet = await createWallet(siweMessage.address);
+      userId = newWallet.id;
     } else {
-      userId = wallets[0].id;
+      await updateLastSeen(existingWallet.id);
+      userId = existingWallet.id;
     }
 
     return createUserSession({

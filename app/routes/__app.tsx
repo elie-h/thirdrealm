@@ -38,6 +38,9 @@ export default function App() {
 }
 
 export function ErrorBoundary({ error }: { error: Error }) {
+  if (process.env.NODE_ENV === "development") {
+    console.log(error.stack);
+  }
   return (
     <WagmiConfig client={wagmiClient}>
       <RainbowKitProvider chains={chains} coolMode>
@@ -67,6 +70,11 @@ export function ErrorBoundary({ error }: { error: Error }) {
                     {error.message}
                   </p>
                   <p className="mt-2 text-base text-gray-500">{error.stack}</p>
+                  {process.env.NODE_ENV === "development" ? (
+                    <p className="mt-2 text-base text-gray-500">
+                      {error.stack}
+                    </p>
+                  ) : null}
                   <div className="mt-6">
                     <Link
                       to="/spaces"
@@ -79,7 +87,6 @@ export function ErrorBoundary({ error }: { error: Error }) {
               </div>
             </main>
           </div>
-          <pre>{error.stack}</pre>
         </ApolloProvider>
       </RainbowKitProvider>
     </WagmiConfig>

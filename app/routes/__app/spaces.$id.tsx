@@ -5,16 +5,19 @@ import invariant from "tiny-invariant";
 import { apolloServerClient } from "~/apollo.server";
 import { requireUser } from "~/session.server";
 import { truncateEthAddress } from "~/utils";
+import {
+  getSpaceById,
+  getSpaceAndMembersById,
+  createSpaceMembership,
+} from "~/models/spaces.server";
 
 export const loader: LoaderFunction = async ({ request, params }) => {
   await requireUser(request);
-  invariant("id" in params, "id is required");
-  const { spaces_by_pk } = await apolloServerClient.getSpaceById({
-    id: params.id,
-  });
+  invariant(params.id, "id is required");
+  const space = await getSpaceById(params.id);
 
-  if (spaces_by_pk) {
-    return spaces_by_pk;
+  if (space) {
+    return space;
   }
 
   throw new Error("Space not found");
@@ -25,49 +28,29 @@ export const action: ActionFunction = async ({ request, params }) => {
   invariant(process.env.ALCHEMY_ETH_RPC, "Expected process.env.RPC_URL");
   invariant(params.id, "Expected params.id");
 
-  const { spaces_by_pk } = await apolloServerClient.getSpaceAndCheckMemberships(
-    {
-      id: params.id,
-      address: user.address,
-    }
-  );
-  const { contract_address, space_memberships } = spaces_by_pk;
-
-  if (space_memberships.length > 0) {
+  const spaceAndMembers = await getSpaceAndMembersById(params.id, user.id);
+  invariant(spaceAndMembers, "Space not found");
+  console.log(spaceAndMembers);
+  if (spaceAndMembers.members.length > 0) {
     // Already a member - redirect them
     return redirect(`/spaces/${params.id}/feed`);
   }
 
   const web3 = createAlchemyWeb3(process.env.ALCHEMY_ETH_RPC);
   const user_balance = await web3.alchemy.getTokenBalances(user.address, [
-    contract_address,
+    spaceAndMembers.contractAddress,
   ]);
 
   const token_balance = Number(user_balance.tokenBalances[0].tokenBalance);
 
   invariant(Number.isInteger(token_balance), "Expected token balance");
   if (token_balance > 0) {
-    console.log(params.id, user.id);
-    const { insert_space_memberships } =
-      await apolloServerClient.addUserToSpace({
-        space_id: params.id,
-        wallet_id: user.id,
-      });
-
-    if (insert_space_memberships.errors) {
-      console.log(insert_space_memberships.errors);
-      return redirect(`/spaces/error/${contract_address}`);
-    }
-    if (insert_space_memberships.affected_rows > 0) {
-      // Successfully added to space
-      return redirect(`/spaces/${params.id}/feed`);
-    }
+    await createSpaceMembership(params.id, user.id);
+    return redirect(`/spaces/${params.id}/feed`);
   } else {
     // Not enough tokens! Redirect to a space where a user can join other spaces
-    return redirect(`/spaces/error/${contract_address}`);
+    return redirect(`/spaces/forbidden/${spaceAndMembers.contractAddress}`);
   }
-
-  return true;
 };
 
 export default function () {
@@ -79,7 +62,7 @@ export default function () {
       <div className="group rounded-lg sm:aspect-h-1 sm:aspect-w-1 sm:row-span-2">
         <div className="aspect-w-1 aspect-h-1 rounded-lg">
           <img
-            src={spaceData.cover_image}
+            src={spaceData.coverImage}
             alt="Space cover image"
             className="rounded-lg object-cover object-center"
           />
@@ -95,18 +78,18 @@ export default function () {
         <section aria-labelledby="information-heading" className="mt-4">
           <div className="flex items-center">
             <p className="text-lg text-gray-900 sm:text-xl">
-              {spaceData.members.aggregate.count} Members
+              {spaceData._count.members} Members
             </p>
           </div>
           <div className="mt-2 flex items-center">
             <p className="text-lg text-gray-500 sm:text-xl">
-              {spaceData.blockchain}
+              {spaceData.network}
             </p>
 
             <div className="ml-4 border-l border-gray-300 pl-4">
               <div className="flex items-center">
                 <p className="text-sm text-gray-500">
-                  {truncateEthAddress(spaceData.contract_address)}
+                  {truncateEthAddress(spaceData.contractAddress)}
                 </p>
               </div>
             </div>
