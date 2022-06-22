@@ -1,7 +1,0 @@
-table:
-  schema: public
-  name: channels
-object_relationships:
-  - name: space
-    using:
-      foreign_key_constraint_on: space_id

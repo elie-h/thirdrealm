@@ -1,5 +1,0 @@
-- "!include public_channels.yaml"
-- "!include public_messages.yaml"
-- "!include public_space_memberships.yaml"
-- "!include public_spaces.yaml"
-- "!include public_wallets.yaml"
