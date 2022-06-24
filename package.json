@@ -24,7 +24,8 @@
     "pretest:e2e:run": "npm run build",
     "test:e2e:run": "cross-env PORT=8811 start-server-and-test start:mocks http://localhost:8811 \"npx cypress run\"",
     "typecheck": "tsc -b && tsc -b cypress",
-    "validate": "run-p \"test -- --run\" lint typecheck test:e2e:run"
+    "validate": "run-p \"test -- --run\" lint typecheck test:e2e:run",
+    "chaindexer": "ts-node chaindexer/main.ts"
   },
   "prettier": {},
   "eslintIgnore": [
@@ -48,6 +49,7 @@
     "ethers": "^5.5.1",
     "express": "^4.18.1",
     "morgan": "^1.10.0",
+    "node-schedule": "^2.1.0",
     "prisma": "^3.15.2",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",

@@ -16,11 +16,18 @@
     "forceConsistentCasingInFileNames": true,
     "baseUrl": ".",
     "paths": {
-      "~/*": ["./app/*"]
+      "~/*": ["./app/*"],
+      "@db/*": ["./db/*"]
     },
     "skipLibCheck": true,
 
     // Remix takes care of building everything in `remix build`.
     "noEmit": true
+  },
+  "ts-node": {
+    "transpileOnly": true,
+    "experimentalResolver": true,
+    "files": true,
+    "require": ["tsconfig-paths/register"]
   }
 }

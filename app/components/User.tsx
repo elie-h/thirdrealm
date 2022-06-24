@@ -52,7 +52,7 @@ export default function User() {
     //   }
 
     const handleSIWE = async () => {
-      if (signer && !user) {
+      if (signer && !user && !isLoading && !isError) {
         await handleSubmit();
       }
     };
@@ -62,6 +62,7 @@ export default function User() {
   if (isLoading) {
     return <p>Loading...</p>;
   }
+
   if (!user && !signer) {
     return (
       <ConnectButton.Custom>

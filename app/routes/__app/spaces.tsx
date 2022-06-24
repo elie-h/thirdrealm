@@ -2,7 +2,7 @@ import type { LoaderFunction } from "@remix-run/node";
 import { Link, useLoaderData } from "@remix-run/react";
 import { getSpaces } from "~/models/spaces.server";
 import { requireUser } from "~/session.server";
-import type { Space } from "@prisma/client";
+import type { Space, Collection } from "@prisma/client";
 
 export const loader: LoaderFunction = async ({ request }) => {
   await requireUser(request);
@@ -10,26 +10,29 @@ export const loader: LoaderFunction = async ({ request }) => {
   return spaces;
 };
 
+interface SpaceWithCollection extends Space {
+  collection: Collection;
+}
+
 export default function () {
   const data = useLoaderData();
-  console.log(data);
   return (
     <div className="mx-auto max-w-2xl py-16 px-4 sm:py-24 sm:px-6 lg:max-w-7xl lg:px-8">
       <div className="grid grid-cols-1 gap-y-4 sm:grid-cols-2 sm:gap-x-6 sm:gap-y-10 lg:grid-cols-3 lg:gap-x-8">
-        {data.map((space: Space) => (
+        {data.map((space: SpaceWithCollection) => (
           <Link to={`/spaces/${space.id}`} key={space.id}>
             <div className="group relative flex flex-col overflow-hidden rounded-lg border border-gray-200 bg-white">
               <div className="aspect-w-3 aspect-h-3 bg-gray-200 group-hover:opacity-75 sm:aspect-none sm:h-96">
                 <img
-                  src={space.coverImage}
-                  alt={space.name}
+                  src={space.collection.coverImage}
+                  alt={space.collection.name}
                   className="h-full w-full object-contain sm:h-full sm:w-full"
                 />
               </div>
               <div className="flex flex-1 flex-col space-y-2 p-4">
                 <div className="flex flex-wrap items-center justify-between sm:flex-nowrap">
                   <h3 className="text-sm font-medium text-gray-900">
-                    {space.name}
+                    {space.collection.name}
                   </h3>
                   {
                     {
@@ -44,10 +47,12 @@ export default function () {
                         </span>
                       ),
                       unknown: <></>,
-                    }[space.network]
+                    }[space.collection.network]
                   }
                 </div>
-                <p className="text-sm text-gray-500">{space.description}</p>
+                <p className="text-sm text-gray-500">
+                  {space.collection.description}
+                </p>
               </div>
             </div>
           </Link>

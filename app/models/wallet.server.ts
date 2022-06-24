@@ -14,7 +14,7 @@ export async function getWalletByAddress(address: Wallet["address"]) {
 
 export async function createWallet(address: Wallet["address"]) {
   return prisma.wallet.create({
-    data: { address },
+    data: { address: address.toLowerCase() },
   });
 }
 

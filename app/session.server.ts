@@ -1,8 +1,7 @@
-import { gql } from "@apollo/client";
 import { createCookieSessionStorage, redirect } from "@remix-run/node";
 import invariant from "tiny-invariant";
-import { serverClient } from "./apollo.server";
-import { getWalletById } from "./models/wallet.server";
+import { getWalletById } from "~/models/wallet.server";
+import { checkSpaceMembership } from "~/models/spaces.server";
 
 invariant(process.env.SESSION_SECRET, "SESSION_SECRET must be set");
 
@@ -57,7 +56,7 @@ export async function requireUser(request: Request) {
   const userId = await requireUserId(request);
   const wallet = await getWalletById(userId);
   if (wallet) {
-    return { id: wallet.id, address: wallet.address };
+    return { id: wallet.id, address: wallet.address.toLowerCase() };
   }
   throw await logout(request);
 }

@@ -12,28 +12,52 @@ enum Network {
   polygon
 }
 
-model Wallet {
-  id          String                   @id @default(cuid())
-  address     String                   @unique
-  createdAt   DateTime                 @default(now())
-  updatedAt   DateTime                 @default(now())
-  lastSeen    DateTime                 @updatedAt
-  memberships WalletSpaceMemberships[]
-}
-
-model Space {
-  id              String                   @id @default(cuid())
+model Collection {
+  id              String            @id @default(cuid())
   name            String
   description     String
   coverImage      String
-  network         Network                  @default(ethereum)
-  contractAddress String                   @unique
-  createdAt       DateTime                 @default(now())
-  updatedAt       DateTime                 @default(now())
-  members         WalletSpaceMemberships[]
+  symbol          String
+  contractAddress String
+  network         Network
+  totalSupply     Int
+  tokenType       String
+  createdAt       DateTime          @default(now())
+  updatedAt       DateTime          @default(now())
+  space           Space?
+  owners          CollectionOwner[]
+  lastRefreshed  DateTime          @default("1993-10-19T00:00:00.000Z")
+
+  @@unique([contractAddress, network])
 }
 
-model WalletSpaceMemberships {
+model CollectionOwner {
+  id           String     @id @default(cuid())
+  ownerAddress String
+  collectionId String
+  updatedAt    DateTime   @default(now())
+  collection   Collection @relation(fields: [collectionId], references: [id])
+}
+
+model Wallet {
+  id          String                  @id @default(cuid())
+  address     String                  @unique
+  createdAt   DateTime                @default(now())
+  updatedAt   DateTime                @default(now())
+  lastSeen    DateTime                @updatedAt
+  memberships WalletSpaceMembership[]
+}
+
+model Space {
+  id           String                  @id @default(cuid())
+  collection   Collection              @relation(fields: [collectionId], references: [id])
+  collectionId String                  @unique
+  createdAt    DateTime                @default(now())
+  updatedAt    DateTime                @default(now())
+  members      WalletSpaceMembership[]
+}
+
+model WalletSpaceMembership {
   wallet    Wallet   @relation(fields: [walletId], references: [id])
   walletId  String
   space     Space    @relation(fields: [spaceId], references: [id])

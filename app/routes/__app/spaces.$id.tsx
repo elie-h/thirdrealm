@@ -1,15 +1,14 @@
-import { createAlchemyWeb3 } from "@alch/alchemy-web3";
 import { ActionFunction, LoaderFunction, redirect } from "@remix-run/node";
 import { Link, useFetcher, useLoaderData } from "@remix-run/react";
 import invariant from "tiny-invariant";
-import { apolloServerClient } from "~/apollo.server";
+import { checkAddressInCollection } from "~/models/collection.server";
+import {
+  createSpaceMembership,
+  getSpaceAndMembersById,
+  getSpaceById,
+} from "~/models/spaces.server";
 import { requireUser } from "~/session.server";
 import { truncateEthAddress } from "~/utils";
-import {
-  getSpaceById,
-  getSpaceAndMembersById,
-  createSpaceMembership,
-} from "~/models/spaces.server";
 
 export const loader: LoaderFunction = async ({ request, params }) => {
   await requireUser(request);
@@ -35,21 +34,17 @@ export const action: ActionFunction = async ({ request, params }) => {
     // Already a member - redirect them
     return redirect(`/spaces/${params.id}/feed`);
   }
+  const isAllowed = await checkAddressInCollection(
+    spaceAndMembers.collection.id,
+    user.address
+  );
 
-  const web3 = createAlchemyWeb3(process.env.ALCHEMY_ETH_RPC);
-  const user_balance = await web3.alchemy.getTokenBalances(user.address, [
-    spaceAndMembers.contractAddress,
-  ]);
-
-  const token_balance = Number(user_balance.tokenBalances[0].tokenBalance);
-
-  invariant(Number.isInteger(token_balance), "Expected token balance");
-  if (token_balance > 0) {
+  if (isAllowed) {
     await createSpaceMembership(params.id, user.id);
     return redirect(`/spaces/${params.id}/feed`);
   } else {
     // Not enough tokens! Redirect to a space where a user can join other spaces
-    return redirect(`/spaces/forbidden/${spaceAndMembers.contractAddress}`);
+    return redirect(`/spaces/${params.id}/forbidden`);
   }
 };
 
@@ -62,7 +57,7 @@ export default function () {
       <div className="group rounded-lg sm:aspect-h-1 sm:aspect-w-1 sm:row-span-2">
         <div className="aspect-w-1 aspect-h-1 rounded-lg">
           <img
-            src={spaceData.coverImage}
+            src={spaceData.collection.coverImage}
             alt="Space cover image"
             className="rounded-lg object-cover object-center"
           />
@@ -71,7 +66,7 @@ export default function () {
       <div className="lg:max-w-lg lg:self-end">
         <div className="mt-4">
           <h1 className="text-3xl font-extrabold tracking-tight text-gray-900 sm:text-4xl">
-            {spaceData.name}
+            {spaceData.collection.name}
           </h1>
         </div>
 
@@ -83,20 +78,22 @@ export default function () {
           </div>
           <div className="mt-2 flex items-center">
             <p className="text-lg text-gray-500 sm:text-xl">
-              {spaceData.network}
+              {spaceData.collection.network}
             </p>
 
             <div className="ml-4 border-l border-gray-300 pl-4">
               <div className="flex items-center">
                 <p className="text-sm text-gray-500">
-                  {truncateEthAddress(spaceData.contractAddress)}
+                  {truncateEthAddress(spaceData.collection.contractAddress)}
                 </p>
               </div>
             </div>
           </div>
 
           <div className="mt-2 space-y-6">
-            <p className="text-base text-gray-500">{spaceData.description}</p>
+            <p className="text-base text-gray-500">
+              {spaceData.collection.description}
+            </p>
           </div>
         </section>
         <div className="mt-10 sm:flex">

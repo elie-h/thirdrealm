@@ -1,8 +1,15 @@
-import type { LoaderFunction } from "@remix-run/node";
+import { LoaderFunction, redirect } from "@remix-run/node";
+import invariant from "tiny-invariant";
+import { checkSpaceMembership } from "~/models/spaces.server";
 import { requireUser } from "~/session.server";
 
-export const loader: LoaderFunction = async ({ request }) => {
-  await requireUser(request);
+export const loader: LoaderFunction = async ({ request, params }) => {
+  invariant(params.id, "params.id is required");
+  const user = await requireUser(request);
+  const isAllowed = await checkSpaceMembership(params.id, user.id);
+  if (!isAllowed) {
+    return redirect(`/spaces/${params.id}/forbidden`);
+  }
   return true;
 };
 

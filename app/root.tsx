@@ -14,7 +14,6 @@ import {
   useCatch,
 } from "@remix-run/react";
 import React from "react";
-import ApolloContext from "./context/apollo";
 import { getUser } from "./session.server";
 
 import rainbowKitStylesheetUrl from "@rainbow-me/rainbowkit/styles.css";
@@ -57,8 +56,6 @@ export function ErrorBoundary({ error }) {
 }
 
 export default function App() {
-  const initialState = React.useContext(ApolloContext);
-
   return (
     <html lang="en" className="h-full">
       <head>
@@ -71,13 +68,6 @@ export default function App() {
         <ScrollRestoration />
         <Scripts />
         <LiveReload />
-        <script
-          dangerouslySetInnerHTML={{
-            __html: `window.__INITIAL_STATE__=${JSON.stringify(
-              initialState
-            ).replace(/</g, "\\u003c")};`,
-          }}
-        />
       </body>
     </html>
   );

@@ -1,7 +1,24 @@
-import { Link, useParams } from "@remix-run/react";
+import { LoaderFunction } from "@remix-run/node";
+import { Link, useLoaderData, useParams } from "@remix-run/react";
+import invariant from "tiny-invariant";
+import { getSpaceById } from "~/models/spaces.server";
+import { requireUser } from "~/session.server";
+
+export const loader: LoaderFunction = async ({ request, params }) => {
+  await requireUser(request);
+  invariant(params.id, "id is required");
+  const space = await getSpaceById(params.id);
+
+  if (space) {
+    return space;
+  }
+
+  throw new Error("Space not found");
+};
 
 export default function () {
   const { contract_address } = useParams();
+  const spaceData = useLoaderData();
   return (
     <div className="flex min-h-full flex-col bg-white pt-16 pb-12">
       <main className="mx-auto flex w-full max-w-7xl flex-grow flex-col justify-center px-4 sm:px-6 lg:px-8">
@@ -11,11 +28,11 @@ export default function () {
               error
             </p>
             <h1 className="mt-2 text-4xl font-extrabold tracking-tight text-gray-900 sm:text-5xl">
-              Can't join this space
+              Can't join this space!
             </h1>
             <p className="mt-2 text-base text-gray-500">
               To join this space you need a token from the following contract:{" "}
-              {contract_address}
+              {spaceData.collection.contractAddress}
             </p>
             <div className="mt-6">
               <Link
