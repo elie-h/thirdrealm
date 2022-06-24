@@ -8,7 +8,7 @@ export default function Example() {
     <Disclosure as="nav" className="bg-white shadow">
       {({ open }) => (
         <>
-          <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+          <div className="mx-auto px-5 ">
             <div className="flex h-16 justify-between">
               <div className="flex">
                 {/* <div className="-ml-2 mr-2 flex items-center md:hidden">
@@ -24,14 +24,9 @@ export default function Example() {
                 <div className="flex flex-shrink-0 items-center">
                   <Link to="/">
                     <img
-                      className="block h-8 w-auto lg:hidden"
-                      src="https://tailwindui.com/img/logos/workflow-mark-indigo-600.svg"
-                      alt="Workflow"
-                    />
-                    <img
-                      className="hidden h-8 w-auto lg:block"
-                      src="https://tailwindui.com/img/logos/workflow-logo-indigo-600-mark-gray-800-text.svg"
-                      alt="Workflow"
+                      className="block h-12 w-auto"
+                      src="logowtext.png"
+                      alt="Logo"
                     />
                   </Link>
                 </div>
