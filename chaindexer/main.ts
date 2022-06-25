@@ -28,7 +28,7 @@ async function getOwnersForCollection(contractAddress: string) {
 
 async function hydrateCollection(collection: Collection) {
   if (
-    !collection.lastRefreshed ||
+    collection.lastRefreshed == undefined ||
     collection.lastRefreshed < new Date(Date.now() - 30 * 60 * 60)
   ) {
     const currentOwners = await getOwnersForCollection(

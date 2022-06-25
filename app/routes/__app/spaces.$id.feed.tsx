@@ -16,9 +16,14 @@ export const loader: LoaderFunction = async ({ request, params }) => {
 export default function () {
   return (
     <div className="mx-auto max-w-2xl py-16 px-4 sm:py-24 sm:px-6 lg:max-w-7xl lg:px-8">
-      <h1>Feed</h1>
-      <p>This is a private area for token holders only!</p>
-      {/* <pre>{JSON.stringify(data, null, 2)}</pre> */}
+      <div className="mt-6 sm:max-w-xl">
+        <h1 className="text-4xl font-extrabold tracking-tight text-gray-900 sm:text-5xl">
+          Welcome!
+        </h1>
+        <p className="mt-6 text-xl text-gray-500">
+          This area is only accessible by token holders
+        </p>
+      </div>
     </div>
   );
 }

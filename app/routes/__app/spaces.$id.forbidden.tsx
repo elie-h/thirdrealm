@@ -29,8 +29,10 @@ export default function () {
             <h1 className="mt-2 text-4xl font-extrabold tracking-tight text-gray-900 sm:text-5xl">
               Can't join this space!
             </h1>
-            <p className="mt-2 overflow-auto text-xs text-base text-gray-500">
-              To join this space you need a token from the following contract:{" "}
+            <p className="mt-4 overflow-auto text-lg text-base text-gray-900">
+              To join this space you need a token from the following contract:
+            </p>
+            <p className="mt-1 overflow-auto text-lg text-base text-gray-500">
               {spaceData.collection.contractAddress}
             </p>
             <div className="mt-6">
