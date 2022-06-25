@@ -58,7 +58,7 @@ export default function User() {
         await handleSubmit();
       }
     };
-    handleSIWE();
+    // handleSIWE();
   }, [signer, isError, isLoading, user, handleSubmit]);
 
   if (isLoading) {
@@ -102,7 +102,7 @@ export default function User() {
     return (
       <button
         onClick={handleSubmit}
-        className="rounded bg-green-600 py-2 px-4 text-blue-100 hover:bg-blue-500 active:bg-blue-600"
+        className="block w-full rounded-md border border-transparent bg-rose-500 px-5 py-3 text-center text-base font-medium text-white shadow hover:bg-rose-600 focus:outline-none focus:ring-2 focus:ring-rose-500 focus:ring-offset-2 sm:px-10"
       >
         SIWE
       </button>
@@ -112,7 +112,7 @@ export default function User() {
       <Form action="/siwe/logout" method="post">
         <button
           type="submit"
-          className="rounded bg-slate-600 py-2 px-4 text-blue-100 hover:bg-blue-500 active:bg-blue-600"
+          className="text-black-100 border-black-600 rounded border py-2 px-4 hover:bg-slate-100 active:bg-slate-100"
         >
           Logout
         </button>

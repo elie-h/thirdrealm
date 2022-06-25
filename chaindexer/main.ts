@@ -38,14 +38,14 @@ async function hydrateCollection(collection: Collection) {
     await updateCollectionLastRefreshed(collection.id);
     return;
   } else {
-    console.log(
+    console.debug(
       `Skipping ${collection.contractAddress} as refresh date is recent`
     );
   }
 }
 
 async function main() {
-  console.log("Starting Hydration");
+  console.debug("Starting Hydration");
   const collections = await getCollections();
   for (const collection of collections) {
     hydrateCollection(collection);
@@ -53,8 +53,6 @@ async function main() {
 }
 
 main();
-schedule.scheduleJob("*/5 * * * *", async function () {
+schedule.scheduleJob("*/15 * * * *", async function () {
   await main();
 });
-
-// Add network support for polygon

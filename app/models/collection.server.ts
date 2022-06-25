@@ -65,7 +65,7 @@ export async function updateCollectionOwners(
       },
     },
   });
-  console.log(`Deleted ${deleteManyOp.count} owners from ${collectionId}`);
+  console.debug(`Deleted ${deleteManyOp.count} owners from ${collectionId}`);
 
   const currentOwners = await prisma.collectionOwner.findMany({
     select: {

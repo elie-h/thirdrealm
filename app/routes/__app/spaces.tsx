@@ -47,7 +47,7 @@ export default function () {
                     }[space.collection.network]
                   }
                 </div>
-                <p className="text-bold text-center text-sm">
+                <p className="text-bold h-20 text-center text-sm">
                   {truncateString(space.collection.description, 100)}
                 </p>
               </div>
