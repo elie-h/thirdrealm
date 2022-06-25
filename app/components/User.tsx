@@ -58,7 +58,7 @@ export default function User() {
         await handleSubmit();
       }
     };
-    // handleSIWE();
+    handleSIWE();
   }, [signer, isError, isLoading, user, handleSubmit]);
 
   if (isLoading) {
