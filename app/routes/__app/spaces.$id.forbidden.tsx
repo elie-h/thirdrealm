@@ -49,3 +49,4 @@ export default function () {
     </div>
   );
 }
+// fly postgres attach --postgres-app 3l-staging-db --app 3l-staging

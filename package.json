@@ -58,7 +58,8 @@
     "tiny-invariant": "^1.2.0",
     "typescript-graphql-request": "^4.4.6",
     "wagmi": "^0.4.8",
-    "wallet-address-validator": "^0.2.4"
+    "wallet-address-validator": "^0.2.4",
+    "ts-node": "^10.7.0"
   },
   "devDependencies": {
     "@faker-js/faker": "^6.3.1",
