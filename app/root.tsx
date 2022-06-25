@@ -26,7 +26,7 @@ export const links: LinksFunction = () => {
 
 export const meta: MetaFunction = () => ({
   charset: "utf-8",
-  title: "3L",
+  title: "Third Realm",
   viewport: "width=device-width,initial-scale=1",
 });
 
@@ -57,7 +57,7 @@ export default function App() {
   return (
     <html lang="en" className="h-full">
       <head>
-        <meta name="description" content="W3B" />
+        <meta name="description" content="Third Realm" />
         <Meta />
         <Links />
       </head>

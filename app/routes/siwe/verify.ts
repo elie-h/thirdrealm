@@ -23,7 +23,7 @@ export const action: ActionFunction = async ({ request, params }) => {
     await siweMessage.validate(signature.toString());
     const existingWallet = await getWalletByAddress(siweMessage.address);
 
-    if (!existingWallet) {
+    if (existingWallet == null) {
       const newWallet = await createWallet(siweMessage.address);
       userId = newWallet.id;
     } else {

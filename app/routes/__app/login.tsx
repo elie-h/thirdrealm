@@ -15,7 +15,6 @@ export default function Login() {
   }, [signer, user, navigate]);
 
   return (
-    /* {isLoading ? <p>Loading...</p> : <h1>Connect your wallet to continue</h1>} */
     <main className="mx-auto mt-16 max-w-7xl px-4 sm:mt-24">
       <div className="text-center">
         {isLoading ? (
