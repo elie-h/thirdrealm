@@ -17,7 +17,6 @@ export const loader: LoaderFunction = async ({ request, params }) => {
 };
 
 export default function () {
-  const { contract_address } = useParams();
   const spaceData = useLoaderData();
   return (
     <div className="flex min-h-full flex-col bg-white pt-16 pb-12">
@@ -30,7 +29,7 @@ export default function () {
             <h1 className="mt-2 text-4xl font-extrabold tracking-tight text-gray-900 sm:text-5xl">
               Can't join this space!
             </h1>
-            <p className="mt-2 text-base text-gray-500">
+            <p className="mt-2 overflow-auto text-xs text-base text-gray-500">
               To join this space you need a token from the following contract:{" "}
               {spaceData.collection.contractAddress}
             </p>

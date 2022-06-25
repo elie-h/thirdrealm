@@ -19,7 +19,6 @@ export const loader: LoaderFunction = async ({ request, params }) => {
   await requireUser(request);
   invariant(params.id, "id is required");
   const space = await getSpaceById(params.id);
-  console.log("GOT:", space);
 
   if (!space) {
     throw new Response("Space not found", { status: 404 });
@@ -59,7 +58,7 @@ export default function () {
   const fetcher = useFetcher();
 
   return (
-    <div className="m:px-6 mx-auto max-w-2xl px-4 sm:mt-10 sm:py-10 lg:grid lg:max-w-7xl lg:grid-cols-2 lg:gap-x-8 lg:px-8">
+    <div className="m:px-6 mx-auto mt-10 max-w-2xl px-4 pb-10 sm:py-10 lg:grid lg:max-w-7xl lg:grid-cols-2 lg:gap-x-8 lg:px-8">
       <div className="group rounded-lg sm:aspect-h-1 sm:aspect-w-1 sm:row-span-2">
         <div className="aspect-w-1 aspect-h-1 rounded-lg">
           <img
