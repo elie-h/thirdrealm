@@ -2,6 +2,17 @@
 @tailwind components;
 @tailwind utilities;
 
+@layer base {
+  @font-face {
+    font-family: "Montserrat";
+    src: url("/fonts/Montserrat-Regular.woff2") format("woff2"),
+      url("/fonts/Montserrat-Regular.woff") format("woff");
+    font-weight: normal;
+    font-style: normal;
+    font-display: swap;
+  }
+}
+
 @layer components {
   .btn {
     @apply inline-block rounded-lg px-5 py-3 text-sm font-semibold uppercase tracking-wider focus:outline-none focus:ring focus:ring-offset-2 sm:text-base;

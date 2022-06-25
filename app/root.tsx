@@ -42,7 +42,7 @@ export const loader: LoaderFunction = async ({ request }) => {
   });
 };
 
-export function ErrorBoundary({ error }) {
+export function ErrorBoundary({ error }: any) {
   return (
     <html lang="en" className="h-full">
       <head>
@@ -63,7 +63,7 @@ export default function App() {
         <Meta />
         <Links />
       </head>
-      <body className="h-full">
+      <body className="h-full font-body">
         <Outlet />
         <ScrollRestoration />
         <Scripts />

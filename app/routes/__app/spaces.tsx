@@ -2,17 +2,14 @@ import type { LoaderFunction } from "@remix-run/node";
 import { Link, useLoaderData } from "@remix-run/react";
 import { getSpaces } from "~/models/spaces.server";
 import { requireUser } from "~/session.server";
-import type { Space, Collection } from "@prisma/client";
+import { SpaceWithCollection } from "~/types";
+import { truncateString } from "~/utils/strings";
 
 export const loader: LoaderFunction = async ({ request }) => {
   await requireUser(request);
   const spaces = await getSpaces();
   return spaces;
 };
-
-interface SpaceWithCollection extends Space {
-  collection: Collection;
-}
 
 export default function () {
   const data = useLoaderData();
@@ -31,7 +28,7 @@ export default function () {
               </div>
               <div className="flex flex-1 flex-col space-y-2 p-4">
                 <div className="flex flex-wrap items-center justify-between sm:flex-nowrap">
-                  <h3 className="text-sm font-medium text-gray-900">
+                  <h3 className="text-xl text-gray-900">
                     {space.collection.name}
                   </h3>
                   {
@@ -50,8 +47,8 @@ export default function () {
                     }[space.collection.network]
                   }
                 </div>
-                <p className="text-sm text-gray-500">
-                  {space.collection.description}
+                <p className="text-bold text-center text-sm">
+                  {truncateString(space.collection.description, 100)}
                 </p>
               </div>
             </div>

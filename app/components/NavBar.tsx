@@ -25,7 +25,7 @@ export default function Example() {
                   <Link to="/">
                     <img
                       className="block h-12 w-auto"
-                      src="logowtext.png"
+                      src="/logowtext.png"
                       alt="Logo"
                     />
                   </Link>

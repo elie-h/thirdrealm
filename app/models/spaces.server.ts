@@ -5,7 +5,7 @@ import { prisma } from "~/db.server";
 export type { Space } from "@prisma/client";
 
 export async function getSpaces() {
-  return prisma.space.findMany({
+  return await prisma.space.findMany({
     include: {
       collection: true,
     },
@@ -13,7 +13,7 @@ export async function getSpaces() {
 }
 
 export async function getSpaceById(id: Space["id"]) {
-  return prisma.space.findUnique({
+  return await prisma.space.findUnique({
     where: { id },
     include: {
       collection: true,
@@ -28,7 +28,7 @@ export async function getSpaceAndMembersById(
   id: Space["id"],
   walletId: Wallet["id"]
 ) {
-  return prisma.space.findUnique({
+  return await prisma.space.findUnique({
     where: { id },
     select: {
       collection: true,
@@ -45,7 +45,7 @@ export async function createSpaceMembership(
   spaceId: Space["id"],
   walletId: Wallet["id"]
 ) {
-  return prisma.walletSpaceMembership.create({
+  return await prisma.walletSpaceMembership.create({
     data: {
       walletId: walletId,
       spaceId: spaceId,

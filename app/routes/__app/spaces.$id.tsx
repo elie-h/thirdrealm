@@ -6,20 +6,27 @@ import {
   createSpaceMembership,
   getSpaceAndMembersById,
   getSpaceById,
+  Space,
 } from "~/models/spaces.server";
 import { requireUser } from "~/session.server";
 import { truncateEthAddress } from "~/utils";
+import { json } from "@remix-run/node";
+import { SpaceWithCollection } from "~/types";
+
+type LoaderData = { space: SpaceWithCollection };
 
 export const loader: LoaderFunction = async ({ request, params }) => {
   await requireUser(request);
   invariant(params.id, "id is required");
   const space = await getSpaceById(params.id);
+  console.log("GOT:", space);
 
-  if (space) {
-    return space;
+  if (!space) {
+    throw new Response("Space not found", { status: 404 });
   }
 
-  throw new Error("Space not found");
+  const data: LoaderData = { space };
+  return json(data);
 };
 
 export const action: ActionFunction = async ({ request, params }) => {
@@ -29,7 +36,6 @@ export const action: ActionFunction = async ({ request, params }) => {
 
   const spaceAndMembers = await getSpaceAndMembersById(params.id, user.id);
   invariant(spaceAndMembers, "Space not found");
-  console.log(spaceAndMembers);
   if (spaceAndMembers.members.length > 0) {
     // Already a member - redirect them
     return redirect(`/spaces/${params.id}/feed`);
@@ -49,15 +55,15 @@ export const action: ActionFunction = async ({ request, params }) => {
 };
 
 export default function () {
-  const spaceData = useLoaderData();
+  const data = useLoaderData<LoaderData>();
   const fetcher = useFetcher();
 
   return (
-    <div className="m:px-6 mx-auto max-w-2xl px-4 sm:py-10 lg:grid lg:max-w-7xl lg:grid-cols-2 lg:gap-x-8 lg:px-8">
+    <div className="m:px-6 mx-auto max-w-2xl px-4 sm:mt-10 sm:py-10 lg:grid lg:max-w-7xl lg:grid-cols-2 lg:gap-x-8 lg:px-8">
       <div className="group rounded-lg sm:aspect-h-1 sm:aspect-w-1 sm:row-span-2">
         <div className="aspect-w-1 aspect-h-1 rounded-lg">
           <img
-            src={spaceData.collection.coverImage}
+            src={data.space.collection.coverImage}
             alt="Space cover image"
             className="rounded-lg object-cover object-center"
           />
@@ -66,25 +72,25 @@ export default function () {
       <div className="lg:max-w-lg lg:self-end">
         <div className="mt-4">
           <h1 className="text-3xl font-extrabold tracking-tight text-gray-900 sm:text-4xl">
-            {spaceData.collection.name}
+            {data.space.collection.name}
           </h1>
         </div>
 
         <section aria-labelledby="information-heading" className="mt-4">
           <div className="flex items-center">
             <p className="text-lg text-gray-900 sm:text-xl">
-              {spaceData._count.members} Members
+              {data.space._count.members} Members
             </p>
           </div>
           <div className="mt-2 flex items-center">
             <p className="text-lg text-gray-500 sm:text-xl">
-              {spaceData.collection.network}
+              {data.space.collection.network}
             </p>
 
             <div className="ml-4 border-l border-gray-300 pl-4">
               <div className="flex items-center">
                 <p className="text-sm text-gray-500">
-                  {truncateEthAddress(spaceData.collection.contractAddress)}
+                  {truncateEthAddress(data.space.collection.contractAddress)}
                 </p>
               </div>
             </div>
@@ -92,7 +98,7 @@ export default function () {
 
           <div className="mt-2 space-y-6">
             <p className="text-base text-gray-500">
-              {spaceData.collection.description}
+              {data.space.collection.description}
             </p>
           </div>
         </section>
