@@ -59,6 +59,7 @@
     "tiny-invariant": "^1.2.0",
     "ts-node": "^10.8.1",
     "tsconfig-paths": "^4.0.0",
+    "typescript": "^4.7.4",
     "typescript-graphql-request": "^4.4.6",
     "wagmi": "^0.4.8",
     "wallet-address-validator": "^0.2.4"
@@ -96,7 +97,6 @@
     "prettier-plugin-tailwindcss": "^0.1.11",
     "start-server-and-test": "^1.14.0",
     "tailwindcss": "^3.0.24",
-    "typescript": "^4.6.4",
     "vite": "^2.9.9",
     "vite-tsconfig-paths": "^3.4.1",
     "vitest": "^0.12.8"
