@@ -1,7 +1,7 @@
+import { upsertCollection } from "app/models/collection.server";
 const { PrismaClient } = require("@prisma/client");
 
 const prisma = new PrismaClient();
-import { upsertCollection } from "app/models/collection.server";
 
 async function seed() {
   const address = "0xdB50cd8FE160422F05C2Bd239895752d0493F92c";
@@ -11,13 +11,13 @@ async function seed() {
     // no worries if it doesn't exist yet
   });
 
-  const wallet = await prisma.wallet.create({
+  await prisma.wallet.create({
     data: {
       address,
     },
   });
 
-  const collection = await upsertCollection(
+  await upsertCollection(
     "Devs for Revolution",
     "Devs for Revolution grants token holders official DD Membership",
     "https://lh3.googleusercontent.com/6Jbode0t_bTO9MHYoYvjIW9nHENCxOs40EGg3Z5ptg4lLlD2z2WXEAIrjyV929aQnIi94hPL4VZ3Pl2NWOO_tSaO6gdjdrcMHrF9=s168",

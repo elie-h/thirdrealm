@@ -1,6 +1,6 @@
 import invariant from "tiny-invariant";
 import {
-  Collection,
+  type Collection,
   getCollections,
   updateCollectionLastRefreshed,
   updateCollectionOwners,

@@ -1,4 +1,4 @@
-import { LoaderFunction, redirect } from "@remix-run/node";
+import { type LoaderFunction, redirect } from "@remix-run/node";
 import invariant from "tiny-invariant";
 import { checkSpaceMembership } from "~/models/spaces.server";
 import { requireUser } from "~/session.server";

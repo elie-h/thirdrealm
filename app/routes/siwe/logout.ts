@@ -8,6 +8,5 @@ export const action: ActionFunction = async ({ request }) => {
 };
 
 export const loader: LoaderFunction = async () => {
-  return true;
   return redirect("/");
 };

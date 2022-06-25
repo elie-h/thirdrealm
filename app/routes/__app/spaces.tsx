@@ -2,7 +2,7 @@ import type { LoaderFunction } from "@remix-run/node";
 import { Link, useLoaderData } from "@remix-run/react";
 import { getSpaces } from "~/models/spaces.server";
 import { requireUser } from "~/session.server";
-import { SpaceWithCollection } from "~/types";
+import { type SpaceWithCollection } from "~/types";
 import { truncateString } from "~/utils/strings";
 
 export const loader: LoaderFunction = async ({ request }) => {

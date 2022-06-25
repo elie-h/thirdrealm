@@ -5,6 +5,7 @@ import { SiweMessage } from "siwe";
 import invariant from "tiny-invariant";
 import { useSigner } from "wagmi";
 import { useOptionalUser } from "~/utils";
+import { useCallback } from "react";
 
 const domain = "localhost";
 const origin = "https://localhost/login";
@@ -28,12 +29,13 @@ export default function User() {
   const submit = useSubmit();
   const { data: signer, isError, isLoading } = useSigner();
 
-  async function handleSubmit() {
+  const handleSubmit = useCallback(async () => {
     invariant(signer, "Signer is required");
     const message = await createSiweMessage(
       await signer.getAddress(),
       "Sign in with Ethereum to the app."
     );
+
     const signature = await signer.signMessage(message);
     const formData = new FormData();
     formData.append("signature", signature);
@@ -44,12 +46,12 @@ export default function User() {
       encType: "application/x-www-form-urlencoded",
       replace: true,
     });
-  }
+  }, [signer, submit]);
 
   useEffect(() => {
-    //   if (user && signer) {
-    //     navigate("/feed", { replace: true });
-    //   }
+    // if (user && signer) {
+    //   navigate("/feed", { replace: true });
+    // }
 
     const handleSIWE = async () => {
       if (signer && !user && !isLoading && !isError) {
@@ -57,7 +59,7 @@ export default function User() {
       }
     };
     handleSIWE();
-  }, [signer]);
+  }, [signer, isError, isLoading, user, handleSubmit]);
 
   if (isLoading) {
     return <p>Loading...</p>;

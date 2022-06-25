@@ -1,4 +1,8 @@
-import { ActionFunction, LoaderFunction, redirect } from "@remix-run/node";
+import {
+  type ActionFunction,
+  type LoaderFunction,
+  redirect,
+} from "@remix-run/node";
 import { Link, useFetcher, useLoaderData } from "@remix-run/react";
 import invariant from "tiny-invariant";
 import { checkAddressInCollection } from "~/models/collection.server";
@@ -6,12 +10,11 @@ import {
   createSpaceMembership,
   getSpaceAndMembersById,
   getSpaceById,
-  Space,
 } from "~/models/spaces.server";
 import { requireUser } from "~/session.server";
 import { truncateEthAddress } from "~/utils";
 import { json } from "@remix-run/node";
-import { SpaceWithCollection } from "~/types";
+import { type SpaceWithCollection } from "~/types";
 
 type LoaderData = { space: SpaceWithCollection };
 
@@ -63,7 +66,7 @@ export default function () {
         <div className="aspect-w-1 aspect-h-1 rounded-lg">
           <img
             src={data.space.collection.coverImage}
-            alt="Space cover image"
+            alt="Space cover"
             className="rounded-lg object-cover object-center"
           />
         </div>

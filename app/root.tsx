@@ -11,9 +11,7 @@ import {
   Outlet,
   Scripts,
   ScrollRestoration,
-  useCatch,
 } from "@remix-run/react";
-import React from "react";
 import { getUser } from "./session.server";
 
 import rainbowKitStylesheetUrl from "@rainbow-me/rainbowkit/styles.css";

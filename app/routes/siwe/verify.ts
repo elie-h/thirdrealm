@@ -1,4 +1,4 @@
-import { ActionFunction, redirect } from "@remix-run/server-runtime";
+import { type ActionFunction, redirect } from "@remix-run/server-runtime";
 import { SiweMessage } from "siwe";
 import invariant from "tiny-invariant";
 import {
@@ -23,7 +23,7 @@ export const action: ActionFunction = async ({ request, params }) => {
     await siweMessage.validate(signature.toString());
     const existingWallet = await getWalletByAddress(siweMessage.address);
 
-    if (!!!existingWallet) {
+    if (!existingWallet) {
       const newWallet = await createWallet(siweMessage.address);
       userId = newWallet.id;
     } else {

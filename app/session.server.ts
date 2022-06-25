@@ -1,7 +1,6 @@
 import { createCookieSessionStorage, redirect } from "@remix-run/node";
 import invariant from "tiny-invariant";
 import { getWalletById } from "~/models/wallet.server";
-import { checkSpaceMembership } from "~/models/spaces.server";
 
 invariant(process.env.SESSION_SECRET, "SESSION_SECRET must be set");
 

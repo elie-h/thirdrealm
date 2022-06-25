@@ -1,5 +1,5 @@
-import { LoaderFunction } from "@remix-run/node";
-import { Link, useLoaderData, useParams } from "@remix-run/react";
+import { type LoaderFunction } from "@remix-run/node";
+import { Link, useLoaderData } from "@remix-run/react";
 import invariant from "tiny-invariant";
 import { getSpaceById } from "~/models/spaces.server";
 import { requireUser } from "~/session.server";
