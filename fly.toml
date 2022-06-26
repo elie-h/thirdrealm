@@ -3,7 +3,7 @@ kill_signal = "SIGINT"
 kill_timeout = 5
 [processes]
 web = "npm start"
-worker = "npm run chaindexer"
+# worker = "npm run chaindexer"
 
 
 [env]
