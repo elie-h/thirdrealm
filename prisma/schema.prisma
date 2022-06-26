@@ -17,16 +17,12 @@ model Collection {
   name            String
   description     String
   coverImage      String
-  symbol          String
   contractAddress String
   network         Network
-  totalSupply     Int
-  tokenType       String
   createdAt       DateTime          @default(now())
   updatedAt       DateTime          @default(now())
   space           Space?
   owners          CollectionOwner[]
-  lastRefreshed  DateTime          @default("1993-10-19T00:00:00.000Z")
 
   @@unique([contractAddress, network])
 }
