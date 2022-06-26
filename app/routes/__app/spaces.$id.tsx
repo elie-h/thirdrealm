@@ -1,22 +1,20 @@
 import {
+  json,
+  redirect,
   type ActionFunction,
   type LoaderFunction,
-  redirect,
 } from "@remix-run/node";
 import { Link, useFetcher, useLoaderData } from "@remix-run/react";
 import invariant from "tiny-invariant";
-import { checkAddressInCollection } from "~/models/collection.server";
+import { checkTokenOwnership } from "~/data/blockchain.server";
 import {
-  createSpaceMembership,
   getSpaceAndMembersById,
   getSpaceById,
   upsertSpaceMembership,
 } from "~/models/spaces.server";
 import { requireUser } from "~/session.server";
-import { truncateEthAddress } from "~/utils";
-import { json } from "@remix-run/node";
 import { type SpaceWithCollection } from "~/types";
-import { checkTokenOwnership } from "~/data/blockchain.server";
+import { truncateEthAddress } from "~/utils";
 
 type LoaderData = { space: SpaceWithCollection };
 
