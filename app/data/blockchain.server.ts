@@ -10,12 +10,20 @@ import {
   getCollectionOwnership,
   upsertCollectionOwnership,
 } from "~/models/collectionOwner.server";
+import { tokenOwnershipCache } from "~/data/cache";
 
 async function getOwnersForCollection(
   contractAddress: string,
   walletAddress: string,
   network: DBNetwork
 ) {
+  const cached_value = tokenOwnershipCache.get(
+    `${network}-${contractAddress}-${walletAddress}`
+  );
+  if (cached_value != undefined) {
+    return cached_value;
+  }
+
   let alchemy_network: Network;
   switch (network) {
     case "ethereum":
@@ -26,19 +34,21 @@ async function getOwnersForCollection(
       break;
   }
 
-  const settings = {
+  const alchemy = initializeAlchemy({
     apiKey: process.env.ALCHEMY_ETH_API_KEY,
     network: alchemy_network,
     maxRetries: 3,
-  };
-
-  const alchemy = initializeAlchemy(settings);
-
-  // Print total NFT count returned in the response:
+  });
   const nftsForOwner = await getNftsForOwner(alchemy, walletAddress, {
     contractAddresses: [contractAddress],
     omitMetadata: true,
   });
+
+  tokenOwnershipCache.set(
+    `${network}-${contractAddress}-${walletAddress}`,
+    nftsForOwner.totalCount
+  );
+
   return nftsForOwner.totalCount;
 }
 
