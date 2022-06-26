@@ -23,7 +23,7 @@ export const action: ActionFunction = async ({ request, params }) => {
     await siweMessage.validate(signature.toString());
     const existingWallet = await getWalletByAddress(siweMessage.address);
 
-    if (existingWallet == null) {
+    if (!existingWallet) {
       const newWallet = await createWallet(siweMessage.address);
       userId = newWallet.id;
     } else {
@@ -39,7 +39,7 @@ export const action: ActionFunction = async ({ request, params }) => {
     });
   } catch (error) {
     console.log(error);
-    throw new Response("Error", { status: 400 });
+    throw new Response("Error - Something went wrong", { status: 400 });
   }
 };
 

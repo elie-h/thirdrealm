@@ -9,7 +9,9 @@ export async function getWalletById(id: Wallet["id"]) {
 }
 
 export async function getWalletByAddress(address: Wallet["address"]) {
-  return prisma.wallet.findUnique({ where: { address } });
+  return prisma.wallet.findUnique({
+    where: { address: address.toLowerCase() },
+  });
 }
 
 export async function createWallet(address: Wallet["address"]) {

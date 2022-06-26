@@ -42,6 +42,7 @@ export const action: ActionFunction = async ({ request, params }) => {
     // Already a member - redirect them
     return redirect(`/spaces/${params.id}/feed`);
   }
+
   const isAllowed = await checkAddressInCollection(
     spaceAndMembers.collection.id,
     user.address

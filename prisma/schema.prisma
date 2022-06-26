@@ -39,6 +39,7 @@ model CollectionOwner {
   collection   Collection @relation(fields: [collectionId], references: [id])
 }
 
+
 model Wallet {
   id          String                  @id @default(cuid())
   address     String                  @unique
