@@ -65,11 +65,9 @@ export async function checkTokenOwnership(
     collectionOwner != undefined &&
     collectionOwner.updatedAt > new Date(Date.now() - 30 * 60 * 60)
   ) {
-    console.log("Getting from cache");
     return true;
   }
   // Check alchemy response
-  console.log("Getting through alchemy");
   const ownedTokens = await getOwnersForCollection(
     collection.contractAddress,
     ownerAddress,
@@ -78,7 +76,6 @@ export async function checkTokenOwnership(
 
   // Update cache and return
   if (ownedTokens > 0) {
-    console.log("Alchemy hit");
     await upsertCollectionOwnership(collection.id, ownerAddress);
     return true;
   } else {

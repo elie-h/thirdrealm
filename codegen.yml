@@ -1,8 +1,0 @@
-overwrite: true
-schema: "http://localhost:8080/v1/graphql"
-documents: "app/data/**/!(*.d).{ts,tsx}"
-generates:
-  app/data/sdk.ts:
-    plugins:
-      - typescript
-      - typescript-generic-sdk
