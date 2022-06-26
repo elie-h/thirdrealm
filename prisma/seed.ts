@@ -21,11 +21,8 @@ async function seed() {
     "Devs for Revolution",
     "Devs for Revolution grants token holders official DD Membership",
     "https://lh3.googleusercontent.com/6Jbode0t_bTO9MHYoYvjIW9nHENCxOs40EGg3Z5ptg4lLlD2z2WXEAIrjyV929aQnIi94hPL4VZ3Pl2NWOO_tSaO6gdjdrcMHrF9=s168",
-    "DD",
     "0x25ed58c027921E14D86380eA2646E3a1B5C55A8b",
-    "ethereum",
-    7900,
-    "ERC721"
+    "ethereum"
   );
 
   console.log(`Database has been seeded. 🌱`);

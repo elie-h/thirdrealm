@@ -56,18 +56,20 @@ export async function checkTokenOwnership(
   collection: Collection,
   ownerAddress: CollectionOwner["ownerAddress"]
 ) {
-  // Check cache first
-  const ownedTokensDB = await getCollectionOwnership(
+  // Check db first
+  const collectionOwner = await getCollectionOwnership(
     collection.id,
     ownerAddress
   );
   if (
-    ownedTokensDB > 0 &&
-    collection.updatedAt < new Date(Date.now() - 30 * 60 * 60)
+    collectionOwner != undefined &&
+    collectionOwner.updatedAt > new Date(Date.now() - 30 * 60 * 60)
   ) {
+    console.log("Getting from cache");
     return true;
   }
   // Check alchemy response
+  console.log("Getting through alchemy");
   const ownedTokens = await getOwnersForCollection(
     collection.contractAddress,
     ownerAddress,

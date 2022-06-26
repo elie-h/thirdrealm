@@ -8,21 +8,15 @@ export async function upsertCollection(
   name: Collection["name"],
   description: Collection["description"],
   coverImage: Collection["coverImage"],
-  symbol: Collection["symbol"],
   contractAddress: Collection["contractAddress"],
-  network: Collection["network"],
-  totalSupply: Collection["totalSupply"],
-  tokenType: Collection["tokenType"]
+  network: Collection["network"]
 ) {
   const data = {
     name,
     description,
     coverImage,
-    symbol,
     contractAddress,
     network,
-    totalSupply,
-    tokenType,
   };
   return prisma.collection.upsert({
     where: {
@@ -89,15 +83,6 @@ export async function updateCollectionOwners(
     skipDuplicates: true, // Skip 'Bobo'
   });
   console.log(`Inserted ${createManyOp.count} new owners to ${collectionId}`);
-}
-
-export async function updateCollectionLastRefreshed(id: Collection["id"]) {
-  await prisma.collection.update({
-    where: { id },
-    data: {
-      lastRefreshed: new Date(),
-    },
-  });
 }
 
 export async function deleteCollectionSpaceMemberships(

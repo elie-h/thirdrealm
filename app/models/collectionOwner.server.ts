@@ -8,26 +8,31 @@ export async function getCollectionOwnership(
   collectionId: Collection["id"],
   ownerAddress: CollectionOwner["ownerAddress"]
 ) {
-  const count = await prisma.collectionOwner.count({
+  const collectionOwner = await prisma.collectionOwner.findFirst({
     where: {
       ownerAddress: ownerAddress.toLowerCase(),
       collectionId,
     },
   });
-  return count;
+  return collectionOwner;
 }
 
 export async function upsertCollectionOwnership(
   collectionId: Collection["id"],
   ownerAddress: CollectionOwner["ownerAddress"]
 ) {
+  console.log("Upserting");
   const data = {
     collectionId,
     ownerAddress,
+    updatedAt: new Date(),
   };
   return await prisma.collectionOwner.upsert({
     where: {
-      collectionId_ownerAddress: data,
+      collectionId_ownerAddress: {
+        collectionId,
+        ownerAddress: ownerAddress.toLowerCase(),
+      },
     },
     update: data,
     create: data,
