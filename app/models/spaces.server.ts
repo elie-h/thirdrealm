@@ -26,7 +26,7 @@ export async function getSpaceById(id: Space["id"]) {
 
 export async function getSpaceAndMembersById(
   id: Space["id"],
-  walletId: Wallet["id"]
+  walletAddress: Wallet["address"]
 ) {
   return await prisma.space.findUnique({
     where: { id },
@@ -34,33 +34,38 @@ export async function getSpaceAndMembersById(
       collection: true,
       members: {
         where: {
-          walletId: walletId,
+          walletAddress,
         },
       },
     },
   });
 }
 
-export async function createSpaceMembership(
+export async function upsertSpaceMembership(
   spaceId: Space["id"],
-  walletId: Wallet["id"]
+  walletAddress: Wallet["address"]
 ) {
-  return await prisma.walletSpaceMembership.create({
-    data: {
-      walletId: walletId,
-      spaceId: spaceId,
+  const data = {
+    walletAddress,
+    spaceId,
+  };
+  return await prisma.walletSpaceMembership.upsert({
+    where: {
+      walletAddress_spaceId: data,
     },
+    create: data,
+    update: data,
   });
 }
 
 export async function checkSpaceMembership(
   spaceId: Space["id"],
-  walletId: Wallet["id"]
+  walletAddress: Wallet["address"]
 ) {
   const count = await prisma.walletSpaceMembership.count({
     where: {
-      walletId: walletId,
-      spaceId: spaceId,
+      walletAddress,
+      spaceId,
     },
   });
   return count > 0;

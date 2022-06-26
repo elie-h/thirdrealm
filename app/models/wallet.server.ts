@@ -4,8 +4,10 @@ import { prisma } from "~/db.server";
 
 export type { Wallet } from "@prisma/client";
 
-export async function getWalletById(id: Wallet["id"]) {
-  return prisma.wallet.findUnique({ where: { id } });
+export async function getWalletById(address: Wallet["address"]) {
+  return prisma.wallet.findUnique({
+    where: { address: address.toLowerCase() },
+  });
 }
 
 export async function getWalletByAddress(address: Wallet["address"]) {
@@ -20,10 +22,10 @@ export async function createWallet(address: Wallet["address"]) {
   });
 }
 
-export async function updateLastSeen(id: Wallet["id"]) {
+export async function updateLastSeen(address: Wallet["address"]) {
   return prisma.wallet.update({
     where: {
-      id,
+      address: address.toLowerCase(),
     },
     data: { lastSeen: new Date() },
   });

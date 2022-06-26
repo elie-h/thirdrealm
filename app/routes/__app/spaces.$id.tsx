@@ -10,11 +10,13 @@ import {
   createSpaceMembership,
   getSpaceAndMembersById,
   getSpaceById,
+  upsertSpaceMembership,
 } from "~/models/spaces.server";
 import { requireUser } from "~/session.server";
 import { truncateEthAddress } from "~/utils";
 import { json } from "@remix-run/node";
 import { type SpaceWithCollection } from "~/types";
+import { checkTokenOwnership } from "~/data/blockchain.server";
 
 type LoaderData = { space: SpaceWithCollection };
 
@@ -38,18 +40,14 @@ export const action: ActionFunction = async ({ request, params }) => {
 
   const spaceAndMembers = await getSpaceAndMembersById(params.id, user.id);
   invariant(spaceAndMembers, "Space not found");
-  if (spaceAndMembers.members.length > 0) {
-    // Already a member - redirect them
-    return redirect(`/spaces/${params.id}/feed`);
-  }
 
-  const isAllowed = await checkAddressInCollection(
-    spaceAndMembers.collection.id,
-    user.address
+  const isAllowed = await checkTokenOwnership(
+    spaceAndMembers.collection,
+    user.id
   );
 
   if (isAllowed) {
-    await createSpaceMembership(params.id, user.id);
+    await upsertSpaceMembership(params.id, user.id);
     return redirect(`/spaces/${params.id}/feed`);
   } else {
     // Not enough tokens! Redirect to a space where a user can join other spaces

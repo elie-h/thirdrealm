@@ -45,7 +45,7 @@ export function useMatchesData(
 }
 
 function isUser(user: any): user is Wallet {
-  return user && typeof user === "object" && typeof user.address === "string";
+  return user && typeof user === "object" && typeof user.id === "string";
 }
 
 export function useOptionalUser(): Wallet | undefined {

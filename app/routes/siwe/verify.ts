@@ -25,15 +25,15 @@ export const action: ActionFunction = async ({ request, params }) => {
 
     if (!existingWallet) {
       const newWallet = await createWallet(siweMessage.address);
-      userId = newWallet.id;
+      userId = newWallet.address;
     } else {
-      await updateLastSeen(existingWallet.id);
-      userId = existingWallet.id;
+      await updateLastSeen(existingWallet.address);
+      userId = existingWallet.address;
     }
 
     return createUserSession({
       request,
-      userId: userId,
+      userId,
       remember: false,
       redirectTo,
     });

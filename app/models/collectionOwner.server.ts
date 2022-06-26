@@ -4,34 +4,50 @@ import { prisma } from "~/db.server";
 
 export type { Collection } from "@prisma/client";
 
-export async function upsertCollection(
-  name: Collection["name"],
-  description: Collection["description"],
-  coverImage: Collection["coverImage"],
-  symbol: Collection["symbol"],
-  contractAddress: Collection["contractAddress"],
-  network: Collection["network"],
-  totalSupply: Collection["totalSupply"],
-  tokenType: Collection["tokenType"]
+export async function getCollectionOwnership(
+  collectionId: Collection["id"],
+  ownerAddress: CollectionOwner["ownerAddress"]
+) {
+  const count = await prisma.collectionOwner.count({
+    where: {
+      ownerAddress: ownerAddress.toLowerCase(),
+      collectionId,
+    },
+  });
+  return count;
+}
+
+export async function upsertCollectionOwnership(
+  collectionId: Collection["id"],
+  ownerAddress: CollectionOwner["ownerAddress"]
 ) {
   const data = {
-    name,
-    description,
-    coverImage,
-    symbol,
-    contractAddress,
-    network,
-    totalSupply,
-    tokenType,
+    collectionId,
+    ownerAddress,
   };
-  return prisma.collection.upsert({
+  return await prisma.collectionOwner.upsert({
     where: {
-      contractAddress_network: {
-        contractAddress,
-        network,
-      },
+      collectionId_ownerAddress: data,
     },
     update: data,
     create: data,
   });
+}
+
+export async function deleteCollectionOwnership(
+  collectionId: Collection["id"],
+  ownerAddress: CollectionOwner["ownerAddress"]
+) {
+  try {
+    return await prisma.collectionOwner.delete({
+      where: {
+        collectionId_ownerAddress: {
+          collectionId,
+          ownerAddress,
+        },
+      },
+    });
+  } catch (error) {
+    return false;
+  }
 }

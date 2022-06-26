@@ -1,4 +1,4 @@
-import type { Collection, CollectionOwner } from "@prisma/client";
+import type { Collection, CollectionOwner, Wallet } from "@prisma/client";
 
 import { prisma } from "~/db.server";
 
@@ -54,7 +54,7 @@ export async function checkAddressInCollection(
 }
 
 export async function updateCollectionOwners(
-  collectionId: CollectionOwner["id"],
+  collectionId: Collection["id"],
   newOwners: CollectionOwner["ownerAddress"][]
 ) {
   const deleteManyOp = await prisma.collectionOwner.deleteMany({
@@ -96,6 +96,22 @@ export async function updateCollectionLastRefreshed(id: Collection["id"]) {
     where: { id },
     data: {
       lastRefreshed: new Date(),
+    },
+  });
+}
+
+export async function deleteCollectionSpaceMemberships(
+  collectionId: Collection["id"],
+  walletAddress: Wallet["address"]
+) {
+  return await prisma.walletSpaceMembership.deleteMany({
+    where: {
+      walletAddress: walletAddress,
+      space: {
+        collection: {
+          id: collectionId,
+        },
+      },
     },
   });
 }
