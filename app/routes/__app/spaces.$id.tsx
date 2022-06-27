@@ -46,7 +46,7 @@ export const action: ActionFunction = async ({ request, params }) => {
 
   if (isAllowed) {
     await upsertSpaceMembership(params.id, user.id);
-    return redirect(`/spaces/${params.id}/feed`);
+    return redirect(`/space/${params.id}/feed`);
   } else {
     // Not enough tokens! Redirect to a space where a user can join other spaces
     return redirect(`/spaces/${params.id}/forbidden`);
