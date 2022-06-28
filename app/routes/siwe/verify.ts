@@ -3,7 +3,7 @@ import { SiweMessage } from "siwe";
 import invariant from "tiny-invariant";
 import {
   createWallet,
-  getWalletByAddress,
+  getWallet,
   updateLastSeen,
 } from "~/models/wallet.server";
 import { createUserSession } from "~/session.server";
@@ -17,11 +17,11 @@ export const action: ActionFunction = async ({ request, params }) => {
   invariant(message, "Message is required");
   invariant(signature, "Signature is required");
   const siweMessage = new SiweMessage(message.toString());
-  const redirectTo = safeRedirect(form.get("redirectTo"), "/spaces");
+  const redirectTo = safeRedirect(form.get("redirectTo"), "/home");
 
   try {
     await siweMessage.validate(signature.toString());
-    const existingWallet = await getWalletByAddress(siweMessage.address);
+    const existingWallet = await getWallet(siweMessage.address);
 
     if (!existingWallet) {
       const newWallet = await createWallet(siweMessage.address);

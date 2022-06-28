@@ -37,10 +37,10 @@ export default function () {
             </p>
             <div className="mt-6">
               <Link
-                to="/spaces"
+                to="/home"
                 className="text-base font-medium text-indigo-600 hover:text-indigo-500"
               >
-                Spaces<span aria-hidden="true"> &rarr;</span>
+                Home<span aria-hidden="true"> &rarr;</span>
               </Link>
             </div>
           </div>

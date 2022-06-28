@@ -141,8 +141,6 @@ export default function () {
             </div>
           </article>
         </li>
-
-        {/* <!-- More questions... --> */}
       </ul>
     </div>
   );

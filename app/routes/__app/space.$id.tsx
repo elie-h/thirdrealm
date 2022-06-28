@@ -1,8 +1,12 @@
-import { Link, Outlet } from "@remix-run/react";
-import { type LoaderFunction, redirect } from "@remix-run/node";
+import { json, redirect, type LoaderFunction } from "@remix-run/node";
+import { Link, Outlet, useLoaderData } from "@remix-run/react";
 import invariant from "tiny-invariant";
 import { checkSpaceMembership } from "~/models/spaces.server";
+import { getWallet } from "~/models/wallet.server";
 import { requireUser } from "~/session.server";
+import { SpaceWithCollection, WalletWithMemberships } from "~/types";
+
+type LoaderData = { wallet: WalletWithMemberships; space: SpaceWithCollection };
 
 export const loader: LoaderFunction = async ({ request, params }) => {
   invariant(params.id, "params.id is required");
@@ -11,10 +15,16 @@ export const loader: LoaderFunction = async ({ request, params }) => {
   if (!isAllowed) {
     return redirect(`/spaces/${params.id}/forbidden`);
   }
-  return true;
+  const walletAndMemberships = await getWallet(user.id, true);
+  const currentSpace = walletAndMemberships?.memberships.find(
+    (m) => m.spaceId === params.id
+  )?.space;
+  console.log(currentSpace);
+  return json({ wallet: walletAndMemberships, space: currentSpace });
 };
 
 export default function Space() {
+  const data = useLoaderData<LoaderData>();
   return (
     <div className="py-10">
       <div className="mx-auto max-w-3xl sm:px-6 lg:grid lg:max-w-screen-2xl	 lg:grid-cols-12 lg:gap-8">
@@ -30,24 +40,21 @@ export default function Space() {
               >
                 My Spaces
               </p>
+              {data.wallet.memberships.map((membership) => (
+                <Link
+                  to={`/space/${membership.space.id}/feed`}
+                  className="group flex items-center rounded-md px-3 py-2 text-sm font-medium text-gray-600 hover:bg-gray-50 hover:text-gray-900"
+                  key={membership.space.id}
+                >
+                  <span className="truncate">
+                    {membership.space.collection.name}
+                  </span>
+                </Link>
+              ))}
               <div
                 className="mt-3 space-y-2"
                 aria-labelledby="communities-headline"
-              >
-                <a
-                  href="#"
-                  className="group flex items-center rounded-md px-3 py-2 text-sm font-medium text-gray-600 hover:bg-gray-50 hover:text-gray-900"
-                >
-                  <span className="truncate"> BAYC </span>
-                </a>
-
-                <a
-                  href="#"
-                  className="group flex items-center rounded-md px-3 py-2 text-sm font-medium text-gray-600 hover:bg-gray-50 hover:text-gray-900"
-                >
-                  <span className="truncate"> Doodles </span>
-                </a>
-              </div>
+              ></div>
             </div>
           </nav>
         </div>
@@ -63,59 +70,22 @@ export default function Space() {
                     id="who-to-follow-heading"
                     className="text-base font-medium text-gray-900"
                   >
-                    About this space
+                    {data.space.collection.name}
                   </h2>
                   <div className="mt-6 flow-root">
                     <ul role="list" className="-my-4 divide-y divide-gray-200">
-                      <li className="flex items-center space-x-3 py-4">
-                        <div className="flex-shrink-0">
-                          <img
-                            className="h-8 w-8 rounded-full"
-                            src="https://images.unsplash.com/photo-1519345182560-3f2917c472ef?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80"
-                            alt=""
-                          />
-                        </div>
+                      <li className="flex items-center  py-4">
+                        <div className="flex-shrink-0"></div>
                         <div className="min-w-0 flex-1">
                           <p className="text-sm font-medium text-gray-900">
-                            <a href="#">Leonard Krasner</a>
+                            <a href="#">{}</a>
                           </p>
                           <p className="text-sm text-gray-500">
-                            <a href="#">@leonardkrasner</a>
+                            {data.space.collection.description}
                           </p>
-                        </div>
-                        <div className="flex-shrink-0">
-                          <button
-                            type="button"
-                            className="inline-flex items-center rounded-full bg-rose-50 px-3 py-0.5 text-sm font-medium text-rose-700 hover:bg-rose-100"
-                          >
-                            {/* <!-- Heroicon name: solid/plus-sm --> */}
-                            <svg
-                              className="-ml-1 mr-0.5 h-5 w-5 text-rose-400"
-                              xmlns="http://www.w3.org/2000/svg"
-                              viewBox="0 0 20 20"
-                              fill="currentColor"
-                              aria-hidden="true"
-                            >
-                              <path
-                                fillRule="evenodd"
-                                d="M10 5a1 1 0 011 1v3h3a1 1 0 110 2h-3v3a1 1 0 11-2 0v-3H6a1 1 0 110-2h3V6a1 1 0 011-1z"
-                                clipRule="evenodd"
-                              />
-                            </svg>
-                            <span> Follow </span>
-                          </button>
                         </div>
                       </li>
                     </ul>
-                  </div>
-                  <div className="mt-6">
-                    <a
-                      href="#"
-                      className="block w-full rounded-md border border-gray-300 bg-white px-4 py-2 text-center text-sm font-medium text-gray-700 shadow-sm hover:bg-gray-50"
-                    >
-                      {" "}
-                      View all{" "}
-                    </a>
                   </div>
                 </div>
               </div>
@@ -158,7 +128,7 @@ export function ErrorBoundary({ error }: { error: Error }) {
             ) : null}
             <div className="mt-6">
               <Link
-                to="/spaces"
+                to="/home"
                 className="text-base font-medium text-indigo-600 hover:text-indigo-500"
               >
                 Spaces<span aria-hidden="true"> &rarr;</span>

@@ -19,7 +19,7 @@ export default function Index() {
                 </div>
                 <div className="mt-6 sm:ml-3 sm:flex sm:w-full sm:max-w-lg">
                   <Link
-                    to={"/spaces"}
+                    to={"/home"}
                     className="block w-full rounded-md border border-transparent bg-rose-500 px-5 py-3 text-center text-base font-medium text-white shadow hover:bg-rose-600 focus:outline-none focus:ring-2 focus:ring-rose-500 focus:ring-offset-2 sm:px-10"
                   >
                     Explore &rarr;
@@ -191,7 +191,7 @@ export default function Index() {
                 </p>
                 <div className="mt-6">
                   <Link
-                    to={"/spaces"}
+                    to={"/home"}
                     className="text-base font-medium text-rose-500"
                   >
                     {" "}

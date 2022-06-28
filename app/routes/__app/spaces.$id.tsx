@@ -110,10 +110,10 @@ export default function () {
           </button>
 
           <Link
-            to="/spaces"
+            to="/home"
             className="mb-5 flex w-full items-center justify-center rounded-md border border-transparent bg-gray-600 py-3 px-8 text-base font-medium text-white hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2 focus:ring-offset-gray-50 sm:mx-5"
           >
-            Spaces
+            Home
           </Link>
         </div>
       </div>

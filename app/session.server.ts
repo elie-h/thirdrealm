@@ -1,6 +1,6 @@
 import { createCookieSessionStorage, redirect } from "@remix-run/node";
 import invariant from "tiny-invariant";
-import { getWalletById } from "~/models/wallet.server";
+import { getWallet } from "~/models/wallet.server";
 
 invariant(process.env.SESSION_SECRET, "SESSION_SECRET must be set");
 
@@ -32,7 +32,7 @@ export async function getUserId(request: Request): Promise<string | undefined> {
 export async function getUser(request: Request) {
   const userId = await getUserId(request);
   if (userId === undefined) return null;
-  const wallet = await getWalletById(userId);
+  const wallet = await getWallet(userId);
   if (wallet) {
     return { id: wallet.address };
   }
@@ -52,7 +52,7 @@ export async function requireUserId(
 
 export async function requireUser(request: Request) {
   const userId = await requireUserId(request);
-  const wallet = await getWalletById(userId);
+  const wallet = await getWallet(userId);
   if (wallet) {
     return { id: wallet.address.toLowerCase() };
   }

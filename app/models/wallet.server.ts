@@ -4,15 +4,23 @@ import { prisma } from "~/db.server";
 
 export type { Wallet } from "@prisma/client";
 
-export async function getWalletById(address: Wallet["address"]) {
+export async function getWallet(
+  address: Wallet["address"],
+  includeMemberships: boolean = false
+) {
   return prisma.wallet.findUnique({
     where: { address: address.toLowerCase() },
-  });
-}
-
-export async function getWalletByAddress(address: Wallet["address"]) {
-  return prisma.wallet.findUnique({
-    where: { address: address.toLowerCase() },
+    include: {
+      memberships: {
+        include: {
+          space: {
+            include: {
+              collection: true,
+            },
+          },
+        },
+      },
+    },
   });
 }
 
