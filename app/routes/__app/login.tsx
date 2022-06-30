@@ -5,7 +5,7 @@ import { useOptionalUser } from "~/utils";
 
 export default function Login() {
   const user = useOptionalUser();
-  const { data: signer, isLoading } = useSigner();
+  const { data: signer } = useSigner();
   const navigate = useNavigate();
 
   useEffect(() => {

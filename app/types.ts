@@ -1,9 +1,4 @@
-import type {
-  Space,
-  Collection,
-  WalletSpaceMembership,
-  Wallet,
-} from "@prisma/client";
+import type { Collection, Space, Wallet } from "@prisma/client";
 
 export interface SpaceWithCollection extends Space {
   collection: Collection;

@@ -36,16 +36,16 @@ export const action: ActionFunction = async ({ request, params }) => {
   invariant(process.env.ALCHEMY_ETH_RPC, "Expected process.env.RPC_URL");
   invariant(params.id, "Expected params.id");
 
-  const spaceAndMembers = await getSpaceAndMembersById(params.id, user.id);
+  const spaceAndMembers = await getSpaceAndMembersById(params.id, user.address);
   invariant(spaceAndMembers, "Space not found");
 
   const isAllowed = await checkTokenOwnership(
     spaceAndMembers.collection,
-    user.id
+    user.address
   );
 
   if (isAllowed) {
-    await upsertSpaceMembership(params.id, user.id);
+    await upsertSpaceMembership(params.id, user.address);
     return redirect(`/space/${params.id}/feed`);
   } else {
     // Not enough tokens! Redirect to a space where a user can join other spaces

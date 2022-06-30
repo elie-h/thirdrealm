@@ -5,7 +5,7 @@ import { Link } from "@remix-run/react";
 
 export default function Example() {
   return (
-    <Disclosure as="nav" className="bg-white shadow">
+    <Disclosure as="nav" className="sticky top-0 z-50 bg-white shadow-md">
       {({ open }) => (
         <>
           <div className="mx-auto px-5 ">

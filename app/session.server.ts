@@ -34,7 +34,7 @@ export async function getUser(request: Request) {
   if (userId === undefined) return null;
   const wallet = await getWallet(userId);
   if (wallet) {
-    return { id: wallet.address };
+    return { address: wallet.address };
   }
 }
 
@@ -54,7 +54,7 @@ export async function requireUser(request: Request) {
   const userId = await requireUserId(request);
   const wallet = await getWallet(userId);
   if (wallet) {
-    return { id: wallet.address.toLowerCase() };
+    return { address: wallet.address.toLowerCase() };
   }
   throw await logout(request);
 }

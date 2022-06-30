@@ -21,7 +21,6 @@ export async function upsertCollectionOwnership(
   collectionId: Collection["id"],
   ownerAddress: CollectionOwner["ownerAddress"]
 ) {
-  console.log("Upserting");
   const data = {
     collectionId,
     ownerAddress,

@@ -1,14 +1,19 @@
+import { Menu, Transition } from "@headlessui/react";
 import { ConnectButton } from "@rainbow-me/rainbowkit";
 import { Form, useSubmit } from "@remix-run/react";
-import { useEffect } from "react";
+import { Fragment, useCallback, useEffect } from "react";
+import Jazzicon, { jsNumberForAddress } from "react-jazzicon";
 import { SiweMessage } from "siwe";
 import invariant from "tiny-invariant";
 import { useSigner } from "wagmi";
 import { useOptionalUser } from "~/utils";
-import { useCallback } from "react";
 
 const domain = "localhost";
 const origin = "https://localhost/login";
+
+function classNames(...classes: string[]) {
+  return classes.filter(Boolean).join(" ");
+}
 
 async function createSiweMessage(address: string, statement: string) {
   const res = await fetch(`siwe/nonce`);
@@ -49,10 +54,6 @@ export default function User() {
   }, [signer, submit]);
 
   useEffect(() => {
-    // if (user && signer) {
-    //   navigate("/feed", { replace: true });
-    // }
-
     const handleSIWE = async () => {
       if (signer && !user && !isLoading && !isError) {
         await handleSubmit();
@@ -109,14 +110,53 @@ export default function User() {
     );
   } else if (user) {
     return (
-      <Form action="/siwe/logout" method="post">
-        <button
-          type="submit"
-          className="text-black-100 border-black-600 rounded border py-2 px-4 hover:bg-slate-100 active:bg-slate-100"
+      <Menu as="div" className="relative ml-3">
+        <div>
+          <Menu.Button className="flex rounded-full bg-gray-800 text-sm focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800">
+            <span className="sr-only">Open user menu</span>
+            <Jazzicon diameter={36} seed={jsNumberForAddress(user.address)} />
+          </Menu.Button>
+        </div>
+        <Transition
+          as={Fragment}
+          enter="transition ease-out duration-100"
+          enterFrom="transform opacity-0 scale-95"
+          enterTo="transform opacity-100 scale-100"
+          leave="transition ease-in duration-75"
+          leaveFrom="transform opacity-100 scale-100"
+          leaveTo="transform opacity-0 scale-95"
         >
-          Logout
-        </button>
-      </Form>
+          <Menu.Items className="absolute right-0 mt-2 w-48 origin-top-right rounded-md bg-white py-1 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
+            {/* <Menu.Item>
+              {({ active }) => (
+                <button
+                  className={classNames(
+                    active ? "bg-gray-100" : "",
+                    "block w-full px-4 py-2 text-left text-sm text-gray-700"
+                  )}
+                >
+                  Profile
+                </button>
+              )}
+            </Menu.Item> */}
+            <Menu.Item>
+              {({ active }) => (
+                <Form action="/siwe/logout" method="post">
+                  <button
+                    type="submit"
+                    className={classNames(
+                      active ? "bg-gray-100" : "",
+                      "block w-full px-4 py-2 text-left text-sm text-gray-700"
+                    )}
+                  >
+                    Logout
+                  </button>
+                </Form>
+              )}
+            </Menu.Item>
+          </Menu.Items>
+        </Transition>
+      </Menu>
     );
   }
   return <p></p>;

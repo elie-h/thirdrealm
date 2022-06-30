@@ -4,22 +4,21 @@ import invariant from "tiny-invariant";
 import { checkSpaceMembership } from "~/models/spaces.server";
 import { getWallet } from "~/models/wallet.server";
 import { requireUser } from "~/session.server";
-import { SpaceWithCollection, WalletWithMemberships } from "~/types";
+import { type SpaceWithCollection, type WalletWithMemberships } from "~/types";
 
 type LoaderData = { wallet: WalletWithMemberships; space: SpaceWithCollection };
 
 export const loader: LoaderFunction = async ({ request, params }) => {
   invariant(params.id, "params.id is required");
   const user = await requireUser(request);
-  const isAllowed = await checkSpaceMembership(params.id, user.id);
+  const isAllowed = await checkSpaceMembership(params.id, user.address);
   if (!isAllowed) {
     return redirect(`/spaces/${params.id}/forbidden`);
   }
-  const walletAndMemberships = await getWallet(user.id, true);
+  const walletAndMemberships = await getWallet(user.address, true);
   const currentSpace = walletAndMemberships?.memberships.find(
     (m) => m.spaceId === params.id
   )?.space;
-  console.log(currentSpace);
   return json({ wallet: walletAndMemberships, space: currentSpace });
 };
 
@@ -73,13 +72,11 @@ export default function Space() {
                     {data.space.collection.name}
                   </h2>
                   <div className="mt-6 flow-root">
-                    <ul role="list" className="-my-4 divide-y divide-gray-200">
+                    <ul className="-my-4 divide-y divide-gray-200">
                       <li className="flex items-center  py-4">
                         <div className="flex-shrink-0"></div>
                         <div className="min-w-0 flex-1">
-                          <p className="text-sm font-medium text-gray-900">
-                            <a href="#">{}</a>
-                          </p>
+                          <p className="text-sm font-medium text-gray-900"></p>
                           <p className="text-sm text-gray-500">
                             {data.space.collection.description}
                           </p>

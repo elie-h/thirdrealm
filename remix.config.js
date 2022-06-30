@@ -6,9 +6,9 @@ module.exports = {
   ignoredRouteFiles: [".*", "**/*.css", "**/*.test.{js,jsx,ts,tsx}"],
   serverDependenciesToBundle: [
     "@rainbow-me/rainbowkit",
-    "@apollo/client",
     "ts-invariant",
     "zen-observable-ts",
+    "@heroicons/react",
   ],
   devServerPort: 8002,
 };

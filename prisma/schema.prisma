@@ -32,7 +32,7 @@ model CollectionOwner {
   collectionId String
   updatedAt    DateTime   @default(now())
   collection   Collection @relation(fields: [collectionId], references: [id])
-  
+
   @@id([collectionId, ownerAddress])
 }
 
@@ -42,6 +42,7 @@ model Wallet {
   updatedAt   DateTime                @default(now())
   lastSeen    DateTime                @updatedAt
   memberships WalletSpaceMembership[]
+  posts       Post[]
 }
 
 model Space {
@@ -51,14 +52,30 @@ model Space {
   createdAt    DateTime                @default(now())
   updatedAt    DateTime                @default(now())
   members      WalletSpaceMembership[]
+  posts        Post[]
 }
 
 model WalletSpaceMembership {
-  wallet    Wallet   @relation(fields: [walletAddress], references: [address])
-  walletAddress  String
-  space     Space    @relation(fields: [spaceId], references: [id])
-  spaceId   String
-  createdAt DateTime @default(now())
+  wallet        Wallet   @relation(fields: [walletAddress], references: [address])
+  walletAddress String
+  space         Space    @relation(fields: [spaceId], references: [id])
+  spaceId       String
+  createdAt     DateTime @default(now())
 
   @@id([walletAddress, spaceId])
+}
+
+model Post {
+  id            String   @id @default(cuid())
+  title         String
+  content       String
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @default(now())
+  author        Wallet   @relation(fields: [authorAddress], references: [address])
+  authorAddress String
+  space         Space    @relation(fields: [spaceId], references: [id])
+  spaceId       String
+
+  @@index([spaceId])
+  @@index([createdAt])
 }
