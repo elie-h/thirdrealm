@@ -1,4 +1,4 @@
-import { Post } from "@prisma/client";
+import { type Post } from "@prisma/client";
 import { truncateEthAddress } from "~/utils/eth";
 import Jazzicon, { jsNumberForAddress } from "react-jazzicon";
 
@@ -7,39 +7,37 @@ interface PostsProps extends React.ComponentPropsWithoutRef<"div"> {
 }
 
 export default function Posts({ posts = [] }: PostsProps) {
-  console.log(posts);
   return (
     <ul className="mx-4 space-y-4">
       {posts.map((post) => (
         <li
           key={post.id}
-          className="rounded-lg border border-gray-300 border-b-indigo-500 px-4 py-4 shadow-sm sm:p-4"
+          className="rounded-lg border border-gray-300 px-4 py-4 shadow-sm sm:p-4"
         >
           <article aria-labelledby="question-title-81614">
             <div>
               <div className="flex space-x-3">
                 <div className="flex-shrink-0">
                   <Jazzicon
-                    diameter={52}
+                    diameter={28}
                     seed={jsNumberForAddress(post.authorAddress)}
                   />
                 </div>
-                <div className="min-w-0 flex-1">
-                  <p className="text-sm font-medium text-gray-900">
+                <div className="flex min-w-0 flex-1 flex-row">
+                  <p className="pr-2 text-sm font-medium text-gray-900">
                     <button className="hover:underline">
                       {truncateEthAddress(post.authorAddress)}
                     </button>
                   </p>
-                  <p className="text-sm text-gray-500">
-                    <button className="hover:underline">
-                      <time>{post.createdAt}</time>
-                    </button>
+                  <span>·</span>
+                  <p className="pl-2 text-sm text-gray-500">
+                    <time>{post.createdAt}</time>
                   </p>
                 </div>
               </div>
               <h2
                 id="question-title-81614"
-                className="mt-4 text-base font-black text-gray-900"
+                className="mt-4 text-lg font-black text-gray-900"
               >
                 {post.title}
               </h2>
