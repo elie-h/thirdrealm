@@ -2,6 +2,7 @@ import {
   getNftsForOwner,
   initializeAlchemy,
   Network,
+  Nft,
   NftExcludeFilters,
   type OwnedNft,
 } from "@alch/alchemy-sdk";
@@ -154,7 +155,10 @@ export async function getWalletData(walletAddress: string) {
   return walletObject;
 }
 
-async function getWalletNfts(walletAddress: string, network: DBNetwork) {
+async function getWalletNfts(
+  walletAddress: string,
+  network: DBNetwork
+): Promise<Nft[] | undefined> {
   if (nftWalletCache.has(`${network}-${walletAddress}`)) {
     return nftWalletCache.get(`${network}-${walletAddress}`);
   }
@@ -188,12 +192,12 @@ export async function getWalletSpaces(walletAddress: string) {
   /** Get the spaces a user is part of and is able to join */
 
   const ethNfts = (await getWalletNfts(walletAddress, "ethereum")) || [];
-  const ethTokenContracts = ethNfts.map((nft: OwnedNft) =>
+  const ethTokenContracts = ethNfts.map((nft) =>
     nft.contract.address.toLowerCase()
   );
 
   const polygonNfts = (await getWalletNfts(walletAddress, "polygon")) || [];
-  const polygonTokenContracts = polygonNfts.map((nft: OwnedNft) =>
+  const polygonTokenContracts = polygonNfts.map((nft) =>
     nft.contract.address.toLowerCase()
   );
 
