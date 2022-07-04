@@ -6,7 +6,7 @@ import {
 } from "@remix-run/node";
 import { Link, useFetcher, useLoaderData } from "@remix-run/react";
 import invariant from "tiny-invariant";
-import { checkTokenOwnership } from "~/data/blockchain.server";
+import { checkCollectionOwnership } from "~/data/blockchain.server";
 import {
   getSpaceAndMembersById,
   getSpaceById,
@@ -39,7 +39,7 @@ export const action: ActionFunction = async ({ request, params }) => {
   const spaceAndMembers = await getSpaceAndMembersById(params.id, user.address);
   invariant(spaceAndMembers, "Space not found");
 
-  const isAllowed = await checkTokenOwnership(
+  const isAllowed = await checkCollectionOwnership(
     spaceAndMembers.collection,
     user.address
   );

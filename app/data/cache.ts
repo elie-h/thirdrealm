@@ -3,10 +3,12 @@ import LRU from "lru-cache";
 declare global {
   var __tokenOwnershipCache: LRU<string, number> | undefined;
   var __walletCache: LRU<string, object> | undefined;
+  var __nftWalletCache: LRU<string, object[]> | undefined;
 }
 
 let tokenOwnershipCache: LRU<string, number>;
 let walletCache: LRU<string, object>;
+let nftWalletCache: LRU<string, object[]>;
 // this is needed because in development we don't want to restart
 // the server with every change, but we want to make sure we don't
 // create a new connection to the DB with every change either.
@@ -16,6 +18,10 @@ if (process.env.NODE_ENV === "production") {
     ttl: 15 * 60 * 1000,
   });
   walletCache = new LRU<string, object>({
+    max: 10000,
+    ttl: 15 * 60 * 1000,
+  });
+  nftWalletCache = new LRU<string, object[]>({
     max: 10000,
     ttl: 15 * 60 * 1000,
   });
@@ -32,8 +38,15 @@ if (process.env.NODE_ENV === "production") {
       ttl: 15 * 60 * 1000,
     });
   }
+  if (!global.__nftWalletCache) {
+    global.__nftWalletCache = new LRU<string, object[]>({
+      max: 10000,
+      ttl: 15 * 60 * 1000,
+    });
+  }
   tokenOwnershipCache = global.__tokenOwnershipCache;
   walletCache = global.__walletCache;
+  nftWalletCache = global.__nftWalletCache;
 }
 
-export { tokenOwnershipCache, walletCache };
+export { tokenOwnershipCache, walletCache, nftWalletCache };
