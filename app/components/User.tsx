@@ -6,7 +6,7 @@ import Jazzicon, { jsNumberForAddress } from "react-jazzicon";
 import { SiweMessage } from "siwe";
 import invariant from "tiny-invariant";
 import { useSigner } from "wagmi";
-import { useOptionalUser } from "~/utils";
+import { truncateEthAddress, useOptionalUser } from "~/utils";
 
 const domain = "localhost";
 const origin = "https://localhost/login";
@@ -112,9 +112,12 @@ export default function User() {
     return (
       <Menu as="div" className="relative ml-3">
         <div>
-          <Menu.Button className="flex rounded-full bg-gray-800 text-sm focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800">
+          <Menu.Button className="flex items-center text-sm">
             <span className="sr-only">Open user menu</span>
             <Jazzicon diameter={36} seed={jsNumberForAddress(user.address)} />
+            <p className="hidden pl-4 text-sm text-gray-500 sm:block">
+              {truncateEthAddress(user.address)}
+            </p>
           </Menu.Button>
         </div>
         <Transition

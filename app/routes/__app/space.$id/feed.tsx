@@ -1,25 +1,14 @@
-import { Post } from "@prisma/client";
+import { type Post } from "@prisma/client";
 import {
   json,
-  redirect,
   type ActionFunction,
   type LoaderFunction,
 } from "@remix-run/node";
-import { Link, useFetcher, useLoaderData } from "@remix-run/react";
-import { title } from "process";
+import { useLoaderData } from "@remix-run/react";
 import invariant from "tiny-invariant";
-import { brotliDecompressSync } from "zlib";
 import Posts from "~/components/Post";
-import { checkTokenOwnership } from "~/data/blockchain.server";
 import { createPost, getPostsForSpace } from "~/models/post.server";
-import {
-  getSpaceAndMembersById,
-  getSpaceById,
-  upsertSpaceMembership,
-} from "~/models/spaces.server";
 import { requireUser } from "~/session.server";
-import { type SpaceWithCollection } from "~/types";
-import { truncateEthAddress } from "~/utils";
 
 type LoaderData = { posts: Post[] };
 
@@ -34,11 +23,13 @@ export const loader: LoaderFunction = async ({ request, params }) => {
 
 export const action: ActionFunction = async ({ request, params }) => {
   const user = await requireUser(request);
-  const body = await request.formData();
-  const title = body.get("title");
-  const content = body.get("description");
+  const body: FormData = await request.formData();
+  const title: string | undefined = body.get("title")?.toString();
+  const content: string | undefined = body.get("description")?.toString();
 
   invariant(title, "Title is required");
+  invariant(content, "Content is required");
+  invariant(params.id, "Space ID is required");
   const newPost = await createPost(title, content, params.id, user.address);
   return newPost;
 };

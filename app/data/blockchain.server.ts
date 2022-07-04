@@ -1,21 +1,27 @@
-import { getNftsForOwner, initializeAlchemy, Network } from "@alch/alchemy-sdk";
+import {
+  getNftsForOwner,
+  initializeAlchemy,
+  Network,
+  NftExcludeFilters,
+  type OwnedNft,
+} from "@alch/alchemy-sdk";
 import { createAlchemyWeb3 } from "@alch/alchemy-web3";
-import type {
-  Collection,
-  CollectionOwner,
+import {
+  type Collection,
+  type CollectionOwner,
   Network as DBNetwork,
 } from "@prisma/client";
-import { tokenOwnershipCache, walletCache } from "~/data/cache";
+import { ethers } from "ethers";
+import invariant from "tiny-invariant";
+import { tokenOwnershipCache, walletCache, nftWalletCache } from "~/data/cache";
+import { prisma } from "~/db.server";
 import { deleteCollectionSpaceMemberships } from "~/models/collection.server";
 import {
   deleteCollectionOwnership,
   getCollectionOwnership,
   upsertCollectionOwnership,
 } from "~/models/collectionOwner.server";
-
-import { ethers } from "ethers";
 import { truncateString } from "~/utils/strings";
-import invariant from "tiny-invariant";
 
 async function getOwnersForCollection(
   contractAddress: string,
@@ -57,7 +63,7 @@ async function getOwnersForCollection(
   return nftsForOwner.totalCount;
 }
 
-export async function checkTokenOwnership(
+export async function checkCollectionOwnership(
   collection: Collection,
   ownerAddress: CollectionOwner["ownerAddress"]
 ) {
@@ -108,6 +114,7 @@ export async function getWalletData(walletAddress: string) {
   const eth_owned_nfts = await web3.alchemy.getNfts({
     owner: walletAddress,
   });
+
   const nfts_to_return: any[] = [];
   eth_owned_nfts.ownedNfts.forEach((nft) => {
     let nft_cover: string;
@@ -136,11 +143,93 @@ export async function getWalletData(walletAddress: string) {
       contract: nft.contract.address,
     });
   });
+
   const walletObject = {
     nfts: nfts_to_return,
     nftCount: nfts_to_return.length,
     ens,
   };
   walletCache.set(walletAddress, walletObject);
+
   return walletObject;
+}
+
+async function getWalletNfts(walletAddress: string, network: DBNetwork) {
+  if (nftWalletCache.has(`${network}-${walletAddress}`)) {
+    return nftWalletCache.get(`${network}-${walletAddress}`);
+  }
+  let alchemy;
+  if (network == DBNetwork.ethereum) {
+    alchemy = initializeAlchemy({
+      apiKey: process.env.ALCHEMY_ETH_API_KEY,
+      network: Network.ETH_MAINNET,
+      maxRetries: 3,
+    });
+  } else if (network == DBNetwork.polygon) {
+    alchemy = initializeAlchemy({
+      apiKey: process.env.ALCHEMY_MATIC_API_KEY,
+      network: Network.MATIC_MAINNET,
+      maxRetries: 3,
+    });
+  } else {
+    throw new Error("Unknown network");
+  }
+
+  const nfts = await getNftsForOwner(alchemy, walletAddress, {
+    excludeFilters: [NftExcludeFilters.SPAM],
+    omitMetadata: true,
+  });
+  nftWalletCache.set(`${network}-${walletAddress}`, nfts.ownedNfts);
+  // TODO: Add pagination
+  return nfts.ownedNfts;
+}
+
+export async function getWalletSpaces(walletAddress: string) {
+  /** Get the spaces a user is part of and is able to join */
+
+  const ethNfts = (await getWalletNfts(walletAddress, "ethereum")) || [];
+  const ethTokenContracts = ethNfts.map((nft: OwnedNft) =>
+    nft.contract.address.toLowerCase()
+  );
+
+  const polygonNfts = (await getWalletNfts(walletAddress, "polygon")) || [];
+  const polygonTokenContracts = polygonNfts.map((nft: OwnedNft) =>
+    nft.contract.address.toLowerCase()
+  );
+
+  // TODO: The below assumes that the contract address isn't duplicated across networks. This is probably wrong.
+  const eligibleSpaces = await prisma.space.findMany({
+    include: {
+      collection: true,
+    },
+    where: {
+      collection: {
+        contractAddress: {
+          in: [...ethTokenContracts, ...polygonTokenContracts],
+        },
+      },
+      members: {
+        none: {
+          walletAddress,
+        },
+      },
+    },
+  });
+
+  const joinedSpaces = await prisma.space.findMany({
+    where: {
+      members: {
+        some: {
+          walletAddress,
+        },
+      },
+    },
+    include: {
+      collection: true,
+    },
+  });
+  return {
+    eligible: eligibleSpaces,
+    joined: joinedSpaces,
+  };
 }
