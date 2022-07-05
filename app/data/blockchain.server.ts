@@ -2,19 +2,18 @@ import {
   getNftsForOwner,
   initializeAlchemy,
   Network,
-  Nft,
+  type Nft,
   NftExcludeFilters,
-  type OwnedNft,
 } from "@alch/alchemy-sdk";
 import { createAlchemyWeb3 } from "@alch/alchemy-web3";
 import {
+  Network as DBNetwork,
   type Collection,
   type CollectionOwner,
-  Network as DBNetwork,
 } from "@prisma/client";
 import { ethers } from "ethers";
 import invariant from "tiny-invariant";
-import { tokenOwnershipCache, walletCache, nftWalletCache } from "~/data/cache";
+import { nftWalletCache, tokenOwnershipCache, walletCache } from "~/data/cache";
 import { prisma } from "~/db.server";
 import { deleteCollectionSpaceMemberships } from "~/models/collection.server";
 import {
