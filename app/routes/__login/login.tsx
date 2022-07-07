@@ -6,8 +6,8 @@ import { useSigner } from "wagmi";
 import WalletButton from "~/components/Web3";
 import { useOptionalUser } from "~/utils";
 
-const domain = "localhost";
-const origin = "https://localhost/login";
+const domain = "thirdrealm";
+const origin = "https://thirdrealm.xyz/login";
 
 async function createSiweMessage(address: string, statement: string) {
   const res = await fetch(`siwe/nonce`);
@@ -56,7 +56,7 @@ export default function Login() {
   }, [signer, isError, isLoading, user, handleSubmit]);
 
   return (
-    <div className="flex h-full">
+    <div className="flex min-h-screen">
       <div className="flex flex-1 flex-col justify-center py-12 px-4 sm:px-6 lg:flex-none lg:px-20 xl:px-24">
         <div className="mx-auto w-full max-w-sm text-center lg:w-96">
           <div>

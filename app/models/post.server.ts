@@ -13,12 +13,11 @@ export async function getPostsForSpace(spaceId: Space["id"]) {
 }
 
 export async function createPost(
-  title: Post["title"],
   content: Post["content"],
   spaceId: Post["spaceId"],
   authorAddress: Post["authorAddress"]
 ) {
   return await prisma.post.create({
-    data: { title, content, spaceId },
+    data: { content, spaceId, authorAddress },
   });
 }

@@ -35,12 +35,6 @@ export default function Posts({ posts = [] }: PostsProps) {
                   </p>
                 </div>
               </div>
-              <h2
-                id="question-title-81614"
-                className="mt-4 text-lg font-black text-gray-900"
-              >
-                {post.title}
-              </h2>
             </div>
             <div className="mt-2 space-y-4 text-sm text-gray-700">
               <p>{post.content}</p>
