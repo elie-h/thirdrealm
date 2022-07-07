@@ -5,7 +5,6 @@ import { checkSpaceMembership } from "~/models/spaces.server";
 import { getWallet } from "~/models/wallet.server";
 import { requireUser } from "~/session.server";
 import { type SpaceWithCollection, type WalletWithMemberships } from "~/types";
-import spaces$id from "./spaces.$id";
 
 type LoaderData = { wallet: WalletWithMemberships; space: SpaceWithCollection };
 
@@ -45,7 +44,7 @@ export default function Space() {
           </div>
         </div>
       </div>
-      <div className="py-10">
+      <div className="py-5">
         <div className="mx-auto max-w-3xl sm:px-6 lg:grid lg:max-w-screen-2xl lg:grid-cols-12 lg:gap-8">
           <div className="hidden lg:col-span-4 lg:block xl:col-span-2">
             <nav
