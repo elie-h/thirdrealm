@@ -4,7 +4,7 @@ import {
   type ActionFunction,
   type LoaderFunction,
 } from "@remix-run/node";
-import { useLoaderData } from "@remix-run/react";
+import { useActionData, useLoaderData } from "@remix-run/react";
 import invariant from "tiny-invariant";
 import Posts from "~/components/Post";
 import { createPost, getPostsForSpace } from "~/models/post.server";
@@ -21,14 +21,53 @@ export const loader: LoaderFunction = async ({ request, params }) => {
   return json(data);
 };
 
+function validatePostTitle(title: string) {
+  if (title.length < 2) {
+    return `Post title is too short`;
+  }
+}
+
+function validatePostContent(content: string) {
+  if (content.length < 2) {
+    return `Post body is too short`;
+  }
+}
+
+type ActionData = {
+  formError?: string;
+  fieldErrors?: {
+    title: string | undefined;
+    content: string | undefined;
+  };
+  fields?: {
+    title: string;
+    content: string;
+  };
+};
+
+const badRequest = (data: ActionData) => json(data, { status: 400 });
+
 export const action: ActionFunction = async ({ request, params }) => {
   const user = await requireUser(request);
-  const body: FormData = await request.formData();
-  const title: string | undefined = body.get("title")?.toString();
-  const content: string | undefined = body.get("description")?.toString();
+  const body = await request.formData();
+  const title = body.get("title");
+  const content = body.get("content");
 
-  invariant(title, "Title is required");
-  invariant(content, "Content is required");
+  if (typeof title !== "string" || typeof content !== "string") {
+    return badRequest({
+      formError: `Form not submitted correctly.`,
+    });
+  }
+
+  const fieldErrors = {
+    title: validatePostTitle(title),
+    content: validatePostContent(content),
+  };
+  const fields = { title, content };
+  if (Object.values(fieldErrors).some(Boolean)) {
+    return badRequest({ fieldErrors, fields });
+  }
+
   invariant(params.id, "Space ID is required");
   const newPost = await createPost(title, content, params.id, user.address);
   return newPost;
@@ -36,6 +75,7 @@ export const action: ActionFunction = async ({ request, params }) => {
 
 export default function () {
   const data = useLoaderData<LoaderData>();
+  const actionData = useActionData<ActionData>();
   return (
     <div>
       <div className="mb-8">
@@ -47,19 +87,46 @@ export default function () {
             <input
               type="text"
               name="title"
+              defaultValue={actionData?.fields?.title}
               className="block w-full border-0 pt-2.5 text-lg font-medium placeholder-gray-500 focus:ring-0"
               placeholder="Title"
+              aria-invalid={
+                Boolean(actionData?.fieldErrors?.title) || undefined
+              }
+              aria-errormessage={
+                actionData?.fieldErrors?.title ? "name-error" : undefined
+              }
             />
-            <label htmlFor="description" className="sr-only">
-              Description
+            {actionData?.fieldErrors?.title ? (
+              <p className="form-validation-error" role="alert" id="name-error">
+                {actionData.fieldErrors.title}
+              </p>
+            ) : null}
+            <label htmlFor="content" className="sr-only">
+              Content
             </label>
             <textarea
               rows={2}
-              name="description"
+              name="content"
               className="block w-full resize-none border-0 py-0 placeholder-gray-500 focus:ring-0 sm:text-sm"
-              placeholder="Write a description..."
-              defaultValue={""}
+              placeholder="Write a content..."
+              defaultValue={actionData?.fields?.content}
+              aria-invalid={
+                Boolean(actionData?.fieldErrors?.content) || undefined
+              }
+              aria-errormessage={
+                actionData?.fieldErrors?.content ? "content-error" : undefined
+              }
             />
+            {actionData?.fieldErrors?.content ? (
+              <p
+                className="form-validation-error"
+                role="alert"
+                id="content-error"
+              >
+                {actionData.fieldErrors.content}
+              </p>
+            ) : null}
 
             {/* Spacer element to match the height of the toolbar */}
             <div aria-hidden="true">
@@ -88,7 +155,7 @@ export default function () {
               </div>
             </div>
           </div>
-        </form>{" "}
+        </form>
       </div>
       <Posts posts={data.posts} />
     </div>

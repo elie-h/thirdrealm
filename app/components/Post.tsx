@@ -19,18 +19,18 @@ export default function Posts({ posts = [] }: PostsProps) {
               <div className="flex space-x-3">
                 <div className="flex-shrink-0">
                   <Jazzicon
-                    diameter={28}
+                    diameter={24}
                     seed={jsNumberForAddress(post.authorAddress)}
                   />
                 </div>
-                <div className="flex min-w-0 flex-1 flex-row">
-                  <p className="pr-2 text-sm font-medium text-gray-900">
+                <div className="flex min-w-0 flex-1 flex-col sm:flex-row">
+                  <p className="pr-2 text-xs font-medium text-gray-900">
                     <button className="hover:underline">
                       {truncateEthAddress(post.authorAddress)}
                     </button>
                   </p>
-                  <span>·</span>
-                  <p className="pl-2 text-sm text-gray-500">
+                  <span className="hidden pr-2 sm:block">·</span>
+                  <p className="text-xs text-gray-500">
                     <time>{post.createdAt}</time>
                   </p>
                 </div>

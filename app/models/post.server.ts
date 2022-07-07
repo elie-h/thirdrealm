@@ -19,6 +19,6 @@ export async function createPost(
   authorAddress: Post["authorAddress"]
 ) {
   return await prisma.post.create({
-    data: { title, content, spaceId, authorAddress },
+    data: { title, content, spaceId },
   });
 }

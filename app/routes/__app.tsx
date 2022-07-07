@@ -3,17 +3,17 @@ import { useEffect } from "react";
 import { useSigner } from "wagmi";
 import NavBar from "~/components/NavBar";
 import { Web3Wrapper } from "~/components/Web3";
-import { useUser } from "~/utils";
+import { useOptionalUser } from "~/utils";
 
 export const AuthGaurd = ({ children }: any) => {
-  const user = useUser();
+  const user = useOptionalUser();
   const { data: signer, isError, isLoading } = useSigner();
   const navigate = useNavigate();
 
   useEffect(() => {
     if (isLoading === false && isError === false) {
       if (!user) {
-        console.log("Navigating", isLoading, signer == null, !user);
+        console.log("Navigating", isLoading, !user);
         navigate("/");
       }
     }

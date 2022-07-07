@@ -50,6 +50,7 @@ function isUser(user: any): user is Wallet {
 
 export function useOptionalUser(): Wallet | undefined {
   const data = useMatchesData("root");
+  console.log("data", data);
   if (!data || !isUser(data.user)) {
     return undefined;
   }

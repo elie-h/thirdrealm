@@ -24,8 +24,15 @@ export default function Example() {
                 <div className="flex flex-shrink-0 items-center">
                   <Link to="/">
                     <img
-                      className="block h-12 w-auto"
+                      className="hidden h-12 w-auto sm:block"
                       src="/logowtext.png"
+                      alt="Logo"
+                    />
+                  </Link>
+                  <Link to="/">
+                    <img
+                      className="block h-8 w-auto sm:hidden"
+                      src="/logo.png"
                       alt="Logo"
                     />
                   </Link>

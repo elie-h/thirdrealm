@@ -24,7 +24,11 @@ export interface Web3WrapperProps {
 }
 
 export const Web3Wrapper = ({ children }: Web3WrapperProps) => {
-  return <WagmiConfig client={wagmiClient}>{children}</WagmiConfig>;
+  return (
+    <WagmiConfig client={wagmiClient}>
+      <RainbowKitProvider chains={chains}>{children}</RainbowKitProvider>
+    </WagmiConfig>
+  );
 };
 
 export default function WalletButton() {
