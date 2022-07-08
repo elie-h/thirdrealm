@@ -1,6 +1,7 @@
 import { type Post } from "@prisma/client";
 import { truncateEthAddress } from "~/utils/eth";
 import Jazzicon, { jsNumberForAddress } from "react-jazzicon";
+import { deserialize } from "~/utils/strings";
 
 interface PostsProps extends React.ComponentPropsWithoutRef<"div"> {
   posts: Post[];
@@ -8,38 +9,43 @@ interface PostsProps extends React.ComponentPropsWithoutRef<"div"> {
 
 export default function Posts({ posts = [] }: PostsProps) {
   return (
-    <ul className="mx-4 space-y-4">
+    <ul>
       {posts.map((post) => (
-        <li
-          key={post.id}
-          className="rounded-lg border border-gray-300 px-4 py-4 shadow-sm sm:p-4"
-        >
-          <article aria-labelledby="question-title-81614">
-            <div>
-              <div className="flex space-x-3">
-                <div className="flex-shrink-0">
-                  <Jazzicon
-                    diameter={24}
-                    seed={jsNumberForAddress(post.authorAddress)}
-                  />
-                </div>
-                <div className="flex min-w-0 flex-1 flex-col sm:flex-row">
-                  <p className="pr-2 text-xs font-medium text-gray-900">
-                    <button className="hover:underline">
-                      {truncateEthAddress(post.authorAddress)}
-                    </button>
-                  </p>
-                  <span className="hidden pr-2 sm:block">·</span>
-                  <p className="text-xs text-gray-500">
-                    <time>{post.createdAt}</time>
-                  </p>
+        <li key={post.id} className="border border-gray-100">
+          <div className="grid grid-flow-col grid-cols-12 grid-rows-6 gap-x-8 gap-y-2 p-4">
+            <div className="col-span-2 row-span-6 sm:col-span-1 ">
+              <Jazzicon
+                diameter={42}
+                seed={jsNumberForAddress(post.authorAddress)}
+              />
+            </div>
+            <div className="col-span-10 row-span-2">
+              <div className="flex flex-row">
+                <p className="text-bold pr-2 text-xs font-medium">
+                  <button className="hover:underline">
+                    {truncateEthAddress(post.authorAddress)}
+                  </button>
+                </p>
+                <span className="pr-2">·</span>
+                <p className="text-xs text-gray-500">
+                  <time>{post.createdAt}</time>
+                </p>
+              </div>
+            </div>
+            <div className="col-span-10 row-span-4 ">
+              <div className="text-md text-black">
+                <div>
+                  {deserialize(post.content).map((parentNode) =>
+                    parentNode.children.map((x, i) => {
+                      return <p key={i}>{x.text}</p>;
+                    })
+                  )}
                 </div>
               </div>
             </div>
-            <div className="mt-2 space-y-4 text-sm text-gray-700">
-              <p>{post.content}</p>
-            </div>
-            {/* <div className="mt-6 flex justify-between space-x-8">
+          </div>
+
+          {/* <div className="mt-6 flex justify-between space-x-8">
               <div className="flex space-x-6">
                 <span className="inline-flex items-center text-sm">
                   <button
@@ -125,7 +131,6 @@ export default function Posts({ posts = [] }: PostsProps) {
                 </span>
               </div>
             </div> */}
-          </article>
         </li>
       ))}
     </ul>

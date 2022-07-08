@@ -25,8 +25,8 @@ export const loader: LoaderFunction = async ({ request, params }) => {
 export default function Space() {
   const data = useLoaderData<LoaderData>();
   return (
-    <div>
-      <div className="bg-white shadow">
+    <div className="h-screen">
+      <div className="sticky bg-white shadow">
         <div className="px-4 sm:px-6 lg:mx-auto lg:max-w-6xl lg:px-8">
           <div className="py-6 md:flex md:items-center md:justify-between lg:border-t lg:border-gray-200">
             <div className="min-w-0 flex-1">
@@ -44,13 +44,10 @@ export default function Space() {
           </div>
         </div>
       </div>
-      <div className="py-5">
+      <div>
         <div className="mx-auto max-w-3xl sm:px-6 lg:grid lg:max-w-screen-2xl lg:grid-cols-12 lg:gap-8">
-          <div className="hidden lg:col-span-4 lg:block xl:col-span-2">
-            <nav
-              aria-label="Sidebar"
-              className="sticky top-4 divide-y divide-gray-300"
-            >
+          <div className="hidden py-5 lg:col-span-4 lg:block xl:col-span-2">
+            <nav className="sticky top-4 divide-y divide-gray-300">
               <div>
                 <p
                   className="px-3 text-xs font-semibold uppercase tracking-wider text-gray-500"
@@ -69,25 +66,19 @@ export default function Space() {
                     </span>
                   </Link>
                 ))}
-                <div
-                  className="mt-3 space-y-2"
-                  aria-labelledby="communities-headline"
-                ></div>
+                <div className="mt-3 space-y-2"></div>
               </div>
             </nav>
           </div>
           <main className="lg:col-span-8 xl:col-span-6">
             <Outlet />
           </main>
-          <aside className="hidden xl:col-span-4 xl:block">
+          <aside className="hidden py-5 xl:col-span-4 xl:block">
             <div className="sticky top-4 space-y-4">
-              <section aria-labelledby="who-to-follow-heading">
+              <section>
                 <div className="rounded-lg bg-white shadow">
                   <div className="p-6">
-                    <h2
-                      id="who-to-follow-heading"
-                      className="text-base font-medium text-gray-900"
-                    >
+                    <h2 className="text-base font-medium text-gray-900">
                       {data.space.collection.name}
                     </h2>
                     <div className="mt-6 flow-root">

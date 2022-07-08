@@ -18,6 +18,7 @@ import { createPost } from "~/models/post.server";
 import { checkSpaceMembership, getSpaceById } from "~/models/spaces.server";
 import { requireUser } from "~/session.server";
 import { type SpaceWithCollection } from "~/types";
+import { validatePostContent } from "~/utils/strings";
 
 type LoaderData = SpaceWithCollection;
 
@@ -43,27 +44,6 @@ type ActionData = {
 };
 
 const badRequest = (data: ActionData) => json(data, { status: 400 });
-
-function buttonClasses(disabled: boolean) {
-  console.log(disabled);
-  const baseClasses =
-    "inline-flex items-center rounded-md border border-transparent px-4 py-2 text-sm font-medium text-white shadow-sm focus:outline-none focus:ring-2 focus:ring-offset-2";
-  const additionalClasses = disabled
-    ? "disabled bg-slate-400 focus:ring-slate-500"
-    : "bg-indigo-600 hover:bg-indigo-700 focus:ring-indigo-500";
-  return `${baseClasses}  ${additionalClasses}`;
-}
-
-function validatePostContent(content: string) {
-  if (
-    content === null ||
-    content.replace(/(\r\n|\n|\r)/gm, "").replace(/\s/g, "").length <= 0 ||
-    content.length <= 0
-  ) {
-    return false;
-  }
-  return true;
-}
 
 export const action: ActionFunction = async ({ request, params }) => {
   const user = await requireUser(request);
