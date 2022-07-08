@@ -1,5 +1,5 @@
 import { useMemo, useState } from "react";
-import { createEditor, Descendant } from "slate";
+import { createEditor, type Descendant } from "slate";
 import { withHistory } from "slate-history";
 import { Editable, Slate, withReact } from "slate-react";
 import { serialize, validatePostContent } from "~/utils/strings";
@@ -32,13 +32,15 @@ const PostEdit = ({ handleChange, handleSubmit }: any) => {
 
   return (
     <div>
-      <Slate
-        editor={editor}
-        value={initialValue}
-        onChange={(x) => handleLocalChange(x)}
-      >
-        <Editable placeholder="Chime in..." value={"1234"} />
-      </Slate>
+      <div>
+        <Slate
+          editor={editor}
+          value={initialValue}
+          onChange={(x) => handleLocalChange(x)}
+        >
+          <Editable placeholder="Chime in..." className="text-md h-10" />
+        </Slate>
+      </div>
       <div className="mt-4 flex justify-end">
         <button
           onClick={handleLocalSubmit}
@@ -59,6 +61,3 @@ const initialValue: Descendant[] = [
 ];
 
 export default PostEdit;
-function setValue(arg0: { type: string; children: { text: string }[] }[]) {
-  throw new Error("Function not implemented.");
-}

@@ -1,6 +1,6 @@
 import {
   json,
-  LoaderFunction,
+  type LoaderFunction,
   redirect,
   type ActionFunction,
 } from "@remix-run/node";
@@ -162,11 +162,7 @@ export default function () {
           <div className="flex items-center justify-between space-x-3 border-t border-gray-200 px-2 py-2 sm:px-3">
             <div className="flex"></div>
             <div className="flex-shrink-0">
-              <button
-                type="submit"
-                disabled={disabled}
-                className={buttonClasses(disabled)}
-              >
+              <button type="submit" disabled={disabled}>
                 Submit
               </button>
             </div>
