@@ -8,7 +8,7 @@ export async function getWallet(
   address: Wallet["address"],
   includeMemberships: boolean = false
 ) {
-  return prisma.wallet.findUnique({
+  return await prisma.wallet.findUnique({
     where: { address: address.toLowerCase() },
     include: {
       memberships: {
@@ -25,13 +25,13 @@ export async function getWallet(
 }
 
 export async function createWallet(address: Wallet["address"]) {
-  return prisma.wallet.create({
+  return await prisma.wallet.create({
     data: { address: address.toLowerCase() },
   });
 }
 
 export async function updateLastSeen(address: Wallet["address"]) {
-  return prisma.wallet.update({
+  return await prisma.wallet.update({
     where: {
       address: address.toLowerCase(),
     },
