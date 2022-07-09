@@ -92,7 +92,7 @@ export function ErrorBoundary({ error }: { error: Error }) {
 
 export default function App() {
   return (
-    <html lang="en" className="overflow-auto">
+    <html lang="en">
       <head>
         <meta name="description" content="Third Realm" />
         <Meta />

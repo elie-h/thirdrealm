@@ -2,6 +2,14 @@ import type { Post, Space } from "@prisma/client";
 
 import { prisma } from "~/db.server";
 
+export async function getPost(
+  id: string,
+  includeComments: boolean = false
+): Promise<Post | null> {
+  return await prisma.post.findFirst({
+    where: { id },
+  });
+}
 export async function getPostsForSpace(spaceId: Space["id"]) {
   return await prisma.post.findMany({
     where: { spaceId },

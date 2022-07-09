@@ -9,12 +9,13 @@ import { useFetcher, useLoaderData } from "@remix-run/react";
 import { useState } from "react";
 import Jazzicon, { jsNumberForAddress } from "react-jazzicon";
 import invariant from "tiny-invariant";
-import Posts from "~/components/Post";
+import Posts from "~/components/Posts";
 import PostEdit from "~/components/PostEdit";
 import { createPost, getPostsForSpace } from "~/models/post.server";
 import { requireUser } from "~/session.server";
 import { useUser } from "~/utils";
 import { validatePostContent } from "~/utils/strings";
+import PostCard from "~/components/PostCard";
 
 type LoaderData = { posts: Post[] };
 
@@ -84,7 +85,7 @@ export default function () {
   }
 
   return (
-    <div className="h-screen overflow-y-scroll scroll-smooth border scrollbar-hide">
+    <div>
       <div className="grid grid-flow-col grid-cols-12 grid-rows-6 gap-x-8 gap-y-2 p-4">
         <div className="col-span-2 row-span-6 sm:col-span-1 ">
           <Jazzicon diameter={42} seed={jsNumberForAddress(user.address)} />
@@ -96,8 +97,13 @@ export default function () {
           />
         </div>
       </div>
-
-      <Posts posts={data.posts} />
+      <ul>
+        {data.posts.map((post) => (
+          <li key={post.id} className="border border-gray-100">
+            <PostCard post={post} />
+          </li>
+        ))}
+      </ul>
     </div>
   );
 }

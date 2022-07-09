@@ -25,7 +25,7 @@ export const loader: LoaderFunction = async ({ request, params }) => {
 export default function Space() {
   const data = useLoaderData<LoaderData>();
   return (
-    <div className="h-screen">
+    <div>
       <div className="sticky bg-white shadow">
         <div className="px-4 sm:px-6 lg:mx-auto lg:max-w-6xl lg:px-8">
           <div className="py-6 md:flex md:items-center md:justify-between lg:border-t lg:border-gray-200">
@@ -73,7 +73,9 @@ export default function Space() {
             </nav>
           </div>
           <main className="lg:col-span-8 xl:col-span-6">
-            <Outlet />
+            <div className="h-screen overflow-y-scroll scroll-smooth shadow-xl scrollbar-hide">
+              <Outlet />
+            </div>
           </main>
           <aside className="hidden py-5 xl:col-span-4 xl:block">
             <div className="sticky top-4 space-y-4">
