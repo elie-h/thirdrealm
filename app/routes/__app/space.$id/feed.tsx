@@ -5,17 +5,16 @@ import {
   type ActionFunction,
   type LoaderFunction,
 } from "@remix-run/node";
-import { useFetcher, useLoaderData } from "@remix-run/react";
+import { Link, useFetcher, useLoaderData } from "@remix-run/react";
 import { useState } from "react";
 import Jazzicon, { jsNumberForAddress } from "react-jazzicon";
 import invariant from "tiny-invariant";
-import Posts from "~/components/Posts";
+import PostCard from "~/components/PostCard";
 import PostEdit from "~/components/PostEdit";
 import { createPost, getPostsForSpace } from "~/models/post.server";
 import { requireUser } from "~/session.server";
 import { useUser } from "~/utils";
 import { validatePostContent } from "~/utils/strings";
-import PostCard from "~/components/PostCard";
 
 type LoaderData = { posts: Post[] };
 
@@ -99,8 +98,13 @@ export default function () {
       </div>
       <ul>
         {data.posts.map((post) => (
-          <li key={post.id} className="border border-gray-100">
-            <PostCard post={post} />
+          <li key={post.id}>
+            <Link
+              className="user-select: text"
+              to={`/space/${post.spaceId}/post/${post.id}`}
+            >
+              <PostCard post={post} />
+            </Link>
           </li>
         ))}
       </ul>

@@ -43,6 +43,7 @@ model Wallet {
   lastSeen    DateTime                @updatedAt
   memberships WalletSpaceMembership[]
   posts       Post[]
+  comments    Comment[]
 }
 
 model Space {
@@ -74,7 +75,26 @@ model Post {
   authorAddress String
   space         Space    @relation(fields: [spaceId], references: [id])
   spaceId       String
+  comments      Comment[]
 
   @@index([spaceId])
   @@index([createdAt])
+}
+
+model Comment {
+  id            String   @id @default(cuid())
+  content       String
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @default(now())
+  author        Wallet   @relation(fields: [authorAddress], references: [address])
+  authorAddress String
+  post          Post     @relation(fields: [postId], references: [id])
+  postId        String
+  parentId      String?    @unique
+  parent        Comment?   @relation("CommentReplies", fields: [parentId], references: [id])
+  child         Comment?   @relation("CommentReplies")
+
+  @@index([postId])
+  @@index([createdAt])
+  @@index([authorAddress])
 }

@@ -8,7 +8,7 @@ function buttonClasses(disabled: boolean) {
   const baseClasses =
     "inline-flex items-center rounded-md border border-transparent px-3 py-1 text-sm font-medium text-white shadow-sm focus:outline-none focus:ring-2 focus:ring-offset-2";
   const additionalClasses = disabled
-    ? "disabled bg-slate-400 focus:ring-slate-500"
+    ? "disabled bg-indigo-300 focus:ring-indigo-300"
     : "bg-indigo-600 hover:bg-indigo-700 focus:ring-indigo-500";
   return `${baseClasses}  ${additionalClasses}`;
 }

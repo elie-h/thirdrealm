@@ -2,14 +2,20 @@ import type { Post, Space } from "@prisma/client";
 
 import { prisma } from "~/db.server";
 
-export async function getPost(
-  id: string,
-  includeComments: boolean = false
-): Promise<Post | null> {
+export async function getPost(id: Post["id"]) {
   return await prisma.post.findFirst({
     where: { id },
+    include: {
+      comments: {
+        orderBy: { createdAt: "desc" },
+        include: {
+          author: true,
+        },
+      },
+    },
   });
 }
+
 export async function getPostsForSpace(spaceId: Space["id"]) {
   return await prisma.post.findMany({
     where: { spaceId },
@@ -27,5 +33,15 @@ export async function createPost(
 ) {
   return await prisma.post.create({
     data: { content, spaceId, authorAddress },
+  });
+}
+
+export async function createComment(
+  content: Post["content"],
+  postId: Post["id"],
+  authorAddress: Post["authorAddress"]
+) {
+  return await prisma.comment.create({
+    data: { content, postId, authorAddress },
   });
 }
