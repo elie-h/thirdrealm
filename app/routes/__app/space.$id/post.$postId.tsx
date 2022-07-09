@@ -5,7 +5,7 @@ import {
   type ActionFunction,
   type LoaderFunction,
 } from "@remix-run/node";
-import { useFetcher, useLoaderData } from "@remix-run/react";
+import { Link, useFetcher, useLoaderData } from "@remix-run/react";
 import { useState } from "react";
 import Jazzicon, { jsNumberForAddress } from "react-jazzicon";
 import invariant from "tiny-invariant";
@@ -90,6 +90,27 @@ export default function Post() {
 
   return (
     <div>
+      <div className="border-b border-gray-200 bg-white px-4 py-5 sm:px-6">
+        <div className="flex items-center">
+          <Link to={`/space/${post.spaceId}/feed`}>
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              className="mr-2 h-6 w-6"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+              strokeWidth="1.5"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                d="M11 15l-3-3m0 0l3-3m-3 3h8M3 12a9 9 0 1118 0 9 9 0 01-18 0z"
+              />
+            </svg>
+          </Link>
+          <h3 className="text-lg font-medium leading-6 text-gray-900">Post</h3>
+        </div>
+      </div>
       <PostCard post={post} />
       <div className="grid grid-flow-col grid-cols-12 grid-rows-6 gap-x-8 gap-y-2 p-4">
         <div className="col-span-2 row-span-6 sm:col-span-1 ">

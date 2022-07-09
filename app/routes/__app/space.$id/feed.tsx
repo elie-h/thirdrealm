@@ -85,6 +85,9 @@ export default function () {
 
   return (
     <div>
+      <div className="border-b border-gray-200 bg-white px-4 py-5 sm:px-6">
+        <h3 className="text-lg font-medium leading-6 text-gray-900">Feed</h3>
+      </div>
       <div className="grid grid-flow-col grid-cols-12 grid-rows-6 gap-x-8 gap-y-2 p-4">
         <div className="col-span-2 row-span-6 sm:col-span-1 ">
           <Jazzicon diameter={42} seed={jsNumberForAddress(user.address)} />
