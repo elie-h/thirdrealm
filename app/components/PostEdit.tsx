@@ -38,7 +38,7 @@ const PostEdit = ({ handleChange, handleSubmit }: any) => {
           value={initialValue}
           onChange={(x) => handleLocalChange(x)}
         >
-          <Editable placeholder="Chime in..." className="text-md h-10" />
+          <Editable placeholder="Chime in..." className="text-md" />
         </Slate>
       </div>
       <div className="mt-4 flex justify-end">

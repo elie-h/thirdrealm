@@ -8,7 +8,6 @@ module.exports = {
     "@rainbow-me/rainbowkit",
     "ts-invariant",
     "zen-observable-ts",
-    "@heroicons/react",
   ],
   devServerPort: 8002,
 };
