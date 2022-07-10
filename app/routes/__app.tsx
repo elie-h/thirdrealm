@@ -1,7 +1,8 @@
 import { Link, Outlet, useNavigate } from "@remix-run/react";
 import { useEffect } from "react";
 import { useSigner } from "wagmi";
-import NavBar from "~/components/NavBar";
+import Layout from "~/components/Layout";
+import NavBar from "~/components/Layout";
 import { Web3Wrapper } from "~/components/Web3";
 import { useOptionalUser } from "~/utils";
 
@@ -26,8 +27,8 @@ export default function App() {
   return (
     <Web3Wrapper>
       <AuthGaurd>
-        <NavBar />
-        <Outlet />
+        <Layout />
+        {/* <Outlet /> */}
       </AuthGaurd>
     </Web3Wrapper>
   );

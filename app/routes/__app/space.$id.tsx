@@ -45,8 +45,8 @@ export default function Space() {
         </div>
       </div>
       <div>
-        <div className="mx-auto max-w-3xl sm:px-6 lg:grid lg:max-w-screen-2xl lg:grid-cols-12 lg:gap-8">
-          <div className="hidden py-5 lg:col-span-4 lg:block xl:col-span-2">
+        <div className="lg:max-w-screen-3xl sm:px-6 lg:grid lg:grid-cols-12 lg:gap-8">
+          <div className="hidden py-5 lg:col-span-2 lg:block">
             <nav className="sticky top-4 divide-y divide-gray-300">
               <div>
                 <p
@@ -72,12 +72,12 @@ export default function Space() {
               </div>
             </nav>
           </div>
-          <main className="lg:col-span-8 xl:col-span-6">
+          <main className="lg:col-span-8">
             <div className="h-screen overflow-y-scroll scroll-smooth shadow-xl scrollbar-hide">
               <Outlet />
             </div>
           </main>
-          <aside className="hidden py-5 xl:col-span-4 xl:block">
+          <aside className="hidden py-5 lg:col-span-2 xl:block">
             <div className="sticky top-4 space-y-4">
               <section>
                 <div className="rounded-lg bg-white shadow">
