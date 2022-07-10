@@ -5,6 +5,15 @@ import Layout from "~/components/Layout";
 import NavBar from "~/components/Layout";
 import { Web3Wrapper } from "~/components/Web3";
 import { useOptionalUser } from "~/utils";
+import { Disclosure } from "@headlessui/react";
+import { json, type LoaderFunction } from "@remix-run/node";
+import { Link, Outlet, useLoaderData } from "@remix-run/react";
+import invariant from "tiny-invariant";
+import User from "~/components/User";
+import { getWallet } from "~/models/wallet.server";
+import { requireUser } from "~/session.server";
+import { type SpaceWithCollection, type WalletWithMemberships } from "~/types";
+import { SpacesDropDown } from "./SpacesDropDown";
 
 export const AuthGaurd = ({ children }: any) => {
   const user = useOptionalUser();
@@ -23,11 +32,24 @@ export const AuthGaurd = ({ children }: any) => {
   return children;
 };
 
+type LoaderData = { wallet: WalletWithMemberships };
+
+export const loader: LoaderFunction = async ({ request, params }) => {
+  console.log("Triggered");
+  invariant(params.id, "params.id is required");
+  const user = await requireUser(request);
+  const walletAndMemberships = await getWallet(user.address, true);
+  console.log(walletAndMemberships);
+  return json({ wallet: walletAndMemberships });
+};
+
 export default function App() {
+  const data = useLoaderData<LoaderData>();
+
   return (
     <Web3Wrapper>
       <AuthGaurd>
-        <Layout />
+        <Layout wallet={data.wallet} />
         {/* <Outlet /> */}
       </AuthGaurd>
     </Web3Wrapper>
@@ -35,12 +57,14 @@ export default function App() {
 }
 
 export function ErrorBoundary({ error }: { error: Error }) {
+  const data = useLoaderData<LoaderData>();
+
   if (process.env.NODE_ENV === "development") {
     console.log(error.stack);
   }
   return (
     <Web3Wrapper>
-      <NavBar />
+      <Layout wallet={data.wallet} />
       <div className="flex min-h-full flex-col bg-white pt-16 pb-12">
         <main className="mx-auto flex w-full flex-grow flex-col justify-center px-4 sm:px-6 lg:px-8">
           <div className="flex flex-shrink-0 justify-center">

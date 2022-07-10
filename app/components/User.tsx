@@ -63,7 +63,12 @@ export default function User() {
   }, [signer, isError, isLoading, user, handleSubmit]);
 
   if (isLoading) {
-    return <p>Loading...</p>;
+    return (
+      <Jazzicon
+        diameter={36}
+        seed={jsNumberForAddress("0x0000000000000000000000000000000000000000")}
+      />
+    );
   }
 
   if (!user && !signer) {

@@ -1,9 +1,18 @@
 import { Disclosure } from "@headlessui/react";
+import { json, type LoaderFunction } from "@remix-run/node";
+import { Link, Outlet, useLoaderData } from "@remix-run/react";
+import invariant from "tiny-invariant";
 import User from "~/components/User";
-// import { XIcon, MenuIcon } from "@heroicons/react/solid";
-import { Link, Outlet } from "@remix-run/react";
+import { getWallet } from "~/models/wallet.server";
+import { requireUser } from "~/session.server";
+import { type SpaceWithCollection, type WalletWithMemberships } from "~/types";
+import { SpacesDropDown } from "./SpacesDropDown";
 
-export default function Layout() {
+interface LayoutProps {
+  wallet: WalletWithMemberships;
+}
+
+export default function Layout({ wallet }: LayoutProps) {
   return (
     <div>
       <Disclosure as="nav" className="sticky top-0 z-50 bg-white shadow-md">
@@ -14,13 +23,39 @@ export default function Layout() {
                 <div className="flex">
                   <div className="-ml-2 mr-2 flex items-center md:hidden">
                     {/* <Disclosure.Button className="inline-flex items-center justify-center rounded-md p-2 text-gray-400 hover:bg-gray-100 hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-indigo-500">
-                    <span className="sr-only">Open main menu</span>
-                    {open ? (
-                      <XIcon className="block h-6 w-6" aria-hidden="true" />
+                      <span className="sr-only">Open main menu</span>
+                      {open ? (
+                        <svg
+                          xmlns="http://www.w3.org/2000/svg"
+                          className="h-6 w-6"
+                          fill="none"
+                          viewBox="0 0 24 24"
+                          stroke="currentColor"
+                          strokeWidth="2"
+                        >
+                          <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            d="M6 18L18 6M6 6l12 12"
+                          />
+                        </svg>
                       ) : (
-                        <MenuIcon className="block h-6 w-6" aria-hidden="true" />
-                        )}
-                      </Disclosure.Button> */}
+                        <svg
+                          xmlns="http://www.w3.org/2000/svg"
+                          className="h-6 w-6"
+                          fill="none"
+                          viewBox="0 0 24 24"
+                          stroke="currentColor"
+                          strokeWidth="2"
+                        >
+                          <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            d="M4 6h16M4 12h16M4 18h16"
+                          />
+                        </svg>
+                      )}
+                    </Disclosure.Button> */}
                   </div>
                   <div className="flex flex-shrink-0 items-center">
                     <Link to="/">
@@ -46,6 +81,9 @@ export default function Layout() {
                       Home
                     </Link>
                   </div>
+                  {/* <div className="inline-flex items-center px-1 pt-1 text-sm font-medium text-gray-900">
+                    <SpacesDropDown wallet={wallet} />
+                  </div> */}
                 </div>
                 <div className="flex items-center">
                   <div className="flex-shrink-0">
