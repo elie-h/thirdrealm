@@ -6,7 +6,7 @@ import { serialize, validatePostContent } from "~/utils/strings";
 
 function buttonClasses(disabled: boolean) {
   const baseClasses =
-    "inline-flex items-center rounded-md border border-transparent px-3 py-1 text-sm font-medium text-white shadow-sm focus:outline-none focus:ring-2 focus:ring-offset-2";
+    "inline-flex items-center rounded-xl border border-transparent px-3 py-1 text-sm font-medium text-white shadow-sm focus:outline-none focus:ring-2 focus:ring-offset-2";
   const additionalClasses = disabled
     ? "disabled bg-indigo-300 focus:ring-indigo-300"
     : "bg-indigo-600 hover:bg-indigo-700 focus:ring-indigo-500";
@@ -38,7 +38,7 @@ const PostEdit = ({ handleChange, handleSubmit }: any) => {
           value={initialValue}
           onChange={(x) => handleLocalChange(x)}
         >
-          <Editable placeholder="Chime in..." className="text-md" />
+          <Editable placeholder="Create a post" className="text-md" />
         </Slate>
       </div>
       <div className="mt-4 flex justify-end">
@@ -47,7 +47,7 @@ const PostEdit = ({ handleChange, handleSubmit }: any) => {
           disabled={disabled}
           className={buttonClasses(disabled)}
         >
-          Submit
+          Post
         </button>
       </div>
     </div>

@@ -10,7 +10,7 @@ interface PostProps {
 
 export default function PostCard({ post }: PostProps) {
   return (
-    <div className="grid grid-flow-col grid-cols-12 grid-rows-6 gap-x-8 gap-y-2 border border-gray-100 p-4">
+    <div className="grid select-text grid-flow-col grid-cols-12 grid-rows-6 gap-x-8 gap-y-2 border border-gray-100 p-4 hover:bg-gray-50">
       <div className="col-span-2 row-span-6 sm:col-span-1 ">
         <Jazzicon diameter={42} seed={jsNumberForAddress(post.authorAddress)} />
       </div>

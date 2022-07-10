@@ -103,7 +103,7 @@ export default function () {
         {data.posts.map((post) => (
           <li key={post.id}>
             <Link
-              className="user-select: text"
+              className="select-text"
               to={`/space/${post.spaceId}/post/${post.id}`}
             >
               <PostCard post={post} />
