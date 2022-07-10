@@ -13,7 +13,18 @@ function buttonClasses(disabled: boolean) {
   return `${baseClasses}  ${additionalClasses}`;
 }
 
-const PostEdit = ({ handleChange, handleSubmit }: any) => {
+interface PostEditProps {
+  handleChange: (x: string) => void;
+  handleSubmit: () => void;
+  buttonText?: string;
+  placeholder?: string;
+}
+const PostEdit = ({
+  handleChange,
+  handleSubmit,
+  buttonText = "Post",
+  placeholder = "Type here",
+}: PostEditProps) => {
   // @ts-ignore
   const editor = useMemo(() => withHistory(withReact(createEditor())), []);
   const [disabled, setDisabled] = useState(true);
@@ -38,7 +49,7 @@ const PostEdit = ({ handleChange, handleSubmit }: any) => {
           value={initialValue}
           onChange={(x) => handleLocalChange(x)}
         >
-          <Editable placeholder="Create a post" className="text-md" />
+          <Editable placeholder={placeholder} className="text-md" />
         </Slate>
       </div>
       <div className="mt-4 flex justify-end">
@@ -47,7 +58,7 @@ const PostEdit = ({ handleChange, handleSubmit }: any) => {
           disabled={disabled}
           className={buttonClasses(disabled)}
         >
-          Post
+          {buttonText}
         </button>
       </div>
     </div>

@@ -94,6 +94,7 @@ export default function () {
         </div>
         <div className="col-span-10 row-span-6 h-auto flex-grow">
           <PostEdit
+            placeholder="Create a post"
             handleChange={(x: string) => onChange(x)}
             handleSubmit={() => onSubmit()}
           />

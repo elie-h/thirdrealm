@@ -120,6 +120,8 @@ export default function Post() {
           <PostEdit
             handleChange={(x: string) => onChange(x)}
             handleSubmit={() => onSubmit()}
+            placeholder="Type a reply"
+            buttonText="Comment"
           />
         </div>
       </div>
