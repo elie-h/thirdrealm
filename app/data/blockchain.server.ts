@@ -69,7 +69,8 @@ export async function checkCollectionOwnership(
 ) {
   // Check db first
   const collectionOwner = await getCollectionOwnership(
-    collection.id,
+    collection.contractAddress,
+    collection.network,
     ownerAddress
   );
   if (
@@ -87,13 +88,25 @@ export async function checkCollectionOwnership(
 
   // Update cache and return
   if (ownedTokens > 0) {
-    await upsertCollectionOwnership(collection.id, ownerAddress);
+    await upsertCollectionOwnership(
+      collection.contractAddress,
+      collection.network,
+      ownerAddress
+    );
     return true;
   } else {
     // Delete cache entry if any
-    await deleteCollectionOwnership(collection.id, ownerAddress);
+    await deleteCollectionOwnership(
+      collection.contractAddress,
+      collection.network,
+      ownerAddress
+    );
     // Revoke any memberships
-    await deleteCollectionSpaceMemberships(collection.id, ownerAddress);
+    await deleteCollectionSpaceMemberships(
+      collection.contractAddress,
+      collection.network,
+      ownerAddress
+    );
     return false;
   }
 }
@@ -117,6 +130,7 @@ export async function getWalletData(walletAddress: string) {
 
   const nfts_to_return: any[] = [];
   eth_owned_nfts.ownedNfts.forEach((nft) => {
+    console.log(nft.metadata);
     let nft_cover: string;
     // @ts-ignore
     if (nft.media && nft.media?.length > 0 && nft.media[0].gateway != "") {

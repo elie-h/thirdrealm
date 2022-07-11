@@ -34,59 +34,9 @@ export async function getCollections() {
   return prisma.collection.findMany();
 }
 
-export async function checkAddressInCollection(
-  collectionId: Collection["id"],
-  ownerAddress: CollectionOwner["ownerAddress"]
-) {
-  const count = await prisma.collectionOwner.count({
-    where: {
-      ownerAddress: ownerAddress.toLowerCase(),
-      collectionId,
-    },
-  });
-  return count > 0;
-}
-
-export async function updateCollectionOwners(
-  collectionId: Collection["id"],
-  newOwners: CollectionOwner["ownerAddress"][]
-) {
-  const deleteManyOp = await prisma.collectionOwner.deleteMany({
-    where: {
-      collectionId,
-      ownerAddress: {
-        notIn: newOwners,
-      },
-    },
-  });
-  console.debug(`Deleted ${deleteManyOp.count} owners from ${collectionId}`);
-
-  const currentOwners = await prisma.collectionOwner.findMany({
-    select: {
-      ownerAddress: true,
-    },
-    where: {
-      collectionId,
-    },
-  });
-
-  const currentOwnersList = currentOwners.map((owner) => owner.ownerAddress);
-  const ownersToInsert = newOwners
-    .filter((owner) => !currentOwnersList.includes(owner))
-    .map((ownerAddress) => ({
-      ownerAddress: ownerAddress,
-      collectionId,
-    }));
-
-  const createManyOp = await prisma.collectionOwner.createMany({
-    data: ownersToInsert,
-    skipDuplicates: true, // Skip 'Bobo'
-  });
-  console.log(`Inserted ${createManyOp.count} new owners to ${collectionId}`);
-}
-
 export async function deleteCollectionSpaceMemberships(
-  collectionId: Collection["id"],
+  collectionAddress: Collection["contractAddress"],
+  network: Collection["network"],
   walletAddress: Wallet["address"]
 ) {
   return await prisma.walletSpaceMembership.deleteMany({
@@ -94,7 +44,8 @@ export async function deleteCollectionSpaceMemberships(
       walletAddress: walletAddress,
       space: {
         collection: {
-          id: collectionId,
+          contractAddress: collectionAddress,
+          network,
         },
       },
     },

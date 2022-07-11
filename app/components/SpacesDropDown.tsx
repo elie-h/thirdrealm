@@ -1,6 +1,6 @@
 import { Listbox, Transition } from "@headlessui/react";
 import { Fragment, useState } from "react";
-import { WalletWithMemberships, type SpaceWithCollection } from "~/types";
+import { type WalletWithMemberships } from "~/types";
 
 function classNames(...classes: string[]) {
   return classes.filter(Boolean).join(" ");

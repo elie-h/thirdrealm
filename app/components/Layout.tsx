@@ -1,15 +1,10 @@
 import { Disclosure } from "@headlessui/react";
-import { json, type LoaderFunction } from "@remix-run/node";
-import { Link, Outlet, useLoaderData } from "@remix-run/react";
-import invariant from "tiny-invariant";
+import { Link, Outlet } from "@remix-run/react";
 import User from "~/components/User";
-import { getWallet } from "~/models/wallet.server";
-import { requireUser } from "~/session.server";
-import { type SpaceWithCollection, type WalletWithMemberships } from "~/types";
-import { SpacesDropDown } from "./SpacesDropDown";
+import { type WalletWithMemberships } from "~/types";
 
 interface LayoutProps {
-  wallet: WalletWithMemberships;
+  wallet?: WalletWithMemberships;
 }
 
 export default function Layout({ wallet }: LayoutProps) {

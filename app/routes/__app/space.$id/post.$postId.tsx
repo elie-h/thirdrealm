@@ -14,7 +14,7 @@ import PostCard from "~/components/PostCard";
 import PostEdit from "~/components/PostEdit";
 import { createComment, getPost } from "~/models/post.server";
 import { requireUser } from "~/session.server";
-import { PostWithComments } from "~/types";
+import { type PostWithComments } from "~/types";
 import { useUser } from "~/utils";
 import { validatePostContent } from "~/utils/strings";
 

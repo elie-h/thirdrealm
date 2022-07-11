@@ -1,19 +1,13 @@
-import { Link, Outlet, useNavigate } from "@remix-run/react";
+import { json, type LoaderFunction } from "@remix-run/node";
+import { Link, useLoaderData, useNavigate } from "@remix-run/react";
 import { useEffect } from "react";
 import { useSigner } from "wagmi";
 import Layout from "~/components/Layout";
-import NavBar from "~/components/Layout";
 import { Web3Wrapper } from "~/components/Web3";
-import { useOptionalUser } from "~/utils";
-import { Disclosure } from "@headlessui/react";
-import { json, type LoaderFunction } from "@remix-run/node";
-import { Link, Outlet, useLoaderData } from "@remix-run/react";
-import invariant from "tiny-invariant";
-import User from "~/components/User";
 import { getWallet } from "~/models/wallet.server";
 import { requireUser } from "~/session.server";
-import { type SpaceWithCollection, type WalletWithMemberships } from "~/types";
-import { SpacesDropDown } from "./SpacesDropDown";
+import { type WalletWithMemberships } from "~/types";
+import { useOptionalUser } from "~/utils";
 
 export const AuthGaurd = ({ children }: any) => {
   const user = useOptionalUser();
@@ -35,11 +29,8 @@ export const AuthGaurd = ({ children }: any) => {
 type LoaderData = { wallet: WalletWithMemberships };
 
 export const loader: LoaderFunction = async ({ request, params }) => {
-  console.log("Triggered");
-  invariant(params.id, "params.id is required");
   const user = await requireUser(request);
   const walletAndMemberships = await getWallet(user.address, true);
-  console.log(walletAndMemberships);
   return json({ wallet: walletAndMemberships });
 };
 
@@ -50,7 +41,6 @@ export default function App() {
     <Web3Wrapper>
       <AuthGaurd>
         <Layout wallet={data.wallet} />
-        {/* <Outlet /> */}
       </AuthGaurd>
     </Web3Wrapper>
   );

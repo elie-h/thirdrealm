@@ -51,9 +51,10 @@ export default function Login() {
 
   useEffect(() => {
     if (signer && user && !isLoading && !isError) {
+      console.log("Navigating");
       navigate("/home");
     }
-  }, [signer, isError, isLoading, user, handleSubmit]);
+  }, [signer, isError, isLoading, user]);
 
   return (
     <div className="flex min-h-screen">

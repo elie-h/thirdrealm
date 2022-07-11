@@ -5,32 +5,37 @@ import { prisma } from "~/db.server";
 export type { Collection } from "@prisma/client";
 
 export async function getCollectionOwnership(
-  collectionId: Collection["id"],
+  address: Collection["contractAddress"],
+  network: Collection["network"],
   ownerAddress: CollectionOwner["ownerAddress"]
 ) {
   const collectionOwner = await prisma.collectionOwner.findFirst({
     where: {
       ownerAddress: ownerAddress.toLowerCase(),
-      collectionId,
+      contractAddress: address.toLowerCase(),
+      network: network,
     },
   });
   return collectionOwner;
 }
 
 export async function upsertCollectionOwnership(
-  collectionId: Collection["id"],
+  address: Collection["contractAddress"],
+  network: Collection["network"],
   ownerAddress: CollectionOwner["ownerAddress"]
 ) {
   const data = {
-    collectionId,
+    contractAddress: address.toLowerCase(),
+    network: network,
     ownerAddress,
     updatedAt: new Date(),
   };
   return await prisma.collectionOwner.upsert({
     where: {
-      collectionId_ownerAddress: {
-        collectionId,
+      contractAddress_ownerAddress_network: {
         ownerAddress: ownerAddress.toLowerCase(),
+        contractAddress: address.toLowerCase(),
+        network: network,
       },
     },
     update: data,
@@ -39,15 +44,17 @@ export async function upsertCollectionOwnership(
 }
 
 export async function deleteCollectionOwnership(
-  collectionId: Collection["id"],
+  address: Collection["contractAddress"],
+  network: Collection["network"],
   ownerAddress: CollectionOwner["ownerAddress"]
 ) {
   try {
     return await prisma.collectionOwner.delete({
       where: {
-        collectionId_ownerAddress: {
-          collectionId,
-          ownerAddress,
+        contractAddress_ownerAddress_network: {
+          ownerAddress: ownerAddress.toLowerCase(),
+          contractAddress: address.toLowerCase(),
+          network: network,
         },
       },
     });
