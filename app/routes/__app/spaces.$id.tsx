@@ -13,10 +13,10 @@ import {
   upsertSpaceMembership,
 } from "~/models/spaces.server";
 import { requireUser } from "~/session.server";
+import { type SpaceWithMembersCount } from "~/types";
 import { truncateEthAddress } from "~/utils";
-import { type Space } from "@prisma/client";
 
-type LoaderData = { space: Space };
+type LoaderData = { space: SpaceWithMembersCount };
 
 export const loader: LoaderFunction = async ({ request, params }) => {
   await requireUser(request);

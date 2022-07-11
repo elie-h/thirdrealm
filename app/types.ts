@@ -1,7 +1,6 @@
-import type { Collection, Post, Space, Wallet, Comment } from "@prisma/client";
+import type { Comment, Post, Space, Wallet } from "@prisma/client";
 
-export interface SpaceWithCollection extends Space {
-  collection: Collection;
+export interface SpaceWithMembersCount extends Space {
   _count: {
     members: number;
   };
@@ -9,7 +8,7 @@ export interface SpaceWithCollection extends Space {
 
 export interface WalletWithMemberships extends Wallet {
   memberships: {
-    space: SpaceWithCollection;
+    space: Space;
   }[];
 }
 

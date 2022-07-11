@@ -21,13 +21,11 @@ export function SpacesDropDown({ wallet }: SpacesDropDownProps) {
             <Listbox.Button className="relative w-full cursor-default bg-white  pl-3 pr-10 text-left">
               <span className="flex items-center">
                 <img
-                  src={selected.collection.coverImage}
+                  src={selected.coverImage}
                   alt=""
                   className="h-6 w-6 flex-shrink-0 rounded-full"
                 />
-                <span className="ml-3 block truncate">
-                  {selected.collection.name}
-                </span>
+                <span className="ml-3 block truncate">{selected.name}</span>
               </span>
             </Listbox.Button>
 
@@ -54,7 +52,7 @@ export function SpacesDropDown({ wallet }: SpacesDropDownProps) {
                       <>
                         <div className="flex items-center">
                           <img
-                            src={membership.space.collection.coverImage}
+                            src={membership.space.coverImage}
                             alt=""
                             className="h-6 w-6 flex-shrink-0 rounded-full"
                           />
@@ -64,7 +62,7 @@ export function SpacesDropDown({ wallet }: SpacesDropDownProps) {
                               "ml-3 block truncate"
                             )}
                           >
-                            {membership.space.collection.name}
+                            {membership.space.name}
                           </span>
                         </div>
 
