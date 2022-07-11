@@ -5,18 +5,13 @@ import { prisma } from "~/db.server";
 export type { Space } from "@prisma/client";
 
 export async function getSpaces() {
-  return await prisma.space.findMany({
-    include: {
-      collection: true,
-    },
-  });
+  return await prisma.space.findMany({});
 }
 
 export async function getSpaceById(id: Space["id"]) {
   return await prisma.space.findUnique({
     where: { id },
     include: {
-      collection: true,
       _count: {
         select: { members: true },
       },

@@ -17,10 +17,10 @@ import invariant from "tiny-invariant";
 import { createPost } from "~/models/post.server";
 import { checkSpaceMembership, getSpaceById } from "~/models/spaces.server";
 import { requireUser } from "~/session.server";
-import { type SpaceWithCollection } from "~/types";
 import { validatePostContent } from "~/utils/strings";
+import { type Space } from "@prisma/client";
 
-type LoaderData = SpaceWithCollection;
+type LoaderData = Space;
 
 export const loader: LoaderFunction = async ({ request, params }) => {
   invariant(params.id, "params.id is required");
@@ -104,11 +104,11 @@ export default function () {
             <div className="flex items-center">
               <img
                 className="h-16 w-16 rounded-full"
-                src={data.collection.coverImage}
+                src={data.coverImage}
                 alt=""
               />
               <h1 className="ml-3 text-2xl font-bold leading-10 text-gray-900 sm:truncate">
-                {data.collection.name}
+                {data.name}
               </h1>
             </div>
           </div>

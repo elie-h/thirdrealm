@@ -16,9 +16,9 @@ import {
 import { getUser } from "./session.server";
 
 import rainbowKitStylesheetUrl from "@rainbow-me/rainbowkit/styles.css";
-import tailwindStylesheetUrl from "./styles/tailwind.css";
-import { Web3Wrapper } from "./components/Web3";
 import Layout from "./components/Layout";
+import { Web3Wrapper } from "./components/Web3";
+import tailwindStylesheetUrl from "./styles/tailwind.css";
 
 export const links: LinksFunction = () => {
   return [

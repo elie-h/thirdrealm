@@ -13,10 +13,10 @@ import {
   upsertSpaceMembership,
 } from "~/models/spaces.server";
 import { requireUser } from "~/session.server";
-import { type SpaceWithCollection } from "~/types";
 import { truncateEthAddress } from "~/utils";
+import { type Space } from "@prisma/client";
 
-type LoaderData = { space: SpaceWithCollection };
+type LoaderData = { space: Space };
 
 export const loader: LoaderFunction = async ({ request, params }) => {
   await requireUser(request);
@@ -62,7 +62,7 @@ export default function () {
       <div className="group rounded-lg sm:aspect-h-1 sm:aspect-w-1 sm:row-span-2">
         <div className="aspect-w-1 aspect-h-1 rounded-lg">
           <img
-            src={data.space.collection.coverImage}
+            src={data.space.coverImage}
             alt="Space cover"
             className="rounded-lg object-cover object-center"
           />
@@ -71,7 +71,7 @@ export default function () {
       <div className="lg:max-w-lg lg:self-end">
         <div className="mt-4">
           <h1 className="text-3xl font-extrabold tracking-tight text-gray-900 sm:text-4xl">
-            {data.space.collection.name}
+            {data.space.name}
           </h1>
         </div>
 
@@ -83,22 +83,20 @@ export default function () {
           </div>
           <div className="mt-2 flex items-center">
             <p className="text-lg text-gray-500 sm:text-xl">
-              {data.space.collection.network}
+              {data.space.network}
             </p>
 
             <div className="ml-4 border-l border-gray-300 pl-4">
               <div className="flex items-center">
                 <p className="text-sm text-gray-500">
-                  {truncateEthAddress(data.space.collection.contractAddress)}
+                  {truncateEthAddress(data.space.contractAddress)}
                 </p>
               </div>
             </div>
           </div>
 
           <div className="mt-2 space-y-6">
-            <p className="text-base text-gray-500">
-              {data.space.collection.description}
-            </p>
+            <p className="text-base text-gray-500">{data.space.description}</p>
           </div>
         </section>
         <div className="mt-10 sm:flex">

@@ -23,7 +23,6 @@ model Collection {
   space           Space?
   owners          CollectionOwner[]
 
-  // @@unique([contractAddress, network])
   @@id([contractAddress, network])
 }
 
@@ -50,6 +49,9 @@ model Wallet {
 // Public spaces are 1:1 with collections - open, no moderation, free tier basically
 model Space {
   id              String                  @id @default(cuid())
+  name            String?
+  description     String?
+  coverImage      String?
   collection      Collection              @relation(fields: [contractAddress, network], references: [contractAddress, network], onDelete: Cascade)
   contractAddress String
   network         Network
@@ -58,6 +60,7 @@ model Space {
   members         WalletSpaceMembership[]
   posts           Post[]
 
+  @@unique([name])
   @@unique([contractAddress, network])
 }
 

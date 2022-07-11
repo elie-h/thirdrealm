@@ -1,8 +1,8 @@
-import { type SpaceWithCollection } from "~/types";
+import { type Space } from "@prisma/client";
 import { truncateString } from "~/utils/strings";
 
 interface SpaceCardProps extends React.ComponentPropsWithoutRef<"div"> {
-  space?: SpaceWithCollection;
+  space?: Space;
   loading: boolean;
 }
 
@@ -15,8 +15,8 @@ export default function SpaceCard({ space, loading }: SpaceCardProps) {
             <div className="animate-pulse rounded-xl bg-gray-200 object-contain sm:h-72 sm:w-full"></div>
           ) : (
             <img
-              src={space?.collection.coverImage}
-              alt={space?.collection.name}
+              src={space?.coverImage}
+              alt={space?.name}
               className="h-full w-full object-contain sm:h-full sm:w-full"
             />
           )}
@@ -27,9 +27,7 @@ export default function SpaceCard({ space, loading }: SpaceCardProps) {
           ) : (
             <div>
               <div className="flex flex-wrap items-center justify-between sm:flex-nowrap">
-                <h3 className="text-xl text-gray-900">
-                  {space?.collection.name}
-                </h3>
+                <h3 className="text-xl text-gray-900">{space?.name}</h3>
                 {
                   {
                     ethereum: (
@@ -43,11 +41,11 @@ export default function SpaceCard({ space, loading }: SpaceCardProps) {
                       </span>
                     ),
                     unknown: <></>,
-                  }[space?.collection.network || "ethereum"]
+                  }[space?.network || "ethereum"]
                 }
               </div>
               <p className="text-bold h-20 text-center text-sm">
-                {truncateString(space?.collection.description, 100)}
+                {truncateString(space?.description, 100)}
               </p>
             </div>
           )}

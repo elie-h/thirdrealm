@@ -13,7 +13,9 @@ export const loader: LoaderFunction = async ({ request, params }) => {
     return space;
   }
 
-  throw new Error("Space not found");
+  throw new Response("Not Found", {
+    status: 404,
+  });
 };
 
 export default function () {
@@ -49,4 +51,3 @@ export default function () {
     </div>
   );
 }
-// fly postgres attach --postgres-app 3l-staging-db --app 3l-staging

@@ -65,6 +65,7 @@
     "slate-history": "^0.66.0",
     "slate-hyperscript": "^0.77.0",
     "slate-react": "^0.81.0",
+    "slugify": "^1.6.5",
     "styled-components": "^5.3.5",
     "tailwind-scrollbar-hide": "^1.1.7",
     "tiny-invariant": "^1.2.0",

@@ -1,7 +1,7 @@
+import { type Space } from "@prisma/client";
 import { Link, useFetcher } from "@remix-run/react";
 import { useEffect } from "react";
 import SpaceCard from "~/components/SpaceCard";
-import { type SpaceWithCollection } from "~/types";
 
 export default function () {
   const walletFetcher = useFetcher();
@@ -29,7 +29,7 @@ export default function () {
           <div>
             {walletData?.joined.length ? (
               <div className="grid grid-cols-1 gap-y-4 sm:grid-cols-2 sm:gap-x-6 sm:gap-y-10 lg:grid-cols-3 lg:gap-x-8">
-                {walletData?.joined.map((space: SpaceWithCollection) => (
+                {walletData?.joined.map((space: Space) => (
                   <Link to={`/space/${space.id}/feed`} key={space.id}>
                     <SpaceCard space={space} loading={false} />
                   </Link>
@@ -61,7 +61,7 @@ export default function () {
             <div>
               {walletData?.eligible.length ? (
                 <div className="grid grid-cols-1 gap-y-4 sm:grid-cols-2 sm:gap-x-6 sm:gap-y-10 lg:grid-cols-3 lg:gap-x-8">
-                  {walletData?.eligible.map((space: SpaceWithCollection) => (
+                  {walletData?.eligible.map((space: Space) => (
                     <Link to={`/spaces/${space.id}`} key={space.id}>
                       <SpaceCard space={space} loading={false} />
                     </Link>
