@@ -191,14 +191,19 @@ async function getWalletNfts(
   } else {
     throw new Error("Unknown network");
   }
-
-  const nfts = await getNftsForOwner(alchemy, walletAddress, {
-    excludeFilters: [NftExcludeFilters.SPAM],
-    omitMetadata: true,
-  });
-  nftWalletCache.set(`${network}-${walletAddress}`, nfts.ownedNfts);
-  // TODO: Add pagination
-  return nfts.ownedNfts;
+  try {
+    const nfts = await getNftsForOwner(alchemy, walletAddress, {
+      excludeFilters: [NftExcludeFilters.SPAM],
+      omitMetadata: true,
+    });
+    nftWalletCache.set(`${network}-${walletAddress}`, nfts.ownedNfts);
+    // TODO: Add pagination
+    return nfts.ownedNfts;
+  } catch (error) {
+    // TODO: Handle error loudly here
+    console.error("Alchemy threw for getNftsForOwner calls", error);
+    return [];
+  }
 }
 
 export async function getWalletSpaces(walletAddress: string) {
@@ -208,7 +213,6 @@ export async function getWalletSpaces(walletAddress: string) {
   const ethTokenContracts = ethNfts.map((nft) =>
     nft.contract.address.toLowerCase()
   );
-
   const polygonNfts = (await getWalletNfts(walletAddress, "polygon")) || [];
   const polygonTokenContracts = polygonNfts.map((nft) =>
     nft.contract.address.toLowerCase()

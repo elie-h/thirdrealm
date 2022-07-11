@@ -1,4 +1,4 @@
-import type { Collection, CollectionOwner, Wallet } from "@prisma/client";
+import type { Collection, Wallet } from "@prisma/client";
 
 import { prisma } from "~/db.server";
 

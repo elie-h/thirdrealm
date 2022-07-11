@@ -30,7 +30,7 @@ model Collection {
 model CollectionOwner {
   ownerAddress    String
   updatedAt       DateTime   @default(now())
-  collection      Collection @relation(fields: [contractAddress, network], references: [contractAddress, network])
+  collection      Collection @relation(fields: [contractAddress, network], references: [contractAddress, network], onDelete: Cascade)
   contractAddress String
   network         Network
 
@@ -50,7 +50,7 @@ model Wallet {
 // Public spaces are 1:1 with collections - open, no moderation, free tier basically
 model Space {
   id              String                  @id @default(cuid())
-  collection      Collection              @relation(fields: [contractAddress, network], references: [contractAddress, network])
+  collection      Collection              @relation(fields: [contractAddress, network], references: [contractAddress, network], onDelete: Cascade)
   contractAddress String
   network         Network
   createdAt       DateTime                @default(now())
@@ -64,9 +64,9 @@ model Space {
 // Private spaces allow for moderation, multicollection ownership and more
 
 model WalletSpaceMembership {
-  wallet        Wallet   @relation(fields: [walletAddress], references: [address])
+  wallet        Wallet   @relation(fields: [walletAddress], references: [address], onDelete: Cascade)
   walletAddress String
-  space         Space    @relation(fields: [spaceId], references: [id])
+  space         Space    @relation(fields: [spaceId], references: [id], onDelete: Cascade)
   spaceId       String
   createdAt     DateTime @default(now())
 
@@ -78,9 +78,9 @@ model Post {
   content       String
   createdAt     DateTime  @default(now())
   updatedAt     DateTime  @default(now())
-  author        Wallet    @relation(fields: [authorAddress], references: [address])
+  author        Wallet    @relation(fields: [authorAddress], references: [address], onDelete: Cascade)
   authorAddress String
-  space         Space     @relation(fields: [spaceId], references: [id])
+  space         Space     @relation(fields: [spaceId], references: [id], onDelete: Cascade)
   spaceId       String
   comments      Comment[]
 
@@ -93,9 +93,9 @@ model Comment {
   content       String
   createdAt     DateTime @default(now())
   updatedAt     DateTime @default(now())
-  author        Wallet   @relation(fields: [authorAddress], references: [address])
+  author        Wallet   @relation(fields: [authorAddress], references: [address], onDelete: Cascade)
   authorAddress String
-  post          Post     @relation(fields: [postId], references: [id])
+  post          Post     @relation(fields: [postId], references: [id], onDelete: Cascade)
   postId        String
   parentId      String?  @unique
   parent        Comment? @relation("CommentReplies", fields: [parentId], references: [id])
