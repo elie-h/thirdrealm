@@ -13,9 +13,9 @@ enum Network {
 }
 
 model Collection {
-  name            String
-  description     String
-  coverImage      String
+  name            String?
+  description     String?
+  coverImage      String?
   contractAddress String
   network         Network
   createdAt       DateTime          @default(now())

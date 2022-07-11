@@ -64,10 +64,17 @@ export default function User() {
 
   if (isLoading) {
     return (
-      <Jazzicon
-        diameter={36}
-        seed={jsNumberForAddress("0x0000000000000000000000000000000000000000")}
-      />
+      <div className="flex items-center text-sm">
+        <Jazzicon
+          diameter={36}
+          seed={jsNumberForAddress(
+            "0x0000000000000000000000000000000000000000"
+          )}
+        />
+        <p className="hidden pl-4 text-sm text-gray-500 sm:block">
+          {truncateEthAddress("0x0000000000000000000000000000000000000000")}
+        </p>
+      </div>
     );
   }
 

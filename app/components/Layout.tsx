@@ -1,13 +1,17 @@
 import { Disclosure } from "@headlessui/react";
-import { Link, Outlet } from "@remix-run/react";
+import { Link, Outlet, useLocation } from "@remix-run/react";
 import User from "~/components/User";
 import { type WalletWithMemberships } from "~/types";
+import { SpacesDropDown } from "./SpacesDropDown";
 
 interface LayoutProps {
-  wallet?: WalletWithMemberships;
+  wallet: WalletWithMemberships;
 }
 
 export default function Layout({ wallet }: LayoutProps) {
+  const location = useLocation();
+  const showSpaceDropdown = location.pathname.startsWith("/space");
+
   return (
     <div>
       <Disclosure as="nav" className="sticky top-0 z-50 bg-white shadow-md">
@@ -76,10 +80,15 @@ export default function Layout({ wallet }: LayoutProps) {
                       Home
                     </Link>
                   </div>
-                  {/* <div className="inline-flex items-center px-1 pt-1 text-sm font-medium text-gray-900">
-                    <SpacesDropDown wallet={wallet} />
-                  </div> */}
                 </div>
+                {showSpaceDropdown ? (
+                  <div className="inline-flex items-center px-1 pt-1 text-sm font-medium text-gray-900">
+                    <SpacesDropDown wallet={wallet} />
+                  </div>
+                ) : (
+                  <></>
+                )}
+
                 <div className="flex items-center">
                   <div className="flex-shrink-0">
                     <User />

@@ -1,5 +1,7 @@
 import { Listbox, Transition } from "@headlessui/react";
-import { Fragment, useState } from "react";
+import { Space } from "@prisma/client";
+import { useNavigate, useParams } from "@remix-run/react";
+import { Fragment, useEffect, useState } from "react";
 import { type WalletWithMemberships } from "~/types";
 
 function classNames(...classes: string[]) {
@@ -11,21 +13,51 @@ interface SpacesDropDownProps {
 }
 
 export function SpacesDropDown({ wallet }: SpacesDropDownProps) {
-  const [selected, setSelected] = useState(wallet.memberships[0].space);
+  const params = useParams();
+  const navigate = useNavigate();
+  const currentSpaceIdx = wallet.memberships.findIndex(
+    (x) => x.space.id === params.id
+  );
+  const [selected, setSelected] = useState<Space>(
+    wallet.memberships[currentSpaceIdx].space
+  );
+
+  useEffect(
+    () => setSelected(wallet.memberships[currentSpaceIdx].space),
+    [currentSpaceIdx]
+  );
+
+  function handleChange(x: Space) {
+    navigate(`/space/${x.id}/feed`);
+  }
 
   return (
-    <Listbox value={selected} onChange={setSelected}>
+    <Listbox value={selected} onChange={handleChange}>
       {({ open }) => (
         <>
           <div className="relative">
-            <Listbox.Button className="relative w-full cursor-default bg-white  pl-3 pr-10 text-left">
+            <Listbox.Button className="sm:text-md relative w-full cursor-default bg-white pl-3 pr-10 text-left text-xs">
               <span className="flex items-center">
                 <img
                   src={selected.coverImage}
                   alt=""
-                  className="h-6 w-6 flex-shrink-0 rounded-full"
+                  className="h-8 w-8 flex-shrink-0 rounded-full"
                 />
                 <span className="ml-3 block truncate">{selected.name}</span>
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  className="ml-1 h-6 w-6"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    d="M19 9l-7 7-7-7"
+                  />
+                </svg>
               </span>
             </Listbox.Button>
 
@@ -50,6 +82,7 @@ export function SpacesDropDown({ wallet }: SpacesDropDownProps) {
                   >
                     {({ selected, active }) => (
                       <>
+                        {/* <Link to={`/space/${membership.space.id}/feed`}> */}
                         <div className="flex items-center">
                           <img
                             src={membership.space.coverImage}
@@ -74,6 +107,7 @@ export function SpacesDropDown({ wallet }: SpacesDropDownProps) {
                             )}
                           ></span>
                         ) : null}
+                        {/* </Link> */}
                       </>
                     )}
                   </Listbox.Option>
