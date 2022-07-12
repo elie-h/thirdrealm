@@ -49,7 +49,10 @@ const PostEdit = ({
           value={initialValue}
           onChange={(x) => handleLocalChange(x)}
         >
-          <Editable placeholder={placeholder} className="text-md" />
+          <Editable
+            placeholder={placeholder}
+            className="text-md border-lg rounded-lg border pt-2 pb-6 pl-3"
+          />
         </Slate>
       </div>
       <div className="mt-4 flex justify-end">

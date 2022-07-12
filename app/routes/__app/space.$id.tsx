@@ -26,84 +26,42 @@ export const loader: LoaderFunction = async ({ request, params }) => {
 export default function SpacePage() {
   const data = useLoaderData<LoaderData>();
   return (
-    <div>
-      <div className="sticky bg-white shadow">
-        <div className="px-4 sm:px-6 lg:mx-auto lg:max-w-6xl lg:px-8">
-          <div className="py-6 md:flex md:items-center md:justify-between lg:border-t lg:border-gray-200">
-            <div className="min-w-0 flex-1">
-              <div className="flex items-center">
+    <div className="mx-auto px-12 sm:grid lg:max-w-screen-2xl lg:grid-cols-12 lg:gap-8">
+      <aside className="xs:col-span-0 hidden py-5 lg:col-span-4 lg:block">
+        <div className="sticky top-4 space-y-4">
+          <section>
+            <div className="rounded-lg">
+              <div className="p-6">
                 <img
-                  className="h-16 w-16 rounded-full"
+                  className="mb-4 w-3/4 rounded-lg"
                   src={data.space.coverImage}
-                  alt=""
+                  alt="Space cover"
                 />
-                <h1 className="ml-3 text-2xl font-bold leading-10 text-gray-900 sm:truncate">
+                <h2 className="text-base text-xl font-bold text-gray-900">
                   {data.space.name}
-                </h1>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div>
-        <div className="lg:max-w-screen-3xl sm:grid sm:px-6 lg:grid-cols-12 lg:gap-8">
-          <div className="hidden py-5 sm:col-span-4 lg:col-span-3 lg:block">
-            <nav className="sticky top-4 divide-y divide-gray-300">
-              <div>
-                <p
-                  className="px-3 text-xs font-semibold uppercase tracking-wider text-gray-500"
-                  id="communities-headline"
-                >
-                  My Spaces
-                </p>
-                {data.wallet.memberships
-                  .filter((membership) => membership.space.id != data.space.id)
-                  .map((membership) => (
-                    <Link
-                      to={`/space/${membership.space.id}/feed`}
-                      className="group flex items-center rounded-md px-3 py-2 text-sm font-medium text-gray-600 hover:bg-gray-50 hover:text-gray-900"
-                      key={membership.space.id}
-                    >
-                      <span className="truncate">{membership.space.name}</span>
-                    </Link>
-                  ))}
-                <div className="mt-3 space-y-2"></div>
-              </div>
-            </nav>
-          </div>
-          <main className="xs:col-span-8 lg:col-span-6">
-            <div className="h-screen overflow-y-scroll scroll-smooth shadow-xl scrollbar-hide">
-              <Outlet />
-            </div>
-          </main>
-          <aside className="sm:col-span-0 hidden py-5 lg:col-span-3 xl:block">
-            <div className="sticky top-4 space-y-4">
-              <section>
-                <div className="rounded-lg bg-white shadow">
-                  <div className="p-6">
-                    <h2 className="text-base font-medium text-gray-900">
-                      {data.space.name}
-                    </h2>
-                    <div className="mt-6 flow-root">
-                      <ul className="-my-4 divide-y divide-gray-200">
-                        <li className="flex items-center  py-4">
-                          <div className="flex-shrink-0"></div>
-                          <div className="min-w-0 flex-1">
-                            <p className="text-sm font-medium text-gray-900"></p>
-                            <p className="text-sm text-gray-500">
-                              {data.space.description}
-                            </p>
-                          </div>
-                        </li>
-                      </ul>
-                    </div>
-                  </div>
+                </h2>
+                <div className="mt-4 flow-root">
+                  <ul className="-my-4 divide-y divide-gray-200">
+                    <li className="flex items-center  py-4">
+                      <div className="flex-shrink-0"></div>
+                      <div className="min-w-0 flex-1">
+                        <p className="text-sm font-bold">
+                          {data.space.description}
+                        </p>
+                      </div>
+                    </li>
+                  </ul>
                 </div>
-              </section>
+              </div>
             </div>
-          </aside>
+          </section>
         </div>
-      </div>
+      </aside>
+      <main className="xs:col-span-8 py-5 lg:col-span-8">
+        <div className="h-screen overflow-y-scroll scroll-smooth scrollbar-hide">
+          <Outlet />
+        </div>
+      </main>
     </div>
   );
 }

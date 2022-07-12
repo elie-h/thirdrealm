@@ -1,5 +1,5 @@
 import { Listbox, Transition } from "@headlessui/react";
-import { Space } from "@prisma/client";
+import { type Space } from "@prisma/client";
 import { useNavigate, useParams } from "@remix-run/react";
 import { Fragment, useEffect, useState } from "react";
 import { type WalletWithMemberships } from "~/types";

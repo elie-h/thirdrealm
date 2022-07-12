@@ -90,7 +90,7 @@ export default function Post() {
 
   return (
     <div>
-      <div className="border-b border-gray-200 bg-white px-4 py-5 sm:px-6">
+      <div className="px-4 py-5 sm:px-6">
         <div className="flex items-center">
           <Link to={`/space/${post.spaceId}/feed`}>
             <svg
@@ -108,11 +108,14 @@ export default function Post() {
               />
             </svg>
           </Link>
-          <h3 className="text-lg font-medium leading-6 text-gray-900">Post</h3>
+          <h3 className="text-lg font-medium leading-6 text-gray-900">Feed</h3>
         </div>
       </div>
-      <PostCard post={post} />
-      <div className="grid grid-flow-col grid-cols-12 grid-rows-6 gap-x-8 gap-y-2 p-4">
+      <div className="border-lg rounded-lg border bg-white">
+        <PostCard post={post} showEngagementBar />
+      </div>
+
+      <div className="mt-5 mb-10 grid grid-flow-col grid-cols-12 grid-rows-6 gap-x-8 gap-y-2 rounded-lg border bg-white p-4 pt-6">
         <div className="col-span-2 row-span-6 sm:col-span-1 ">
           <Jazzicon diameter={42} seed={jsNumberForAddress(user.address)} />
         </div>
@@ -125,9 +128,13 @@ export default function Post() {
           />
         </div>
       </div>
+
       <ul>
         {post.comments.map((comment: Comment) => (
-          <li key={comment.id} className="border border-gray-100">
+          <li
+            key={comment.id}
+            className="border-lg border border-b-0 bg-white first:rounded-t-lg last:rounded-b-lg last:border-b"
+          >
             <CommentCard comment={comment} />
           </li>
         ))}

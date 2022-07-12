@@ -6,6 +6,9 @@ export async function getPost(id: Post["id"]) {
   return await prisma.post.findFirst({
     where: { id },
     include: {
+      _count: {
+        select: { comments: true },
+      },
       comments: {
         orderBy: { createdAt: "desc" },
         include: {
@@ -21,6 +24,9 @@ export async function getPostsForSpace(spaceId: Space["id"]) {
     where: { spaceId },
     orderBy: { createdAt: "desc" },
     include: {
+      _count: {
+        select: { comments: true },
+      },
       author: true,
     },
   });

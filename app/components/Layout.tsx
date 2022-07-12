@@ -13,7 +13,7 @@ export default function Layout({ wallet }: LayoutProps) {
   const showSpaceDropdown = location.pathname.startsWith("/space");
 
   return (
-    <div>
+    <div className="h-screen-full">
       <Disclosure as="nav" className="sticky top-0 z-50 bg-white shadow-md">
         {({ open }) => (
           <>
@@ -88,7 +88,6 @@ export default function Layout({ wallet }: LayoutProps) {
                 ) : (
                   <></>
                 )}
-
                 <div className="flex items-center">
                   <div className="flex-shrink-0">
                     <User />
@@ -100,7 +99,7 @@ export default function Layout({ wallet }: LayoutProps) {
           </>
         )}
       </Disclosure>
-      <main className="flex-1">
+      <main className="flex-1 bg-stone-50">
         <Outlet></Outlet>
       </main>
     </div>

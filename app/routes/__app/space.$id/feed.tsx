@@ -1,11 +1,10 @@
-import { type Post } from "@prisma/client";
 import {
   json,
   redirect,
   type ActionFunction,
   type LoaderFunction,
 } from "@remix-run/node";
-import { Link, useFetcher, useLoaderData } from "@remix-run/react";
+import { useFetcher, useLoaderData } from "@remix-run/react";
 import { useState } from "react";
 import Jazzicon, { jsNumberForAddress } from "react-jazzicon";
 import invariant from "tiny-invariant";
@@ -13,10 +12,11 @@ import PostCard from "~/components/PostCard";
 import PostEdit from "~/components/PostEdit";
 import { createPost, getPostsForSpace } from "~/models/post.server";
 import { requireUser } from "~/session.server";
+import { type PostWithCommentCount } from "~/types";
 import { useUser } from "~/utils";
 import { validatePostContent } from "~/utils/strings";
 
-type LoaderData = { posts: Post[] };
+type LoaderData = { posts: PostWithCommentCount[] };
 
 export const loader: LoaderFunction = async ({ request, params }) => {
   await requireUser(request);
@@ -85,10 +85,7 @@ export default function () {
 
   return (
     <div>
-      <div className="border-b border-gray-200 bg-white px-4 py-5 sm:px-6">
-        <h3 className="text-lg font-medium leading-6 text-gray-900">Feed</h3>
-      </div>
-      <div className="grid grid-flow-col grid-cols-12 grid-rows-6 gap-x-8 gap-y-2 p-4">
+      <div className="mt-5 mb-10 grid grid-flow-col grid-cols-12 grid-rows-6 gap-x-8 gap-y-2 rounded-lg border bg-white p-4 pt-6">
         <div className="col-span-2 row-span-6 sm:col-span-1 ">
           <Jazzicon diameter={42} seed={jsNumberForAddress(user.address)} />
         </div>
@@ -100,15 +97,13 @@ export default function () {
           />
         </div>
       </div>
-      <ul>
+      <ul className="">
         {data.posts.map((post) => (
-          <li key={post.id}>
-            <Link
-              className="select-text"
-              to={`/space/${post.spaceId}/post/${post.id}`}
-            >
-              <PostCard post={post} />
-            </Link>
+          <li
+            key={post.id}
+            className="border-lg border border-b-0 bg-white first:rounded-t-lg last:rounded-b-lg last:border-b"
+          >
+            <PostCard post={post} showEngagementBar />
           </li>
         ))}
       </ul>

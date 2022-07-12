@@ -13,5 +13,14 @@ export interface WalletWithMemberships extends Wallet {
 }
 
 export interface PostWithComments extends Post {
+  _count: {
+    comments: number;
+  };
   comments: Comment[];
+}
+
+export interface PostWithCommentCount extends Post {
+  _count: {
+    comments: number;
+  };
 }
