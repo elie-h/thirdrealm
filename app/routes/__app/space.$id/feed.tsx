@@ -6,7 +6,6 @@ import {
 } from "@remix-run/node";
 import { useFetcher, useLoaderData } from "@remix-run/react";
 import { useState } from "react";
-import Jazzicon, { jsNumberForAddress } from "react-jazzicon";
 import invariant from "tiny-invariant";
 import PostCard from "~/components/PostCard";
 import PostEdit from "~/components/PostEdit";
@@ -85,28 +84,48 @@ export default function () {
 
   return (
     <div>
-      <div className="mt-5 mb-10 grid grid-flow-col grid-cols-12 grid-rows-6 gap-x-8 gap-y-2 rounded-lg border bg-white p-4 pt-6">
-        <div className="col-span-2 row-span-6 sm:col-span-1 ">
-          <Jazzicon diameter={42} seed={jsNumberForAddress(user.address)} />
-        </div>
-        <div className="col-span-10 row-span-6 h-auto flex-grow">
-          <PostEdit
-            placeholder="Create a post"
-            handleChange={(x: string) => onChange(x)}
-            handleSubmit={() => onSubmit()}
-          />
-        </div>
+      <div className="my-4">
+        <PostEdit
+          placeholder="Create a post"
+          handleChange={(x: string) => onChange(x)}
+          handleSubmit={() => onSubmit()}
+        />
       </div>
-      <ul className="">
-        {data.posts.map((post) => (
-          <li
-            key={post.id}
-            className="border-lg border border-b-0 bg-white first:rounded-t-lg last:rounded-b-lg last:border-b"
+      {data.posts.length > 0 ? (
+        <ul>
+          {data.posts.map((post) => (
+            <li
+              key={post.id}
+              className="border-lg border border-b-0 bg-white first:rounded-t-lg last:rounded-b-lg last:border-b"
+            >
+              <PostCard post={post} showEngagementBar />
+            </li>
+          ))}
+        </ul>
+      ) : (
+        <div className="text-center">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            className="mx-auto h-6 w-6"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+            strokeWidth="2"
           >
-            <PostCard post={post} showEngagementBar />
-          </li>
-        ))}
-      </ul>
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"
+            />
+          </svg>
+          <h3 className="mt-2 text-sm font-medium text-gray-900">
+            You're the first one here!
+          </h3>
+          <p className="mt-1 text-sm text-gray-500">
+            Go on, make history and be the first to post.
+          </p>
+        </div>
+      )}
     </div>
   );
 }

@@ -43,7 +43,9 @@ export function SpacesDropDown({ wallet }: SpacesDropDownProps) {
                   alt=""
                   className="h-8 w-8 flex-shrink-0 rounded-full"
                 />
-                <span className="ml-3 block truncate">{selected.name}</span>
+                <span className="ml-3 block truncate text-sm">
+                  {selected.name}
+                </span>
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   className="ml-1 h-6 w-6"

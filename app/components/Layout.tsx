@@ -13,7 +13,7 @@ export default function Layout({ wallet }: LayoutProps) {
   const showSpaceDropdown = location.pathname.startsWith("/space");
 
   return (
-    <div className="h-screen-full">
+    <div>
       <Disclosure as="nav" className="sticky top-0 z-50 bg-white shadow-md">
         {({ open }) => (
           <>
@@ -57,19 +57,15 @@ export default function Layout({ wallet }: LayoutProps) {
                     </Disclosure.Button> */}
                   </div>
                   <div className="flex flex-shrink-0 items-center">
-                    <Link to="/">
+                    {/* <Link to="/">
                       <img
-                        className="hidden h-12 w-auto sm:block"
+                        className="h-12 w-auto"
                         src="/logowtext.png"
                         alt="Logo"
                       />
-                    </Link>
+                    </Link> */}
                     <Link to="/">
-                      <img
-                        className="block h-8 w-auto sm:hidden"
-                        src="/logo.png"
-                        alt="Logo"
-                      />
+                      <img className="h-8 w-auto" src="/logo.png" alt="Logo" />
                     </Link>
                   </div>
                   <div className="hidden md:ml-6 md:flex md:space-x-8">
@@ -82,7 +78,7 @@ export default function Layout({ wallet }: LayoutProps) {
                   </div>
                 </div>
                 {showSpaceDropdown ? (
-                  <div className="inline-flex items-center px-1 pt-1 text-sm font-medium text-gray-900">
+                  <div className="inline-flex items-center justify-start px-1 pt-1 text-sm font-medium text-gray-900">
                     <SpacesDropDown wallet={wallet} />
                   </div>
                 ) : (
@@ -99,7 +95,7 @@ export default function Layout({ wallet }: LayoutProps) {
           </>
         )}
       </Disclosure>
-      <main className="flex-1 bg-stone-50">
+      <main className="bg-stone-50">
         <Outlet></Outlet>
       </main>
     </div>

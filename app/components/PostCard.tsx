@@ -15,7 +15,7 @@ export default function PostCard({
   showEngagementBar = false,
 }: PostProps) {
   return (
-    <div className="h-36">
+    <div>
       <div className="grid-rows-12 grid min-h-full select-text grid-flow-col grid-cols-12 gap-x-8 gap-y-2 p-4 ">
         <div className="row-span-12 col-span-2 sm:col-span-1 ">
           <Jazzicon

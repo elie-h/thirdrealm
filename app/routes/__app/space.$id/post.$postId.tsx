@@ -7,7 +7,6 @@ import {
 } from "@remix-run/node";
 import { Link, useFetcher, useLoaderData } from "@remix-run/react";
 import { useState } from "react";
-import Jazzicon, { jsNumberForAddress } from "react-jazzicon";
 import invariant from "tiny-invariant";
 import CommentCard from "~/components/CommentCard";
 import PostCard from "~/components/PostCard";
@@ -15,7 +14,6 @@ import PostEdit from "~/components/PostEdit";
 import { createComment, getPost } from "~/models/post.server";
 import { requireUser } from "~/session.server";
 import { type PostWithComments } from "~/types";
-import { useUser } from "~/utils";
 import { validatePostContent } from "~/utils/strings";
 
 type LoaderData = { post: PostWithComments };
@@ -73,7 +71,6 @@ export const action: ActionFunction = async ({ request, params }) => {
 
 export default function Post() {
   const { post } = useLoaderData<LoaderData>();
-  const user = useUser();
   const fetcher = useFetcher();
 
   const [postContent, setPostContent] = useState<string>();
@@ -115,30 +112,46 @@ export default function Post() {
         <PostCard post={post} showEngagementBar />
       </div>
 
-      <div className="mt-5 mb-10 grid grid-flow-col grid-cols-12 grid-rows-6 gap-x-8 gap-y-2 rounded-lg border bg-white p-4 pt-6">
-        <div className="col-span-2 row-span-6 sm:col-span-1 ">
-          <Jazzicon diameter={42} seed={jsNumberForAddress(user.address)} />
-        </div>
-        <div className="col-span-10 row-span-6 h-auto flex-grow">
-          <PostEdit
-            handleChange={(x: string) => onChange(x)}
-            handleSubmit={() => onSubmit()}
-            placeholder="Type a reply"
-            buttonText="Comment"
-          />
-        </div>
+      <div className="my-4">
+        <PostEdit
+          handleChange={(x: string) => onChange(x)}
+          handleSubmit={() => onSubmit()}
+          placeholder="Type a reply"
+          buttonText="Comment"
+        />
       </div>
-
-      <ul>
-        {post.comments.map((comment: Comment) => (
-          <li
-            key={comment.id}
-            className="border-lg border border-b-0 bg-white first:rounded-t-lg last:rounded-b-lg last:border-b"
+      {post.comments.length > 0 ? (
+        <ul>
+          {post.comments.map((comment: Comment) => (
+            <li
+              key={comment.id}
+              className="border-lg border border-b-0 bg-white first:rounded-t-lg last:rounded-b-lg last:border-b"
+            >
+              <CommentCard comment={comment} />
+            </li>
+          ))}
+        </ul>
+      ) : (
+        <div className="text-center">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            className="mx-auto h-6 w-6"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+            strokeWidth="2"
           >
-            <CommentCard comment={comment} />
-          </li>
-        ))}
-      </ul>
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"
+            />
+          </svg>
+          <h3 className="mt-2 text-sm font-medium text-gray-900">
+            Be the first one to comment
+          </h3>
+        </div>
+      )}
     </div>
   );
 }

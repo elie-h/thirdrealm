@@ -26,7 +26,7 @@ export const loader: LoaderFunction = async ({ request, params }) => {
 export default function SpacePage() {
   const data = useLoaderData<LoaderData>();
   return (
-    <div className="mx-auto px-12 sm:grid lg:max-w-screen-2xl lg:grid-cols-12 lg:gap-8">
+    <div className="mx-auto px-0 sm:grid sm:px-12 lg:max-w-screen-2xl lg:grid-cols-12 lg:gap-8">
       <aside className="xs:col-span-0 hidden py-5 lg:col-span-4 lg:block">
         <div className="sticky top-4 space-y-4">
           <section>
@@ -55,6 +55,32 @@ export default function SpacePage() {
               </div>
             </div>
           </section>
+        </div>
+      </aside>
+      <aside className="mx-4 block py-5 sm:mx-16 lg:hidden">
+        <div className="sticky top-4 space-y-4">
+          <div className="mx-auto rounded-lg">
+            <img
+              className="mx-auto w-1/3 rounded-lg"
+              src={data.space.coverImage}
+              alt="Space cover"
+            />
+            <h2 className="mt-4 text-center text-base text-xl font-bold text-gray-900">
+              {data.space.name}
+            </h2>
+            <div className="mt-4 flow-root">
+              <ul className="-my-4 divide-y divide-gray-200">
+                <li className="flex items-center  py-4">
+                  <div className="flex-shrink-0"></div>
+                  <div className="min-w-0 flex-1">
+                    <p className="text-xs font-bold sm:text-sm">
+                      {data.space.description}
+                    </p>
+                  </div>
+                </li>
+              </ul>
+            </div>
+          </div>
         </div>
       </aside>
       <main className="xs:col-span-8 py-5 lg:col-span-8">

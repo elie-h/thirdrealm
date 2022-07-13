@@ -14,7 +14,7 @@ export default function () {
     walletFetcher.state != "idle" || walletFetcher.data == undefined;
 
   return (
-    <div className="py-16">
+    <div className="min-h-screen py-16">
       <div className="my-10 mx-auto max-w-2xl px-4 sm:px-6 lg:max-w-7xl lg:px-8">
         <h2 className="mb-4 text-center text-2xl font-extrabold tracking-tight text-gray-900">
           Your Spaces

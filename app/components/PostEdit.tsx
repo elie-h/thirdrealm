@@ -42,19 +42,17 @@ const PostEdit = ({
   }
 
   return (
-    <div>
-      <div>
-        <Slate
-          editor={editor}
-          value={initialValue}
-          onChange={(x) => handleLocalChange(x)}
-        >
-          <Editable
-            placeholder={placeholder}
-            className="text-md border-lg rounded-lg border pt-2 pb-6 pl-3"
-          />
-        </Slate>
-      </div>
+    <div className="border bg-white p-4 pt-6 sm:rounded-lg">
+      <Slate
+        editor={editor}
+        value={initialValue}
+        onChange={(x) => handleLocalChange(x)}
+      >
+        <Editable
+          placeholder={placeholder}
+          className="text-md border-lg w-full rounded-lg border pt-2 pb-8 pl-3"
+        />
+      </Slate>
       <div className="mt-4 flex justify-end">
         <button
           onClick={handleLocalSubmit}
