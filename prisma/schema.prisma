@@ -20,7 +20,7 @@ model Collection {
   network         Network
   createdAt       DateTime          @default(now())
   updatedAt       DateTime          @default(now())
-  space           Space?
+  community       Community?
   owners          CollectionOwner[]
 
   @@id([contractAddress, network])
@@ -37,57 +37,58 @@ model CollectionOwner {
 }
 
 model Wallet {
-  address     String                  @id
-  createdAt   DateTime                @default(now())
-  updatedAt   DateTime                @default(now())
-  lastSeen    DateTime                @updatedAt
-  memberships WalletSpaceMembership[]
+  address     String                      @id
+  createdAt   DateTime                    @default(now())
+  updatedAt   DateTime                    @default(now())
+  lastSeen    DateTime                    @updatedAt
+  memberships WalletCommunityMembership[]
   posts       Post[]
   comments    Comment[]
 }
 
-// Public spaces are 1:1 with collections - open, no moderation, free tier basically
-model Space {
-  id              String                  @id @default(cuid())
-  name            String                  
-  description     String                  
-  coverImage      String                  
-  collection      Collection              @relation(fields: [contractAddress, network], references: [contractAddress, network], onDelete: Cascade)
+// Public communitys are 1:1 with collections - open, no moderation, free tier basically
+// Private communitys allow for moderation, multicollection ownership and more
+
+model Community {
+  id              String                      @id @default(cuid())
+  name            String
+  description     String
+  coverImage      String
+  collection      Collection                  @relation(fields: [contractAddress, network], references: [contractAddress, network], onDelete: Cascade)
   contractAddress String
   network         Network
-  createdAt       DateTime                @default(now())
-  updatedAt       DateTime                @default(now())
-  members         WalletSpaceMembership[]
+  createdAt       DateTime                    @default(now())
+  updatedAt       DateTime                    @default(now())
+  members         WalletCommunityMembership[]
   posts           Post[]
 
   @@unique([name])
   @@unique([contractAddress, network])
 }
 
-// Private spaces allow for moderation, multicollection ownership and more
-
-model WalletSpaceMembership {
-  wallet        Wallet   @relation(fields: [walletAddress], references: [address], onDelete: Cascade)
+model WalletCommunityMembership {
+  wallet        Wallet    @relation(fields: [walletAddress], references: [address], onDelete: Cascade)
   walletAddress String
-  space         Space    @relation(fields: [spaceId], references: [id], onDelete: Cascade)
-  spaceId       String
-  createdAt     DateTime @default(now())
+  community     Community @relation(fields: [communityId], references: [id], onDelete: Cascade)
+  communityId   String
+  createdAt     DateTime  @default(now())
 
-  @@id([walletAddress, spaceId])
+  @@id([walletAddress, communityId])
 }
 
 model Post {
   id            String    @id @default(cuid())
-  content       String
+  // title         String
+  content       Json
   createdAt     DateTime  @default(now())
   updatedAt     DateTime  @default(now())
   author        Wallet    @relation(fields: [authorAddress], references: [address], onDelete: Cascade)
   authorAddress String
-  space         Space     @relation(fields: [spaceId], references: [id], onDelete: Cascade)
-  spaceId       String
+  community     Community @relation(fields: [communityId], references: [id], onDelete: Cascade)
+  communityId   String
   comments      Comment[]
 
-  @@index([spaceId])
+  @@index([communityId])
   @@index([createdAt])
 }
 

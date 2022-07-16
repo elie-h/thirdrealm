@@ -1,9 +1,15 @@
+import { type Post } from "@prisma/client";
 import { Link } from "@remix-run/react";
+import Blocks from "editorjs-blocks-react-renderer";
 import Jazzicon, { jsNumberForAddress } from "react-jazzicon";
-import { type PostWithCommentCount } from "~/types";
 import { friendlyDate } from "~/utils";
 import { truncateEthAddress } from "~/utils/eth";
-import { deserialize } from "~/utils/strings";
+
+interface PostWithCommentCount extends Post {
+  _count: {
+    comments: number;
+  };
+}
 
 interface PostProps {
   post: PostWithCommentCount;
@@ -14,6 +20,9 @@ export default function PostCard({
   post,
   showEngagementBar = false,
 }: PostProps) {
+  if (!post) {
+    return <div>Post not found</div>;
+  }
   return (
     <div>
       <div className="grid-rows-12 grid min-h-full select-text grid-flow-col grid-cols-12 gap-x-8 gap-y-2 p-4 ">
@@ -38,25 +47,29 @@ export default function PostCard({
             </div>
           </div>
           <div>
-            <div className="text-md text-black ">
-              <div>
-                {deserialize(post.content).map((parentNode) =>
-                  parentNode.children.map((x, i) => {
-                    return (
-                      <p key={i}>
-                        {x.text} <br />
-                      </p>
-                    );
-                  })
-                )}
-              </div>
-            </div>
+            <section>
+              <Blocks
+                // @ts-ignore
+                data={post.content}
+                config={{
+                  header: { className: "text-xl font-bold" },
+                  image: {
+                    className: "w-full max-w-screen-md",
+                    actionsClassNames: {
+                      stretched: "w-full h-80 object-cover",
+                      withBorder: "border border-2",
+                      withBackground: "p-2",
+                    },
+                  },
+                }}
+              />
+            </section>
           </div>
           {showEngagementBar ? (
             <div>
               <div className="col-span-10 row-span-2 mt-2 flex">
                 <Link
-                  to={`/space/${post.spaceId}/post/${post.id}`}
+                  to={`/space/${post.communityId}/post/${post.id}`}
                   className="inline-flex items-center rounded-full border border-transparent p-1 text-black shadow-sm hover:bg-indigo-700 hover:text-white focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
                 >
                   <svg
@@ -73,7 +86,6 @@ export default function PostCard({
                       d="M17 8h2a2 2 0 012 2v6a2 2 0 01-2 2h-2v4l-4-4H9a1.994 1.994 0 01-1.414-.586m0 0L11 14h4a2 2 0 002-2V6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2v4l.586-.586z"
                     />
                   </svg>
-                  {/* @ts-ignore */}
                   <span className="ml-1 text-xs">{post._count.comments}</span>
                 </Link>
               </div>

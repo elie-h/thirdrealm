@@ -1,29 +1,29 @@
-import { type Space } from "@prisma/client";
+import { type Community } from "@prisma/client";
 import { json, redirect, type LoaderFunction } from "@remix-run/node";
 import { Link, Outlet, useCatch, useLoaderData } from "@remix-run/react";
 import invariant from "tiny-invariant";
-import { checkSpaceMembership } from "~/models/spaces.server";
+import { checkCommunityMembership } from "~/models/community.server";
 import { getWallet } from "~/models/wallet.server";
 import { requireUser } from "~/session.server";
 import { type WalletWithMemberships } from "~/types";
 
-type LoaderData = { wallet: WalletWithMemberships; space: Space };
+type LoaderData = { wallet: WalletWithMemberships; community: Community };
 
 export const loader: LoaderFunction = async ({ request, params }) => {
   invariant(params.id, "params.id is required");
   const user = await requireUser(request);
-  const isAllowed = await checkSpaceMembership(params.id, user.address);
+  const isAllowed = await checkCommunityMembership(params.id, user.address);
   if (!isAllowed) {
-    return redirect(`/spaces/${params.id}/forbidden`);
+    return redirect(`/communities/${params.id}/forbidden`);
   }
   const walletAndMemberships = await getWallet(user.address, true);
-  const currentSpace = walletAndMemberships?.memberships.find(
-    (m) => m.spaceId === params.id
-  )?.space;
-  return json({ wallet: walletAndMemberships, space: currentSpace });
+  const currentCommunity = walletAndMemberships?.memberships.find(
+    (m) => m.communityId === params.id
+  )?.community;
+  return json({ wallet: walletAndMemberships, community: currentCommunity });
 };
 
-export default function SpacePage() {
+export default function CommunityPage() {
   const data = useLoaderData<LoaderData>();
   return (
     <div className="mx-auto px-0 sm:grid sm:px-12 lg:max-w-screen-2xl lg:grid-cols-12 lg:gap-8">
@@ -34,11 +34,11 @@ export default function SpacePage() {
               <div className="p-6">
                 <img
                   className="mb-4 w-3/4 rounded-lg"
-                  src={data.space.coverImage}
-                  alt="Space cover"
+                  src={data.community.coverImage}
+                  alt="Community cover"
                 />
                 <h2 className="text-base text-xl font-bold text-gray-900">
-                  {data.space.name}
+                  {data.community.name}
                 </h2>
                 <div className="mt-4 flow-root">
                   <ul className="-my-4 divide-y divide-gray-200">
@@ -46,7 +46,7 @@ export default function SpacePage() {
                       <div className="flex-shrink-0"></div>
                       <div className="min-w-0 flex-1">
                         <p className="text-sm font-bold">
-                          {data.space.description}
+                          {data.community.description}
                         </p>
                       </div>
                     </li>
@@ -62,19 +62,19 @@ export default function SpacePage() {
           <div className="mx-auto rounded-lg">
             <img
               className="mx-auto w-1/3 rounded-lg"
-              src={data.space.coverImage}
-              alt="Space cover"
+              src={data.community.coverImage}
+              alt="Community cover"
             />
             <h2 className="mt-4 text-center text-base text-xl font-bold text-gray-900">
-              {data.space.name}
+              {data.community.name}
             </h2>
             <div className="mt-4 flow-root">
               <ul className="-my-4 divide-y divide-gray-200">
                 <li className="flex items-center  py-4">
                   <div className="flex-shrink-0"></div>
                   <div className="min-w-0 flex-1">
-                    <p className="text-xs font-bold sm:text-sm">
-                      {data.space.description}
+                    <p className="text-center text-xs font-bold sm:text-sm">
+                      {data.community.description}
                     </p>
                   </div>
                 </li>
@@ -126,7 +126,7 @@ export function ErrorBoundary({ error }: { error: Error }) {
                 to="/home"
                 className="text-base font-medium text-indigo-600 hover:text-indigo-500"
               >
-                Spaces<span aria-hidden="true"> &rarr;</span>
+                Communities<span aria-hidden="true"> &rarr;</span>
               </Link>
             </div>
           </div>
@@ -166,7 +166,7 @@ export function CatchBoundary() {
                 to="/home"
                 className="text-base font-medium text-indigo-600 hover:text-indigo-500"
               >
-                Spaces<span aria-hidden="true"> &rarr;</span>
+                Communities<span aria-hidden="true"> &rarr;</span>
               </Link>
             </div>
           </div>

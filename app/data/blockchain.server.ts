@@ -206,7 +206,7 @@ async function getWalletNfts(
   }
 }
 
-export async function getWalletSpaces(walletAddress: string) {
+export async function getWalletCommunities(walletAddress: string) {
   /** Get the spaces a user is part of and is able to join */
 
   const ethNfts = (await getWalletNfts(walletAddress, "ethereum")) || [];
@@ -219,7 +219,7 @@ export async function getWalletSpaces(walletAddress: string) {
   );
 
   // TODO: The below assumes that the contract address isn't duplicated across networks. This is probably wrong.
-  const eligibleSpaces = await prisma.space.findMany({
+  const eligibleCommunities = await prisma.community.findMany({
     include: {
       collection: true,
     },
@@ -237,7 +237,7 @@ export async function getWalletSpaces(walletAddress: string) {
     },
   });
 
-  const joinedSpaces = await prisma.space.findMany({
+  const joinedCommunities = await prisma.community.findMany({
     where: {
       members: {
         some: {
@@ -250,7 +250,7 @@ export async function getWalletSpaces(walletAddress: string) {
     },
   });
   return {
-    eligible: eligibleSpaces,
-    joined: joinedSpaces,
+    eligible: eligibleCommunities,
+    joined: joinedCommunities,
   };
 }

@@ -2,15 +2,15 @@ import { Disclosure } from "@headlessui/react";
 import { Link, Outlet, useLocation } from "@remix-run/react";
 import User from "~/components/User";
 import { type WalletWithMemberships } from "~/types";
-import { SpacesDropDown } from "./SpacesDropDown";
+import { CommunityDropDown } from "~/components/CommunityDropDown";
 
 interface LayoutProps {
-  wallet: WalletWithMemberships;
+  wallet?: WalletWithMemberships;
 }
 
 export default function Layout({ wallet }: LayoutProps) {
   const location = useLocation();
-  const showSpaceDropdown = location.pathname.startsWith("/space");
+  const showCommunityDropdown = location.pathname.startsWith("/c/");
 
   return (
     <div>
@@ -77,9 +77,9 @@ export default function Layout({ wallet }: LayoutProps) {
                     </Link>
                   </div>
                 </div>
-                {showSpaceDropdown ? (
+                {showCommunityDropdown && wallet ? (
                   <div className="inline-flex items-center justify-start px-1 pt-1 text-sm font-medium text-gray-900">
-                    <SpacesDropDown wallet={wallet} />
+                    <CommunityDropDown wallet={wallet} />
                   </div>
                 ) : (
                   <></>

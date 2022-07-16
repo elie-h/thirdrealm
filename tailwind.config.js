@@ -23,6 +23,11 @@ module.exports = {
         "5xl": ["80px", { lineHeight: "80px", letterSpacing: "-0.032em" }],
         "2xl": ["36px", { lineHeight: "48px", letterSpacing: "-0.032em" }],
       },
+      "ce-header": {
+        fontSize: "48px",
+        lineHeight: "56px",
+        letterSpacing: "-0.032em",
+      },
     },
   },
   corePlugins: {

@@ -16,11 +16,13 @@ import { getUser } from "./session.server";
 
 import rainbowKitStylesheetUrl from "@rainbow-me/rainbowkit/styles.css";
 import tailwindStylesheetUrl from "./styles/tailwind.css";
+import rendererStylesheetUrl from "./styles/editorjs.css";
 
 export const links: LinksFunction = () => {
   return [
     { rel: "stylesheet", href: tailwindStylesheetUrl },
     { rel: "stylesheet", href: rainbowKitStylesheetUrl },
+    { rel: "stylesheet", href: rendererStylesheetUrl },
   ];
 };
 

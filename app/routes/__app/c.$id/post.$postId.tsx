@@ -6,15 +6,18 @@ import {
   type LoaderFunction,
 } from "@remix-run/node";
 import { Link, useFetcher, useLoaderData } from "@remix-run/react";
-import { useState } from "react";
+import { ClientOnly } from "remix-utils";
 import invariant from "tiny-invariant";
 import CommentCard from "~/components/CommentCard";
-import PostCard from "~/components/PostCard";
-import PostEdit from "~/components/PostEdit";
-import { createComment, getPost } from "~/models/post.server";
+import CommentForm from "~/components/CommentForm";
+import PostCard from "~/components/PostCard.client";
+import {
+  createComment,
+  getPost,
+  type PostWithComments,
+} from "~/models/post.server";
 import { requireUser } from "~/session.server";
-import { type PostWithComments } from "~/types";
-import { validatePostContent } from "~/utils/strings";
+import { isEmptyString } from "~/utils/strings";
 
 type LoaderData = { post: PostWithComments };
 
@@ -54,7 +57,7 @@ export const action: ActionFunction = async ({ request, params }) => {
   }
 
   const fieldErrors = {
-    content: validatePostContent(content),
+    content: isEmptyString(content),
   };
 
   const fields = { content };
@@ -73,23 +76,21 @@ export default function Post() {
   const { post } = useLoaderData<LoaderData>();
   const fetcher = useFetcher();
 
-  const [postContent, setPostContent] = useState<string>();
-
-  function onChange(x: string) {
-    setPostContent(x);
+  function onSubmit(comment: string) {
+    if (comment) {
+      fetcher.submit({ content: comment }, { method: "post" });
+    }
   }
 
-  function onSubmit() {
-    if (postContent) {
-      fetcher.submit({ content: postContent }, { method: "post" });
-    }
+  if (!post) {
+    return <h1>Post not found</h1>;
   }
 
   return (
     <div>
       <div className="px-4 py-5 sm:px-6">
         <div className="flex items-center">
-          <Link to={`/space/${post.spaceId}/feed`}>
+          <Link to={`/space/${post.communityId}/feed`}>
             <svg
               xmlns="http://www.w3.org/2000/svg"
               className="mr-2 h-6 w-6"
@@ -109,16 +110,13 @@ export default function Post() {
         </div>
       </div>
       <div className="border-lg rounded-lg border bg-white">
-        <PostCard post={post} showEngagementBar />
+        <ClientOnly>
+          {() => <PostCard post={post} showEngagementBar />}
+        </ClientOnly>
       </div>
 
       <div className="my-4">
-        <PostEdit
-          handleChange={(x: string) => onChange(x)}
-          handleSubmit={() => onSubmit()}
-          placeholder="Type a reply"
-          buttonText="Comment"
-        />
+        <CommentForm handleSubmit={onSubmit} />
       </div>
       {post.comments.length > 0 ? (
         <ul>

@@ -13,7 +13,7 @@ export async function getWallet(
     include: {
       memberships: {
         include: {
-          space: {
+          community: {
             include: {
               collection: true,
             },

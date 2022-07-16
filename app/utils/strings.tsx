@@ -7,7 +7,7 @@ export const truncateString = (input: string | undefined, n: number) => {
   return input.length > n ? `${input.substring(0, n)}...` : input;
 };
 
-export function validatePostContent(content: string) {
+export function isEmptyString(content: string) {
   if (
     content === null ||
     content.replace(/(\r\n|\n|\r)/gm, "").replace(/\s/g, "").length <= 0 ||

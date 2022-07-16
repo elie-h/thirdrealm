@@ -1,12 +1,15 @@
-import { type Space } from "@prisma/client";
+import { type Community } from "@prisma/client";
 import { truncateString } from "~/utils/strings";
 
-interface SpaceCardProps extends React.ComponentPropsWithoutRef<"div"> {
-  space?: Space;
+interface CommunityCardProps extends React.ComponentPropsWithoutRef<"div"> {
+  community?: Community;
   loading: boolean;
 }
 
-export default function SpaceCard({ space, loading }: SpaceCardProps) {
+export default function CommunityCard({
+  community,
+  loading,
+}: CommunityCardProps) {
   return (
     <div className="group relative flex flex-col overflow-hidden rounded-lg border border-gray-200 bg-white">
       <div>
@@ -15,8 +18,8 @@ export default function SpaceCard({ space, loading }: SpaceCardProps) {
             <div className="animate-pulse rounded-xl bg-gray-200 object-contain sm:h-72 sm:w-full"></div>
           ) : (
             <img
-              src={space?.coverImage}
-              alt={space?.name}
+              src={community?.coverImage}
+              alt={community?.name}
               className="h-full w-full object-contain sm:h-full sm:w-full"
             />
           )}
@@ -27,7 +30,7 @@ export default function SpaceCard({ space, loading }: SpaceCardProps) {
           ) : (
             <div>
               <div className="flex flex-wrap items-center justify-between sm:flex-nowrap">
-                <h3 className="text-xl text-gray-900">{space?.name}</h3>
+                <h3 className="text-xl text-gray-900">{community?.name}</h3>
                 {
                   {
                     ethereum: (
@@ -41,11 +44,11 @@ export default function SpaceCard({ space, loading }: SpaceCardProps) {
                       </span>
                     ),
                     unknown: <></>,
-                  }[space?.network || "ethereum"]
+                  }[community?.network || "ethereum"]
                 }
               </div>
               <p className="text-bold h-20 text-center text-sm">
-                {truncateString(space?.description, 100)}
+                {truncateString(community?.description, 100)}
               </p>
             </div>
           )}

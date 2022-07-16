@@ -51,7 +51,6 @@ export default function Login() {
 
   useEffect(() => {
     if (signer && user && !isLoading && !isError) {
-      console.log("Navigating");
       navigate("/home");
     }
   }, [signer, isError, isLoading, user]);

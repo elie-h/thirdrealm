@@ -1,4 +1,4 @@
-import type { Post, Space } from "@prisma/client";
+import type { Post, Prisma, Community, Comment } from "@prisma/client";
 
 import { prisma } from "~/db.server";
 
@@ -19,9 +19,11 @@ export async function getPost(id: Post["id"]) {
   });
 }
 
-export async function getPostsForSpace(spaceId: Space["id"]) {
+export type PostWithComments = Prisma.PromiseReturnType<typeof getPost>;
+
+export async function getPostsForCommunity(communityId: Community["id"]) {
   return await prisma.post.findMany({
-    where: { spaceId },
+    where: { communityId },
     orderBy: { createdAt: "desc" },
     include: {
       _count: {
@@ -32,20 +34,27 @@ export async function getPostsForSpace(spaceId: Space["id"]) {
   });
 }
 
+export type PostsForCommunities = Prisma.PromiseReturnType<
+  typeof getPostsForCommunity
+>;
+
 export async function createPost(
   content: Post["content"],
-  spaceId: Post["spaceId"],
+  communityId: Post["communityId"],
   authorAddress: Post["authorAddress"]
 ) {
+  if (content == null) {
+    throw new Error("Content is required");
+  }
   return await prisma.post.create({
-    data: { content, spaceId, authorAddress },
+    data: { content, communityId, authorAddress },
   });
 }
 
 export async function createComment(
-  content: Post["content"],
+  content: Comment["content"],
   postId: Post["id"],
-  authorAddress: Post["authorAddress"]
+  authorAddress: Comment["authorAddress"]
 ) {
   return await prisma.comment.create({
     data: { content, postId, authorAddress },

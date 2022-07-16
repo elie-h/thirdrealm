@@ -8,26 +8,26 @@ import { Link, useFetcher, useLoaderData } from "@remix-run/react";
 import invariant from "tiny-invariant";
 import { checkCollectionOwnership } from "~/data/blockchain.server";
 import {
-  getSpaceAndMembersById,
-  getSpaceById,
-  upsertSpaceMembership,
-} from "~/models/spaces.server";
+  getCommunityAndMembersById,
+  getCommunityById,
+  upsertCommunityMembership,
+} from "~/models/community.server";
 import { requireUser } from "~/session.server";
-import { type SpaceWithMembersCount } from "~/types";
+import { type CommunityWithMembersCount } from "~/types";
 import { truncateEthAddress } from "~/utils";
 
-type LoaderData = { space: SpaceWithMembersCount };
+type LoaderData = { community: CommunityWithMembersCount };
 
 export const loader: LoaderFunction = async ({ request, params }) => {
   await requireUser(request);
   invariant(params.id, "id is required");
-  const space = await getSpaceById(params.id);
+  const community = await getCommunityById(params.id);
 
-  if (!space) {
-    throw new Response("Space not found", { status: 404 });
+  if (!community) {
+    throw new Response("Community not found", { status: 404 });
   }
 
-  const data: LoaderData = { space };
+  const data: LoaderData = { community };
   return json(data);
 };
 
@@ -36,20 +36,23 @@ export const action: ActionFunction = async ({ request, params }) => {
   invariant(process.env.ALCHEMY_ETH_RPC, "Expected process.env.RPC_URL");
   invariant(params.id, "Expected params.id");
 
-  const spaceAndMembers = await getSpaceAndMembersById(params.id, user.address);
-  invariant(spaceAndMembers, "Space not found");
+  const communityAndMembers = await getCommunityAndMembersById(
+    params.id,
+    user.address
+  );
+  invariant(communityAndMembers, "Space not found");
 
   const isAllowed = await checkCollectionOwnership(
-    spaceAndMembers.collection,
+    communityAndMembers.collection,
     user.address
   );
 
   if (isAllowed) {
-    await upsertSpaceMembership(params.id, user.address);
-    return redirect(`/space/${params.id}/feed`);
+    await upsertCommunityMembership(params.id, user.address);
+    return redirect(`/c/${params.id}/feed`);
   } else {
-    // Not enough tokens! Redirect to a space where a user can join other spaces
-    return redirect(`/spaces/${params.id}/forbidden`);
+    // Not enough tokens! Redirect to a community where a user can join other community
+    return redirect(`/communities/${params.id}/forbidden`);
   }
 };
 
@@ -62,7 +65,7 @@ export default function () {
       <div className="group rounded-lg sm:aspect-h-1 sm:aspect-w-1 sm:row-span-2">
         <div className="aspect-w-1 aspect-h-1 rounded-lg">
           <img
-            src={data.space.coverImage}
+            src={data.community.coverImage}
             alt="Space cover"
             className="rounded-lg object-cover object-center"
           />
@@ -71,32 +74,34 @@ export default function () {
       <div className="lg:max-w-lg lg:self-end">
         <div className="mt-4">
           <h1 className="text-3xl font-extrabold tracking-tight text-gray-900 sm:text-4xl">
-            {data.space.name}
+            {data.community.name}
           </h1>
         </div>
 
         <section aria-labelledby="information-heading" className="mt-4">
           <div className="flex items-center">
             <p className="text-lg text-gray-900 sm:text-xl">
-              {data.space._count.members} Members
+              {data.community._count.members} Members
             </p>
           </div>
           <div className="mt-2 flex items-center">
             <p className="text-lg text-gray-500 sm:text-xl">
-              {data.space.network}
+              {data.community.network}
             </p>
 
             <div className="ml-4 border-l border-gray-300 pl-4">
               <div className="flex items-center">
                 <p className="text-sm text-gray-500">
-                  {truncateEthAddress(data.space.contractAddress)}
+                  {truncateEthAddress(data.community.contractAddress)}
                 </p>
               </div>
             </div>
           </div>
 
           <div className="mt-2 space-y-6">
-            <p className="text-base text-gray-500">{data.space.description}</p>
+            <p className="text-base text-gray-500">
+              {data.community.description}
+            </p>
           </div>
         </section>
         <div className="mt-10 sm:flex">

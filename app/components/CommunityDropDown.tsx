@@ -1,5 +1,5 @@
 import { Listbox, Transition } from "@headlessui/react";
-import { type Space } from "@prisma/client";
+import { type Community } from "@prisma/client";
 import { useNavigate, useParams } from "@remix-run/react";
 import { Fragment, useEffect, useState } from "react";
 import { type WalletWithMemberships } from "~/types";
@@ -8,27 +8,27 @@ function classNames(...classes: string[]) {
   return classes.filter(Boolean).join(" ");
 }
 
-interface SpacesDropDownProps {
+interface CommunityDropDownProps {
   wallet: WalletWithMemberships;
 }
 
-export function SpacesDropDown({ wallet }: SpacesDropDownProps) {
+export function CommunityDropDown({ wallet }: CommunityDropDownProps) {
   const params = useParams();
   const navigate = useNavigate();
-  const currentSpaceIdx = wallet.memberships.findIndex(
-    (x) => x.space.id === params.id
+  const currentCommunityIdx = wallet.memberships.findIndex(
+    (x) => x.community.id === params.id
   );
-  const [selected, setSelected] = useState<Space>(
-    wallet.memberships[currentSpaceIdx].space
+  const [selected, setSelected] = useState<Community>(
+    wallet.memberships[currentCommunityIdx].community
   );
 
   useEffect(
-    () => setSelected(wallet.memberships[currentSpaceIdx].space),
-    [currentSpaceIdx]
+    () => setSelected(wallet.memberships[currentCommunityIdx].community),
+    [currentCommunityIdx, wallet.memberships]
   );
 
-  function handleChange(x: Space) {
-    navigate(`/space/${x.id}/feed`);
+  function handleChange(x: Community) {
+    navigate(`/c/${x.id}/feed`);
   }
 
   return (
@@ -73,21 +73,20 @@ export function SpacesDropDown({ wallet }: SpacesDropDownProps) {
               <Listbox.Options className="absolute z-10 mt-1 max-h-56 w-full overflow-auto rounded-md bg-white py-1 text-base shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm">
                 {wallet.memberships.map((membership) => (
                   <Listbox.Option
-                    key={membership.space.id}
+                    key={membership.community.id}
                     className={({ active }) =>
                       classNames(
                         active ? "bg-indigo-600 text-white" : "text-gray-900",
                         "relative cursor-default select-none py-2 pl-3 pr-9"
                       )
                     }
-                    value={membership.space}
+                    value={membership.community}
                   >
                     {({ selected, active }) => (
                       <>
-                        {/* <Link to={`/space/${membership.space.id}/feed`}> */}
                         <div className="flex items-center">
                           <img
-                            src={membership.space.coverImage}
+                            src={membership.community.coverImage}
                             alt=""
                             className="h-6 w-6 flex-shrink-0 rounded-full"
                           />
@@ -97,7 +96,7 @@ export function SpacesDropDown({ wallet }: SpacesDropDownProps) {
                               "ml-3 block truncate"
                             )}
                           >
-                            {membership.space.name}
+                            {membership.community.name}
                           </span>
                         </div>
 
@@ -109,7 +108,6 @@ export function SpacesDropDown({ wallet }: SpacesDropDownProps) {
                             )}
                           ></span>
                         ) : null}
-                        {/* </Link> */}
                       </>
                     )}
                   </Listbox.Option>

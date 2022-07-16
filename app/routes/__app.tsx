@@ -47,14 +47,12 @@ export default function App() {
 }
 
 export function ErrorBoundary({ error }: { error: Error }) {
-  const data = useLoaderData<LoaderData>();
-
   if (process.env.NODE_ENV === "development") {
     console.log(error.stack);
   }
   return (
     <Web3Wrapper>
-      <Layout wallet={data.wallet} />
+      <Layout />
       <div className="flex min-h-full flex-col bg-white pt-16 pb-12">
         <main className="mx-auto flex w-full flex-grow flex-col justify-center px-4 sm:px-6 lg:px-8">
           <div className="flex flex-shrink-0 justify-center">

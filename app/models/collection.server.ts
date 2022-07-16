@@ -39,10 +39,10 @@ export async function deleteCollectionSpaceMemberships(
   network: Collection["network"],
   walletAddress: Wallet["address"]
 ) {
-  return await prisma.walletSpaceMembership.deleteMany({
+  return await prisma.walletCommunityMembership.deleteMany({
     where: {
       walletAddress: walletAddress,
-      space: {
+      community: {
         collection: {
           contractAddress: collectionAddress,
           network,
