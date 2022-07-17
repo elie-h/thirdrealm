@@ -69,7 +69,7 @@ export default function PostCard({
             <div>
               <div className="col-span-10 row-span-2 mt-2 flex">
                 <Link
-                  to={`/space/${post.communityId}/post/${post.id}`}
+                  to={`/c/${post.communityId}/post/${post.id}`}
                   className="inline-flex items-center rounded-full border border-transparent p-1 text-black shadow-sm hover:bg-indigo-700 hover:text-white focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
                 >
                   <svg

@@ -1,13 +1,10 @@
-import type { Wallet } from "@prisma/client";
+import type { Prisma, Wallet } from "@prisma/client";
 
 import { prisma } from "~/db.server";
 
 export type { Wallet } from "@prisma/client";
 
-export async function getWallet(
-  address: Wallet["address"],
-  includeMemberships: boolean = false
-) {
+export async function getWallet(address: Wallet["address"]) {
   return await prisma.wallet.findUnique({
     where: { address: address.toLowerCase() },
     include: {
@@ -23,6 +20,8 @@ export async function getWallet(
     },
   });
 }
+
+export type WalletWithMemberships = Prisma.PromiseReturnType<typeof getWallet>;
 
 export async function createWallet(address: Wallet["address"]) {
   return await prisma.wallet.create({

@@ -73,6 +73,7 @@
     "react-dom": "^17.0.2",
     "react-editor-js": "^2.1.0",
     "react-jazzicon": "^1.0.3",
+    "react-uploader": "^1.8.0",
     "remix-utils": "^3.3.0",
     "siwe": "^1.1.6",
     "slate": "^0.81.1",

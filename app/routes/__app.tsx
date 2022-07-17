@@ -30,7 +30,7 @@ type LoaderData = { wallet: WalletWithMemberships };
 
 export const loader: LoaderFunction = async ({ request, params }) => {
   const user = await requireUser(request);
-  const walletAndMemberships = await getWallet(user.address, true);
+  const walletAndMemberships = await getWallet(user.address);
   return json({ wallet: walletAndMemberships });
 };
 

@@ -42,7 +42,7 @@ export const action: ActionFunction = async ({ request, params }) => {
   // }
 
   await createPost(jsonContent, params.id, user.address);
-  return redirect(`/space/${params.id}/feed`);
+  return redirect(`/c/${params.id}/feed`);
 };
 
 export default function () {
@@ -59,7 +59,7 @@ export default function () {
     <div className="my-4">
       <div className="px-4 py-5 sm:px-6">
         <div className="flex items-center">
-          <Link to={`/space/${params.id}/feed`}>
+          <Link to={`/c/${params.id}/feed`}>
             <svg
               xmlns="http://www.w3.org/2000/svg"
               className="mr-2 h-6 w-6"

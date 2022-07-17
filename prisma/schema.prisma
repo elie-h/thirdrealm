@@ -13,14 +13,11 @@ enum Network {
 }
 
 model Collection {
-  name            String?
-  description     String?
-  coverImage      String?
   contractAddress String
   network         Network
-  createdAt       DateTime          @default(now())
-  updatedAt       DateTime          @default(now())
-  community       Community?
+  createdAt       DateTime                   @default(now())
+  updatedAt       DateTime                   @default(now())
+  rules           CommunityCollectionRules[]
   owners          CollectionOwner[]
 
   @@id([contractAddress, network])
@@ -46,24 +43,28 @@ model Wallet {
   comments    Comment[]
 }
 
-// Public communitys are 1:1 with collections - open, no moderation, free tier basically
-// Private communitys allow for moderation, multicollection ownership and more
-
-model Community {
-  id              String                      @id @default(cuid())
-  name            String
-  description     String
-  coverImage      String
-  collection      Collection                  @relation(fields: [contractAddress, network], references: [contractAddress, network], onDelete: Cascade)
+model CommunityCollectionRules {
+  communityId     String
   contractAddress String
   network         Network
-  createdAt       DateTime                    @default(now())
-  updatedAt       DateTime                    @default(now())
-  members         WalletCommunityMembership[]
-  posts           Post[]
+  createdAt       DateTime   @default(now())
+  updatedAt       DateTime   @default(now())
+  community       Community  @relation(fields: [communityId], references: [id], onDelete: Cascade)
+  collection      Collection @relation(fields: [contractAddress, network], references: [contractAddress, network], onDelete: Cascade)
 
-  @@unique([name])
-  @@unique([contractAddress, network])
+  @@id([communityId, contractAddress, network])
+}
+
+model Community {
+  id          String                      @id @default(cuid())
+  name        String
+  description String
+  coverImage  String
+  rules       CommunityCollectionRules[]
+  createdAt   DateTime                    @default(now())
+  updatedAt   DateTime                    @default(now())
+  members     WalletCommunityMembership[]
+  posts       Post[]
 }
 
 model WalletCommunityMembership {

@@ -69,7 +69,7 @@ export const action: ActionFunction = async ({ request, params }) => {
   }
 
   await createComment(content, params.postId, user.address);
-  return redirect(`/space/${params.id}/post/${params.postId}`);
+  return redirect(`/c/${params.id}/post/${params.postId}`);
 };
 
 export default function Post() {
@@ -90,7 +90,7 @@ export default function Post() {
     <div>
       <div className="px-4 py-5 sm:px-6">
         <div className="flex items-center">
-          <Link to={`/space/${post.communityId}/feed`}>
+          <Link to={`/c/${post.communityId}/feed`}>
             <svg
               xmlns="http://www.w3.org/2000/svg"
               className="mr-2 h-6 w-6"

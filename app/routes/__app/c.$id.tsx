@@ -16,7 +16,7 @@ export const loader: LoaderFunction = async ({ request, params }) => {
   if (!isAllowed) {
     return redirect(`/communities/${params.id}/forbidden`);
   }
-  const walletAndMemberships = await getWallet(user.address, true);
+  const walletAndMemberships = await getWallet(user.address);
   const currentCommunity = walletAndMemberships?.memberships.find(
     (m) => m.communityId === params.id
   )?.community;
