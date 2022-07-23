@@ -1,5 +1,4 @@
 import { type Community } from "@prisma/client";
-import { truncateString } from "~/utils/strings";
 
 interface CommunityCardProps extends React.ComponentPropsWithoutRef<"div"> {
   community?: Community;
@@ -11,7 +10,7 @@ export default function CommunityCard({
   loading,
 }: CommunityCardProps) {
   return (
-    <div className="relative col-span-1 flex rounded-md shadow-sm">
+    <div className="relative col-span-1 flex rounded-md shadow-md">
       {loading ? (
         <div className="animate-pulse rounded-xl bg-gray-200 object-contain sm:h-72 sm:w-full"></div>
       ) : (
@@ -21,7 +20,7 @@ export default function CommunityCard({
           className="rounded-md"
         />
       )}
-      <div className="flex flex-1 items-center justify-between truncate rounded-r-md border-t border-r border-b border-gray-200 bg-white">
+      <div className="flex flex-1 items-center justify-between truncate rounded-r-md  border-gray-200 bg-white">
         <div className="flex-1 truncate px-4 py-2 text-lg">
           <div className="font-bold text-gray-900 hover:text-gray-600">
             {community?.name}

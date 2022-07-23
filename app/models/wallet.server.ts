@@ -10,11 +10,7 @@ export async function getWallet(address: Wallet["address"]) {
     include: {
       memberships: {
         include: {
-          community: {
-            include: {
-              collection: true,
-            },
-          },
+          community: true,
         },
       },
     },

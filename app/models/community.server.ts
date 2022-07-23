@@ -10,6 +10,7 @@ export async function getCommunityById(id: Community["id"]) {
   return await prisma.community.findUnique({
     where: { id },
     include: {
+      rules: true,
       _count: {
         select: { members: true },
       },
@@ -24,7 +25,6 @@ export async function getCommunityAndMembersById(
   return await prisma.community.findUnique({
     where: { id },
     select: {
-      collection: true,
       members: {
         where: {
           walletAddress,

@@ -7,14 +7,13 @@ import {
 import { Link, useFetcher, useLoaderData } from "@remix-run/react";
 import invariant from "tiny-invariant";
 import { checkCollectionOwnership } from "~/data/blockchain.server";
+import { prisma } from "~/db.server";
 import {
-  getCommunityAndMembersById,
   getCommunityById,
   upsertCommunityMembership,
 } from "~/models/community.server";
 import { requireUser } from "~/session.server";
 import { type CommunityWithMembersCount } from "~/types";
-import { truncateEthAddress } from "~/utils";
 
 type LoaderData = { community: CommunityWithMembersCount };
 
@@ -35,17 +34,33 @@ export const action: ActionFunction = async ({ request, params }) => {
   const user = await requireUser(request);
   invariant(process.env.ALCHEMY_ETH_RPC, "Expected process.env.RPC_URL");
   invariant(params.id, "Expected params.id");
+  const community = await getCommunityById(params.id);
+  invariant(community, "Space not found");
 
-  const communityAndMembers = await getCommunityAndMembersById(
-    params.id,
-    user.address
-  );
-  invariant(communityAndMembers, "Space not found");
+  const communityContracts = await prisma.communityCollectionRules.findMany({
+    include: {
+      collection: true,
+    },
+    where: {
+      communityId: params.id,
+    },
+  });
 
-  const isAllowed = await checkCollectionOwnership(
-    communityAndMembers.collection,
-    user.address
-  );
+  let isAllowed = false;
+  if (community.membershipSetting == "public") {
+    isAllowed = true;
+  } else {
+    for (let i = 0; i < communityContracts.length; i++) {
+      const isOwner = await checkCollectionOwnership(
+        communityContracts[i].collection,
+        user.address
+      );
+      if (isOwner) {
+        isAllowed = true;
+        break;
+      }
+    }
+  }
 
   if (isAllowed) {
     await upsertCommunityMembership(params.id, user.address);
@@ -85,19 +100,19 @@ export default function () {
                 {data.community._count.members} Members
               </p>
             </div>
-            <div className="mt-2 flex items-center">
+            {/* <div className="mt-2 flex items-center">
               <p className="text-lg text-gray-500 sm:text-xl">
-                {data.community.network}
+                {data.community}
               </p>
 
               <div className="ml-4 border-l border-gray-300 pl-4">
                 <div className="flex items-center">
                   <p className="text-sm text-gray-500">
-                    {truncateEthAddress(data.community.contractAddress)}
+                    {truncateEthAddress(data.community)}
                   </p>
                 </div>
               </div>
-            </div>
+            </div> */}
 
             <div className="mt-2 space-y-6">
               <p className="text-base text-gray-500">

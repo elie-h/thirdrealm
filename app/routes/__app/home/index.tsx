@@ -1,10 +1,10 @@
-import { Community } from "@prisma/client";
+import { type Community } from "@prisma/client";
 import type { LoaderFunction } from "@remix-run/node";
 import { json } from "@remix-run/node";
 import { Link, useFetcher, useLoaderData } from "@remix-run/react";
 import { useEffect } from "react";
 import CommunityCard from "~/components/CommunityCard";
-import { getWallet, WalletWithMemberships } from "~/models/wallet.server";
+import { getWallet, type WalletWithMemberships } from "~/models/wallet.server";
 import { requireUser } from "~/session.server";
 
 type LoaderData = { wallet: WalletWithMemberships };
@@ -19,7 +19,7 @@ export const loader: LoaderFunction = async ({ request }) => {
 };
 
 export default function () {
-  const { wallet: wallet } = useLoaderData<LoaderData>();
+  const { wallet } = useLoaderData<LoaderData>();
   const walletFetcher = useFetcher();
   useEffect(() => {
     walletFetcher.load("/api/communities");

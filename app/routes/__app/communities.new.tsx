@@ -12,7 +12,7 @@ const uploader = new Uploader({
 });
 
 export const action: ActionFunction = async ({ request, params }) => {
-  const user = await requireUser(request);
+  await requireUser(request);
   const body = await request.formData();
   const content = body.get("name");
   const profileImage = body.get("profileImage");

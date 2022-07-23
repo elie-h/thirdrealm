@@ -12,6 +12,12 @@ enum Network {
   polygon
 }
 
+enum MembershipSetting {
+  public
+  tokenGated
+  inviteOnly
+}
+
 model Collection {
   contractAddress String
   network         Network
@@ -43,6 +49,7 @@ model Wallet {
   comments    Comment[]
 }
 
+// This need heavy reviewing
 model CommunityCollectionRules {
   communityId     String
   contractAddress String
@@ -65,6 +72,7 @@ model Community {
   updatedAt   DateTime                    @default(now())
   members     WalletCommunityMembership[]
   posts       Post[]
+  membershipSetting MembershipSetting @default(public)
 }
 
 model WalletCommunityMembership {

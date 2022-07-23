@@ -3,6 +3,8 @@ import { type DataProp } from "editorjs-blocks-react-renderer";
 import React, { useState } from "react";
 import { createReactEditorJS } from "react-editor-js";
 import { ClientOnly } from "remix-utils";
+// @ts-ignore
+import ImageTool from "@editorjs/image";
 
 function buttonClasses(disabled: boolean) {
   const baseClasses =
@@ -56,6 +58,20 @@ const PostEdit = ({
                     placeholder: "Header",
                     levels: [1],
                     defaultLevel: 1,
+                  },
+                },
+                image: {
+                  class: ImageTool,
+                  config: {
+                    endpoints: {
+                      byFile: "/api/upload", // Your backend file uploader endpoint
+                      // byUrl: "/api/upload", // Your endpoint that provides uploading by Url
+                    },
+                    // additionalRequestHeaders: {
+                    //   Authorization:
+                    //     "Bearer public_kW15at381Uc1mXEPk4uK1nsfD1bx",
+                    //   "Content-Type": "image/png",
+                    // },
                   },
                 },
               }}

@@ -2,8 +2,8 @@ import {
   getNftsForOwner,
   initializeAlchemy,
   Network,
-  type Nft,
   NftExcludeFilters,
+  type Nft,
 } from "@alch/alchemy-sdk";
 import { createAlchemyWeb3 } from "@alch/alchemy-web3";
 import {
@@ -15,7 +15,6 @@ import { ethers } from "ethers";
 import invariant from "tiny-invariant";
 import { nftWalletCache, tokenOwnershipCache, walletCache } from "~/data/cache";
 import { prisma } from "~/db.server";
-import { deleteCollectionSpaceMemberships } from "~/models/collection.server";
 import {
   deleteCollectionOwnership,
   getCollectionOwnership,
@@ -97,12 +96,6 @@ export async function checkCollectionOwnership(
   } else {
     // Delete cache entry if any
     await deleteCollectionOwnership(
-      collection.contractAddress,
-      collection.network,
-      ownerAddress
-    );
-    // Revoke any memberships
-    await deleteCollectionSpaceMemberships(
       collection.contractAddress,
       collection.network,
       ownerAddress
@@ -220,13 +213,12 @@ export async function getWalletCommunities(walletAddress: string) {
 
   // TODO: The below assumes that the contract address isn't duplicated across networks. This is probably wrong.
   const eligibleCommunities = await prisma.community.findMany({
-    include: {
-      collection: true,
-    },
     where: {
-      collection: {
-        contractAddress: {
-          in: [...ethTokenContracts, ...polygonTokenContracts],
+      rules: {
+        every: {
+          contractAddress: {
+            in: [...ethTokenContracts, ...polygonTokenContracts],
+          },
         },
       },
       members: {
@@ -244,9 +236,6 @@ export async function getWalletCommunities(walletAddress: string) {
           walletAddress,
         },
       },
-    },
-    include: {
-      collection: true,
     },
   });
   return {
