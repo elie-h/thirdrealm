@@ -1,5 +1,6 @@
 import { json, redirect, type ActionFunction } from "@remix-run/node";
 import { Link, useFetcher, useParams } from "@remix-run/react";
+import { type DataProp } from "editorjs-blocks-react-renderer";
 import { ClientOnly } from "remix-utils";
 import PostEdit from "~/components/PostEdit.client";
 import { createPost } from "~/models/post.server";
@@ -20,9 +21,10 @@ const badRequest = (data: ActionData) => json(data, { status: 400 });
 export const action: ActionFunction = async ({ request, params }) => {
   const user = await requireUser(request);
   const body = await request.formData();
+  const title = body.get("title")?.toString();
   const content = body.get("content");
   // Add more validation here
-  if (content == null || params.id == undefined) {
+  if (title == null || content == null || params.id == undefined) {
     return badRequest({
       formError: `Form not submitted correctly.`,
     });
@@ -41,16 +43,17 @@ export const action: ActionFunction = async ({ request, params }) => {
   //   });
   // }
 
-  await createPost(jsonContent, params.id, user.address);
+  await createPost(title, jsonContent, params.id, user.address);
   return redirect(`/c/${params.id}/feed`);
 };
 
 export default function () {
   const params = useParams();
   const fetcher = useFetcher();
-  function onSubmit(postContent: any) {
+  function onSubmit(title: string, postContent: DataProp) {
+    console.log(title, postContent);
     fetcher.submit(
-      { content: JSON.stringify(postContent) },
+      { title: title, content: JSON.stringify(postContent) },
       { method: "post" }
     );
   }
@@ -81,8 +84,10 @@ export default function () {
       <ClientOnly>
         {() => (
           <PostEdit
-            placeholder="Create a post"
-            handleSubmit={(postContent: any) => onSubmit(postContent)}
+            placeholder="Post body goes here!"
+            handleSubmit={(title: string, postContent: DataProp) =>
+              onSubmit(title, postContent)
+            }
           />
         )}
       </ClientOnly>

@@ -19,7 +19,7 @@ const CommentForm = ({ handleSubmit }: CommentFormProps) => {
   const [content, setContent] = useState("");
 
   const handleChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
-    const valid = isEmptyString(e.target.value);
+    const valid = !isEmptyString(e.target.value);
     setContent(e.target.value);
     setDisabled(!valid);
   };

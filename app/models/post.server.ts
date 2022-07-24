@@ -1,6 +1,7 @@
 import type { Post, Prisma, Community, Comment } from "@prisma/client";
 
 import { prisma } from "~/db.server";
+import { isEmptyString } from "~/utils/strings";
 
 export async function getPost(id: Post["id"]) {
   return await prisma.post.findFirst({
@@ -39,15 +40,16 @@ export type PostsForCommunities = Prisma.PromiseReturnType<
 >;
 
 export async function createPost(
+  title: Post["title"],
   content: Post["content"],
   communityId: Post["communityId"],
   authorAddress: Post["authorAddress"]
 ) {
-  if (content == null) {
-    throw new Error("Content is required");
+  if (isEmptyString(title) || content == null) {
+    throw new Error("Title and content are required");
   }
   return await prisma.post.create({
-    data: { content, communityId, authorAddress },
+    data: { title, content, communityId, authorAddress },
   });
 }
 

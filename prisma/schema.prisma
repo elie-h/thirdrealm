@@ -73,6 +73,7 @@ model Community {
   members     WalletCommunityMembership[]
   posts       Post[]
   membershipSetting MembershipSetting @default(public)
+
 }
 
 model WalletCommunityMembership {
@@ -87,8 +88,8 @@ model WalletCommunityMembership {
 
 model Post {
   id            String    @id @default(cuid())
-  // title         String
-  content       Json
+  title         String
+  content       Json?
   createdAt     DateTime  @default(now())
   updatedAt     DateTime  @default(now())
   author        Wallet    @relation(fields: [authorAddress], references: [address], onDelete: Cascade)

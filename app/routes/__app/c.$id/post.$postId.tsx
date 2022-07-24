@@ -57,7 +57,7 @@ export const action: ActionFunction = async ({ request, params }) => {
   }
 
   const fieldErrors = {
-    content: isEmptyString(content),
+    content: !isEmptyString(content),
   };
 
   const fields = { content };

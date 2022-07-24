@@ -13,9 +13,9 @@ export function isEmptyString(content: string) {
     content.replace(/(\r\n|\n|\r)/gm, "").replace(/\s/g, "").length <= 0 ||
     content.length <= 0
   ) {
-    return false;
+    return true;
   }
-  return true;
+  return false;
 }
 
 // Define a serializing function that takes a value and returns a string.

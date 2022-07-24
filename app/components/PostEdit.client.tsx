@@ -5,6 +5,7 @@ import { createReactEditorJS } from "react-editor-js";
 import { ClientOnly } from "remix-utils";
 // @ts-ignore
 import ImageTool from "@editorjs/image";
+import { isEmptyString } from "~/utils/strings";
 
 function buttonClasses(disabled: boolean) {
   const baseClasses =
@@ -16,7 +17,7 @@ function buttonClasses(disabled: boolean) {
 }
 
 interface PostEditProps {
-  handleSubmit: (x: DataProp) => void;
+  handleSubmit: (title: string, body: DataProp) => void;
   buttonText?: string;
   placeholder?: string;
 }
@@ -25,7 +26,8 @@ const PostEdit = ({
   placeholder = "Type here",
 }: PostEditProps) => {
   // @ts-ignore
-  const [disabled] = useState(false);
+  const [title, setTitle] = useState("");
+  const [disabled, setDisabled] = useState(isEmptyString(title));
 
   const ReactEditorJS = createReactEditorJS();
   const editorCore = React.useRef(null);
@@ -34,48 +36,66 @@ const PostEdit = ({
     editorCore.current = instance;
   }, []);
 
-  const handleSave = React.useCallback(async () => {
+  const handleTitleChange = (val: string) => {
+    setTitle(val);
+    setDisabled(isEmptyString(val));
+  };
+
+  // const handleSave = React.useCallback(async () => {
+  //   // @ts-ignore
+  //   const savedData = await editorCore.current.save();
+  //   console.log("TITLE", title);
+  //   // handleSubmit(title, savedData);
+  //   // // @ts-ignore
+  //   // editorCore.current.clear();
+  // }, [handleSubmit]);
+
+  const handleSave = async () => {
     // @ts-ignore
     const savedData = await editorCore.current.save();
-    handleSubmit(savedData);
+    handleSubmit(title, savedData);
     // @ts-ignore
     editorCore.current.clear();
-  }, [handleSubmit]);
+  };
 
   return (
     <div className="border bg-white p-4 pt-6 sm:rounded-lg">
       <ClientOnly fallback={<p>Loading...</p>}>
         {() => (
-          <div>
-            <ReactEditorJS
-              placeholder={placeholder}
-              onInitialize={handleInitialize}
-              tools={{
-                header: {
-                  // @ts-ignore
-                  class: Header,
-                  config: {
-                    placeholder: "Header",
-                    levels: [1],
-                    defaultLevel: 1,
-                  },
-                },
-                image: {
-                  class: ImageTool,
-                  config: {
-                    endpoints: {
-                      byFile: "/api/upload", // Your backend file uploader endpoint
-                      // byUrl: "/api/upload", // Your endpoint that provides uploading by Url
+          <div className="w-full">
+            <div className="mx-0 sm:mx-[124px]">
+              <input
+                className="ring-none w-full border-none bg-white py-4 px-0 text-xl font-bold leading-tight text-gray-700  focus:ring-transparent"
+                placeholder="Title"
+                type="text"
+                onChange={(x) => handleTitleChange(x.target.value)}
+              />
+            </div>
+            <div className="w-full">
+              <ReactEditorJS
+                placeholder={placeholder}
+                onInitialize={handleInitialize}
+                tools={{
+                  header: {
+                    // @ts-ignore
+                    class: Header,
+                    config: {
+                      placeholder: "Header",
+                      levels: [1],
+                      defaultLevel: 1,
                     },
-                    // additionalRequestHeaders: {
-                    //   Authorization:
-                    //     "Bearer public_kW15at381Uc1mXEPk4uK1nsfD1bx",
-                    //   "Content-Type": "image/png",
-                    // },
                   },
-                },
-              }}
-            />
+                  image: {
+                    class: ImageTool,
+                    config: {
+                      endpoints: {
+                        byFile: "/api/upload", // Your backend file uploader endpoint
+                      },
+                    },
+                  },
+                }}
+              />
+            </div>
           </div>
         )}
       </ClientOnly>
