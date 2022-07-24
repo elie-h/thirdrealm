@@ -5,7 +5,7 @@ export default function Index() {
     <div className="bg-white">
       <main>
         {/* <!-- Hero section --> */}
-        <div className="overflow-hidden pt-8 sm:pt-12 lg:relative lg:py-48">
+        <div className="overflow-hidden lg:relative lg:py-36">
           <div className="mx-auto max-w-md px-4 sm:max-w-3xl sm:px-6 lg:grid lg:max-w-7xl lg:grid-cols-2 lg:gap-24 lg:px-8">
             <div>
               {/* <img className="h-12 w-auto" src="/logo.png" alt="Workflow" /> */}
@@ -32,46 +32,44 @@ export default function Index() {
             </div>
           </div>
 
-          <div className="sm:mx-auto sm:max-w-3xl sm:px-6">
-            <div className="py-12 sm:relative sm:mt-12 sm:py-16 lg:absolute lg:inset-y-0 lg:right-0 lg:w-1/2">
-              <div className="hidden sm:block">
-                <div className="absolute inset-y-0 left-1/2 w-screen rounded-l-3xl bg-gray-50 lg:left-80 lg:right-0 lg:w-full"></div>
-                <svg
-                  className="absolute top-8 right-1/2 -mr-3 lg:left-0 lg:m-0"
-                  width="404"
-                  height="392"
-                  fill="none"
-                  viewBox="0 0 404 392"
-                >
-                  <defs>
-                    <pattern
-                      id="837c3e70-6c3a-44e6-8854-cc48c737b659"
+          <div className="hidden sm:mx-auto sm:max-w-3xl sm:px-6 lg:block">
+            <div className="sm:relative sm:mt-12 sm:py-16 lg:absolute lg:inset-y-0 lg:right-0 lg:w-1/2">
+              <div className="absolute inset-y-0 left-1/2 w-screen rounded-l-3xl bg-gray-50 lg:left-80 lg:right-0 lg:w-full"></div>
+              <svg
+                className="absolute top-8 right-1/2 -mr-3 lg:left-0 lg:m-0"
+                width="404"
+                height="392"
+                fill="none"
+                viewBox="0 0 404 392"
+              >
+                <defs>
+                  <pattern
+                    id="837c3e70-6c3a-44e6-8854-cc48c737b659"
+                    x="0"
+                    y="0"
+                    width="20"
+                    height="20"
+                    patternUnits="userSpaceOnUse"
+                  >
+                    <rect
                       x="0"
                       y="0"
-                      width="20"
-                      height="20"
-                      patternUnits="userSpaceOnUse"
-                    >
-                      <rect
-                        x="0"
-                        y="0"
-                        width="4"
-                        height="4"
-                        className="text-gray-200"
-                        fill="currentColor"
-                      />
-                    </pattern>
-                  </defs>
-                  <rect
-                    width="404"
-                    height="392"
-                    fill="url(#837c3e70-6c3a-44e6-8854-cc48c737b659)"
-                  />
-                </svg>
-              </div>
-              <div className="relative -mr-40 pl-4 sm:mx-auto sm:max-w-3xl sm:px-0 lg:h-full lg:max-w-none lg:pl-12">
+                      width="4"
+                      height="4"
+                      className="text-gray-200"
+                      fill="currentColor"
+                    />
+                  </pattern>
+                </defs>
+                <rect
+                  width="404"
+                  height="392"
+                  fill="url(#837c3e70-6c3a-44e6-8854-cc48c737b659)"
+                />
+              </svg>
+              <div className="relative pl-4 sm:mx-auto sm:max-w-3xl sm:px-0 lg:h-4/5 lg:max-w-none lg:pl-12">
                 <img
-                  className="w-full rounded-md ring-opacity-5 lg:h-full lg:w-auto lg:max-w-none"
+                  className="hidden w-full rounded-md ring-opacity-5 sm:block lg:h-full lg:w-auto lg:max-w-none"
                   src="biglogo.png"
                   alt=""
                 />
@@ -405,17 +403,17 @@ export default function Index() {
               <div className="relative">
                 <div className="sm:text-center">
                   <h2 className="text-3xl font-extrabold tracking-tight text-white sm:text-4xl">
-                    Join the beta today
+                    Join the beta
                   </h2>
                   <p className="mx-auto mt-6 max-w-2xl text-lg text-rose-100">
                     Interested in launching a community? Contact us to get
                     started!
                   </p>
-                  <div className="mt-12 w-full">
+                  <div className="mt-12 flex w-full">
                     <a
                       target="_blank"
                       href="https://us13.list-manage.com/contact-form?u=bd8ea784a3b10bf067e791b2d&form_id=1d92c5c3ca9f4e010707312dbb0eb43c"
-                      className="w-42 mx-auto rounded-md border border-transparent bg-gray-900 px-5 py-3 text-base font-medium text-white shadow first-letter:block hover:bg-black focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-rose-500"
+                      className="mx-auto rounded-md border border-transparent bg-gray-900 px-5 py-3 text-base font-medium text-white shadow first-letter:block hover:bg-black focus:outline-none focus:ring-2"
                     >
                       Contact
                     </a>
@@ -503,7 +501,9 @@ export default function Index() {
             </button> */}
 
             <a
-              href="www.twitter.com/jointhirdrealm"
+              href="https://www.twitter.com/jointhirdrealm"
+              target={`_blank`}
+              rel="noreferrer"
               className="text-gray-400 hover:text-gray-300"
             >
               <span className="sr-only">Twitter</span>

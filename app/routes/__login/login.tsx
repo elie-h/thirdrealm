@@ -1,4 +1,4 @@
-import { useNavigate, useSubmit } from "@remix-run/react";
+import { useFetcher, useNavigate } from "@remix-run/react";
 import { useEffect } from "react";
 import { SiweMessage } from "siwe";
 import invariant from "tiny-invariant";
@@ -24,7 +24,7 @@ export default function Login() {
   const user = useOptionalUser();
   const navigate = useNavigate();
 
-  const submit = useSubmit();
+  const fetcher = useFetcher();
   const { data: signer, isError, isLoading } = useSigner();
 
   const handleSubmit = async () => {
@@ -38,7 +38,7 @@ export default function Login() {
     const formData = new FormData();
     formData.append("signature", signature);
     formData.append("message", message);
-    submit(formData, {
+    fetcher.submit(formData, {
       action: "/siwe/verify",
       method: "post",
       encType: "application/x-www-form-urlencoded",
