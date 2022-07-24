@@ -412,6 +412,7 @@ export default function Index() {
                   <div className="mt-12 flex w-full">
                     <a
                       target="_blank"
+                      rel="noopener noreferrer"
                       href="https://us13.list-manage.com/contact-form?u=bd8ea784a3b10bf067e791b2d&form_id=1d92c5c3ca9f4e010707312dbb0eb43c"
                       className="mx-auto rounded-md border border-transparent bg-gray-900 px-5 py-3 text-base font-medium text-white shadow first-letter:block hover:bg-black focus:outline-none focus:ring-2"
                     >
