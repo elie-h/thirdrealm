@@ -35,7 +35,7 @@ const CommentForm = ({ handleSubmit }: CommentFormProps) => {
         rows={2}
         name="comment"
         id="comment"
-        className="block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+        className="block h-fit w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
         placeholder="Add your comment..."
         onChange={(x) => handleChange(x)}
         value={content}

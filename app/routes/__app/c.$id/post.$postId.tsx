@@ -88,7 +88,7 @@ export default function Post() {
 
   return (
     <div>
-      <div className="px-4 py-5 sm:px-6">
+      <div className="py-5 px-4 sm:px-1">
         <div className="flex items-center">
           <Link to={`/c/${post.communityId}/feed`}>
             <svg

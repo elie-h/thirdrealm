@@ -37,7 +37,7 @@ export default function () {
           <h3 className="font-lg text-xl font-bold leading-6">
             Your Communities
           </h3>
-          <Link
+          {/* <Link
             to={`/communities/new`}
             className="inline-flex items-center rounded-md border border-transparent bg-indigo-600 px-4 py-1 text-sm font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
           >
@@ -56,7 +56,7 @@ export default function () {
               />
             </svg>
             New
-          </Link>
+          </Link> */}
         </div>
         {wallet?.memberships.length ? (
           <div className="grid grid-cols-1 gap-y-4 sm:grid-cols-2 sm:gap-x-6 sm:gap-y-10 lg:grid-cols-3 lg:gap-x-8">

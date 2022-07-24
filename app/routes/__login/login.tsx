@@ -6,16 +6,13 @@ import { useSigner } from "wagmi";
 import WalletButton from "~/components/Web3";
 import { useOptionalUser } from "~/utils";
 
-const domain = "thirdrealm";
-const origin = "https://thirdrealm.xyz/login";
-
 async function createSiweMessage(address: string, statement: string) {
   const res = await fetch(`siwe/nonce`);
   const siweMessage = new SiweMessage({
-    domain,
+    domain: window.location.host,
     address,
     statement,
-    uri: origin,
+    uri: window.location.origin,
     version: "1",
     chainId: 1,
     nonce: await res.text(),
