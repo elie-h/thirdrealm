@@ -29,8 +29,9 @@ export default function Login() {
 
   const handleSubmit = async () => {
     invariant(signer, "Signer is required");
+    const signerAddress = await signer.getAddress();
     const message = await createSiweMessage(
-      await signer.getAddress(),
+      signerAddress,
       "Sign in with Ethereum to the app."
     );
 
