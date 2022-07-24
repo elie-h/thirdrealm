@@ -8,13 +8,16 @@ export default function Index() {
         <div className="overflow-hidden pt-8 sm:pt-12 lg:relative lg:py-48">
           <div className="mx-auto max-w-md px-4 sm:max-w-3xl sm:px-6 lg:grid lg:max-w-7xl lg:grid-cols-2 lg:gap-24 lg:px-8">
             <div>
+              {/* <img className="h-12 w-auto" src="/logo.png" alt="Workflow" /> */}
               <div className="mt-20">
                 <div className="mt-6 sm:max-w-xl">
                   <h1 className="text-4xl font-extrabold tracking-tight text-gray-900 sm:text-5xl">
                     Third Realm
                   </h1>
                   <p className="mt-6 text-xl text-gray-500">
-                    Social Graphs Based On Token Ownership
+                    Token gated digital spaces for NFT communities. Find your
+                    frens, connect with communities you're already part of and
+                    share exclusive content.
                   </p>
                 </div>
                 <div className="mt-6 sm:ml-3 sm:flex sm:w-full sm:max-w-lg">
@@ -68,8 +71,8 @@ export default function Index() {
               </div>
               <div className="relative -mr-40 pl-4 sm:mx-auto sm:max-w-3xl sm:px-0 lg:h-full lg:max-w-none lg:pl-12">
                 <img
-                  className="w-full rounded-md shadow-xl ring-1 ring-black ring-opacity-5 lg:h-full lg:w-auto lg:max-w-none"
-                  src="https://lh3.googleusercontent.com/svc_rQkHVGf3aMI14v3pN-ZTI7uDRwN-QayvixX-nHSMZBgb1L1LReSg1-rXj4gNLJgAB0-yD8ERoT-Q2Gu4cy5AuSg-RdHF9bOxFDw=h600"
+                  className="w-full rounded-md ring-opacity-5 lg:h-full lg:w-auto lg:max-w-none"
+                  src="biglogo.png"
                   alt=""
                 />
               </div>
@@ -141,17 +144,18 @@ export default function Index() {
                           <path d="M9.352 4C4.456 7.456 1 13.12 1 19.36c0 5.088 3.072 8.064 6.624 8.064 3.36 0 5.856-2.688 5.856-5.856 0-3.168-2.208-5.472-5.088-5.472-.576 0-1.344.096-1.536.192.48-3.264 3.552-7.104 6.624-9.024L9.352 4zm16.512 0c-4.8 3.456-8.256 9.12-8.256 15.36 0 5.088 3.072 8.064 6.624 8.064 3.264 0 5.856-2.688 5.856-5.856 0-3.168-2.304-5.472-5.184-5.472-.576 0-1.248.096-1.44.192.48-3.264 3.456-7.104 6.528-9.024L25.864 4z" />
                         </svg>
                         <p className="relative">
-                          Third Realm offers our community an unprecedented way
-                          of connecting. It's like a gated community that keeps
-                          the noise from scammers and spammers out.
+                          Hosting a community on Third Realm completely changed
+                          the way our token holders are able to interact. By
+                          restricting the community to just token holders all
+                          the scammers and bots completely disappeared.
                         </p>
                       </div>
 
-                      <footer className="mt-4">
+                      {/* <footer className="mt-4">
                         <p className="text-base font-semibold text-rose-200">
                           A completely made up review
                         </p>
-                      </footer>
+                      </footer> */}
                     </blockquote>
                   </div>
                 </div>
@@ -162,14 +166,14 @@ export default function Index() {
               {/* <!-- Content area --> */}
               <div className="pt-12 sm:pt-16 lg:pt-20">
                 <h2 className="text-3xl font-extrabold tracking-tight text-gray-900 sm:text-4xl">
-                  On a mission to connect communities
+                  Private digital spaces for token holders only
                 </h2>
                 <div className="mt-6 space-y-6 text-gray-500">
                   <p className="text-lg">
-                    Cut through the noise, and give token holders the platform
-                    they deserve. By limiting voices to token holders only
-                    projects can connect with their users directly without the
-                    headache of fighting scammers and spammers.
+                    Third Realm communities are token gated spaces where only
+                    token holders can post, share and interact. Join web3
+                    projects, make new frens and share content with communities
+                    you're already part of.
                   </p>
                 </div>
               </div>
@@ -178,7 +182,7 @@ export default function Index() {
         </div>
 
         {/* <!-- Logo cloud section --> */}
-        <div className="mt-32">
+        {/* <div className="mt-32">
           <div className="mx-auto max-w-md px-4 sm:max-w-3xl sm:px-6 lg:max-w-7xl lg:px-8">
             <div className="lg:grid lg:grid-cols-2 lg:items-center lg:gap-24">
               <div>
@@ -334,7 +338,7 @@ export default function Index() {
               </div>
             </div>
           </div>
-        </div>
+        </div> */}
 
         {/* <!-- CTA section --> */}
         <div className="relative mt-24 sm:mt-32 sm:py-16">
@@ -404,8 +408,18 @@ export default function Index() {
                     Join the beta today
                   </h2>
                   <p className="mx-auto mt-6 max-w-2xl text-lg text-rose-100">
-                    Be the first to shape the future of token based communities.
+                    Interested in launching a community? Contact us to get
+                    started!
                   </p>
+                  <div className="mt-12 w-full">
+                    <a
+                      target="_blank"
+                      href="https://us13.list-manage.com/contact-form?u=bd8ea784a3b10bf067e791b2d&form_id=1d92c5c3ca9f4e010707312dbb0eb43c"
+                      className="w-42 mx-auto rounded-md border border-transparent bg-gray-900 px-5 py-3 text-base font-medium text-white shadow first-letter:block hover:bg-black focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-rose-500"
+                    >
+                      Contact
+                    </a>
+                  </div>
                 </div>
               </div>
             </div>
@@ -416,7 +430,7 @@ export default function Index() {
       {/* <!-- Footer section --> */}
       <footer className="mt-24 bg-gray-900 sm:mt-12">
         <div className="mx-auto max-w-md overflow-hidden py-12 px-4 sm:max-w-3xl sm:px-6 lg:max-w-7xl lg:px-8">
-          <nav
+          {/* <nav
             className="-mx-5 -my-2 flex flex-wrap justify-center"
             aria-label="Footer"
           >
@@ -454,9 +468,9 @@ export default function Index() {
                 Partners{" "}
               </button>
             </div>
-          </nav>
+          </nav> */}
           <div className="mt-8 flex justify-center space-x-6">
-            <button className="text-gray-400 hover:text-gray-300">
+            {/* <button className="text-gray-400 hover:text-gray-300">
               <span className="sr-only">Facebook</span>
               <svg
                 className="h-6 w-6"
@@ -470,9 +484,9 @@ export default function Index() {
                   clipRule="evenodd"
                 />
               </svg>
-            </button>
+            </button> */}
 
-            <button className="text-gray-400 hover:text-gray-300">
+            {/* <button className="text-gray-400 hover:text-gray-300">
               <span className="sr-only">Instagram</span>
               <svg
                 className="h-6 w-6"
@@ -486,9 +500,12 @@ export default function Index() {
                   clipRule="evenodd"
                 />
               </svg>
-            </button>
+            </button> */}
 
-            <button className="text-gray-400 hover:text-gray-300">
+            <a
+              href="www.twitter.com/jointhirdrealm"
+              className="text-gray-400 hover:text-gray-300"
+            >
               <span className="sr-only">Twitter</span>
               <svg
                 className="h-6 w-6"
@@ -498,9 +515,9 @@ export default function Index() {
               >
                 <path d="M8.29 20.251c7.547 0 11.675-6.253 11.675-11.675 0-.178 0-.355-.012-.53A8.348 8.348 0 0022 5.92a8.19 8.19 0 01-2.357.646 4.118 4.118 0 001.804-2.27 8.224 8.224 0 01-2.605.996 4.107 4.107 0 00-6.993 3.743 11.65 11.65 0 01-8.457-4.287 4.106 4.106 0 001.27 5.477A4.072 4.072 0 012.8 9.713v.052a4.105 4.105 0 003.292 4.022 4.095 4.095 0 01-1.853.07 4.108 4.108 0 003.834 2.85A8.233 8.233 0 012 18.407a11.616 11.616 0 006.29 1.84" />
               </svg>
-            </button>
+            </a>
 
-            <button className="text-gray-400 hover:text-gray-300">
+            {/* <button className="text-gray-400 hover:text-gray-300">
               <span className="sr-only">GitHub</span>
               <svg
                 className="h-6 w-6"
@@ -514,9 +531,9 @@ export default function Index() {
                   clipRule="evenodd"
                 />
               </svg>
-            </button>
+            </button> */}
 
-            <button className="text-gray-400 hover:text-gray-300">
+            {/* <button className="text-gray-400 hover:text-gray-300">
               <span className="sr-only">Dribbble</span>
               <svg
                 className="h-6 w-6"
@@ -530,7 +547,7 @@ export default function Index() {
                   clipRule="evenodd"
                 />
               </svg>
-            </button>
+            </button> */}
           </div>
           <p className="mt-8 text-center text-base text-gray-400">
             &copy; 2022 ThirdRealm, Inc. All rights reserved.
