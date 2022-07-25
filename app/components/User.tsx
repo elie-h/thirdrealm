@@ -1,6 +1,6 @@
 import { Menu, Transition } from "@headlessui/react";
 import { ConnectButton } from "@rainbow-me/rainbowkit";
-import { Form, useSubmit } from "@remix-run/react";
+import { Form } from "@remix-run/react";
 import { Fragment, useEffect } from "react";
 import Jazzicon, { jsNumberForAddress } from "react-jazzicon";
 import { useSigner } from "wagmi";

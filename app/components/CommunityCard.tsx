@@ -1,6 +1,6 @@
 import { type Community } from "@prisma/client";
 
-interface CommunityCardProps extends React.ComponentPropsWithoutRef<"div"> {
+interface CommunityCardProps {
   community?: Community;
   loading: boolean;
 }

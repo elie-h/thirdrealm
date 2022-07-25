@@ -4,10 +4,8 @@ import { json } from "@remix-run/node";
 import { Link, useFetcher, useLoaderData } from "@remix-run/react";
 import { useEffect } from "react";
 import CommunityCard from "~/components/CommunityCard";
-import { getWallet, type WalletWithMemberships } from "~/models/wallet.server";
+import { getWallet } from "~/models/wallet.server";
 import { requireUser } from "~/session.server";
-
-type LoaderData = { wallet: WalletWithMemberships };
 
 export const loader: LoaderFunction = async ({ request }) => {
   const user = await requireUser(request);
@@ -19,7 +17,7 @@ export const loader: LoaderFunction = async ({ request }) => {
 };
 
 export default function () {
-  const { wallet } = useLoaderData<LoaderData>();
+  const { wallet } = useLoaderData();
   const walletFetcher = useFetcher();
   useEffect(() => {
     walletFetcher.load("/api/communities");
@@ -60,7 +58,7 @@ export default function () {
         </div>
         {wallet?.memberships.length ? (
           <div className="grid grid-cols-1 gap-y-4 sm:grid-cols-2 sm:gap-x-6 sm:gap-y-10 lg:grid-cols-3 lg:gap-x-8">
-            {wallet?.memberships.map((membership) => (
+            {wallet?.memberships.map((membership: any) => (
               <Link
                 to={`/c/${membership.community.id}/feed`}
                 key={membership.community.id}

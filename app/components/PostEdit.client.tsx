@@ -32,7 +32,7 @@ const PostEdit = ({
   const ReactEditorJS = createReactEditorJS();
   const editorCore = React.useRef(null);
 
-  const handleInitialize = React.useCallback((instance) => {
+  const handleInitialize = React.useCallback((instance: any) => {
     editorCore.current = instance;
   }, []);
 

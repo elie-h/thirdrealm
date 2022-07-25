@@ -3,25 +3,20 @@ import { Link, useLoaderData, useParams } from "@remix-run/react";
 import { ClientOnly } from "remix-utils";
 import invariant from "tiny-invariant";
 import PostCard from "~/components/PostCard.client";
-import {
-  getPostsForCommunity,
-  type PostsForCommunities,
-} from "~/models/post.server";
+import { getPostsForCommunity } from "~/models/post.server";
 import { requireUser } from "~/session.server";
-
-type LoaderData = { posts: PostsForCommunities };
 
 export const loader: LoaderFunction = async ({ request, params }) => {
   await requireUser(request);
   invariant(params.id, "id is required");
   const posts = await getPostsForCommunity(params.id);
 
-  const data: LoaderData = { posts };
+  const data = { posts };
   return json(data);
 };
 
 export default function () {
-  const data = useLoaderData<LoaderData>();
+  const data = useLoaderData();
   const params = useParams();
 
   return (
@@ -53,7 +48,7 @@ export default function () {
         <ClientOnly>
           {() => (
             <ul>
-              {data.posts.map((post) => (
+              {data.posts.map((post: any) => (
                 <li
                   key={post.id}
                   className="border-lg border border-b-0 bg-white first:rounded-t-lg last:rounded-b-lg last:border-b"

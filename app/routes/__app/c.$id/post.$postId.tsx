@@ -11,22 +11,16 @@ import invariant from "tiny-invariant";
 import CommentCard from "~/components/CommentCard";
 import CommentForm from "~/components/CommentForm";
 import PostCard from "~/components/PostCard.client";
-import {
-  createComment,
-  getPost,
-  type PostWithComments,
-} from "~/models/post.server";
+import { createComment, getPost } from "~/models/post.server";
 import { requireUser } from "~/session.server";
 import { isEmptyString } from "~/utils/strings";
-
-type LoaderData = { post: PostWithComments };
 
 export const loader: LoaderFunction = async ({ request, params }) => {
   await requireUser(request);
   invariant(params.postId, "id is required");
   const post = await getPost(params.postId);
   if (post) {
-    const data: LoaderData = { post };
+    const data = { post };
     return json(data);
   }
   // TODO: Handle missing ones here
@@ -73,7 +67,7 @@ export const action: ActionFunction = async ({ request, params }) => {
 };
 
 export default function Post() {
-  const { post } = useLoaderData<LoaderData>();
+  const { post } = useLoaderData();
   const fetcher = useFetcher();
 
   function onSubmit(comment: string) {
