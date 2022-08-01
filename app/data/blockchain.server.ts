@@ -22,7 +22,7 @@ import {
 } from "~/models/collectionOwner.server";
 import { truncateString } from "~/utils/strings";
 
-async function getOwnersForCollection(
+export async function getOwnersForCollection(
   contractAddress: string,
   walletAddress: string,
   network: DBNetwork
@@ -42,6 +42,9 @@ async function getOwnersForCollection(
     case "polygon":
       alchemy_network = Network.MATIC_MAINNET;
       break;
+  }
+  if (alchemy_network == undefined) {
+    throw new Error("Unknown network");
   }
 
   const alchemy = initializeAlchemy({

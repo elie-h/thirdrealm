@@ -1,5 +1,3 @@
-import { Outlet } from "@remix-run/react";
-import { Web3Wrapper } from "~/components/Web3";
 import { ConnectButton } from "@rainbow-me/rainbowkit";
 
 export default function Test() {

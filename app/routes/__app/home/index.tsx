@@ -30,9 +30,9 @@ export default function () {
   return (
     <div className="min-h-screen py-16 px-4 sm:px-6 lg:px-8">
       <h3 className="font-lg text-xl font-bold leading-6">Welcome home,</h3>
-      <div className="my-10 border-t">
+      <div className="my-5 border-t">
         <div className="flex items-center justify-between py-3 ">
-          <h3 className="font-lg text-xl font-bold leading-6">
+          <h3 className="font-lg my-5 text-xl font-bold leading-6">
             Your Communities
           </h3>
           {/* <Link

@@ -19,7 +19,7 @@ export default function FormField({
     <label className={"flex flex-col " + className}>
       {label && <span>{label}</span>}
       {children}
-      <ErrorMessage error={error} className="ml-2" />
+      <ErrorMessage error={error} />
     </label>
   );
 }
