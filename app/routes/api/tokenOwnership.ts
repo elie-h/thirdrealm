@@ -24,12 +24,21 @@ export const loader: LoaderFunction = async ({ request }) => {
       network
     );
 
-    return json({
-      contractAddress,
-      walletAddress,
-      network,
-      ownedTokens: count,
-    });
+    return json(
+      {
+        contractAddress,
+        walletAddress,
+        network,
+        ownedTokens: count,
+      },
+      {
+        status: 200,
+        headers: {
+          "Access-Control-Allow-Origin": "*",
+          "Access-Control-Allow-Headers": "*",
+        },
+      }
+    );
   } catch (error: any) {
     console.error(error);
     throw new Response(error, {
