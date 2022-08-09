@@ -12,57 +12,112 @@ enum Network {
   polygon
 }
 
+enum MembershipSetting {
+  public
+  tokenGated
+  inviteOnly
+}
+
 model Collection {
-  id              String            @id @default(cuid())
-  name            String
-  description     String
-  coverImage      String
-  symbol          String
   contractAddress String
   network         Network
-  totalSupply     Int
-  tokenType       String
-  createdAt       DateTime          @default(now())
-  updatedAt       DateTime          @default(now())
-  space           Space?
+  createdAt       DateTime                   @default(now())
+  updatedAt       DateTime                   @default(now())
+  rules           CommunityCollectionRules[]
   owners          CollectionOwner[]
-  lastRefreshed  DateTime          @default("1993-10-19T00:00:00.000Z")
 
-  @@unique([contractAddress, network])
+  @@id([contractAddress, network])
 }
 
 model CollectionOwner {
-  id           String     @id @default(cuid())
-  ownerAddress String
-  collectionId String
-  updatedAt    DateTime   @default(now())
-  collection   Collection @relation(fields: [collectionId], references: [id])
+  ownerAddress    String
+  updatedAt       DateTime   @default(now())
+  collection      Collection @relation(fields: [contractAddress, network], references: [contractAddress, network], onDelete: Cascade)
+  contractAddress String
+  network         Network
+
+  @@id([contractAddress, ownerAddress, network])
 }
 
 model Wallet {
-  id          String                  @id @default(cuid())
-  address     String                  @unique
-  createdAt   DateTime                @default(now())
-  updatedAt   DateTime                @default(now())
-  lastSeen    DateTime                @updatedAt
-  memberships WalletSpaceMembership[]
+  address     String                      @id
+  name        String?
+  bio         String?
+  image       String?
+  createdAt   DateTime                    @default(now())
+  updatedAt   DateTime                    @default(now())
+  lastSeen    DateTime                    @updatedAt
+  memberships WalletCommunityMembership[]
+  posts       Post[]
+  comments    Comment[]
 }
 
-model Space {
-  id           String                  @id @default(cuid())
-  collection   Collection              @relation(fields: [collectionId], references: [id])
-  collectionId String                  @unique
-  createdAt    DateTime                @default(now())
-  updatedAt    DateTime                @default(now())
-  members      WalletSpaceMembership[]
+// This need heavy reviewing
+model CommunityCollectionRules {
+  communityId     String
+  contractAddress String
+  network         Network
+  createdAt       DateTime   @default(now())
+  updatedAt       DateTime   @default(now())
+  community       Community  @relation(fields: [communityId], references: [id], onDelete: Cascade)
+  collection      Collection @relation(fields: [contractAddress, network], references: [contractAddress, network], onDelete: Cascade)
+
+  @@id([communityId, contractAddress, network])
 }
 
-model WalletSpaceMembership {
-  wallet    Wallet   @relation(fields: [walletId], references: [id])
-  walletId  String
-  space     Space    @relation(fields: [spaceId], references: [id])
-  spaceId   String
-  createdAt DateTime @default(now())
+model Community {
+  id                String                      @id @default(cuid())
+  name              String
+  description       String
+  coverImage        String
+  rules             CommunityCollectionRules[]
+  createdAt         DateTime                    @default(now())
+  updatedAt         DateTime                    @default(now())
+  members           WalletCommunityMembership[]
+  posts             Post[]
+  membershipSetting MembershipSetting           @default(public)
+}
 
-  @@id([walletId, spaceId])
+model WalletCommunityMembership {
+  wallet        Wallet    @relation(fields: [walletAddress], references: [address], onDelete: Cascade)
+  walletAddress String
+  community     Community @relation(fields: [communityId], references: [id], onDelete: Cascade)
+  communityId   String
+  createdAt     DateTime  @default(now())
+
+  @@id([walletAddress, communityId])
+}
+
+model Post {
+  id            String    @id @default(cuid())
+  title         String
+  content       Json?
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @default(now())
+  author        Wallet    @relation(fields: [authorAddress], references: [address], onDelete: Cascade)
+  authorAddress String
+  community     Community @relation(fields: [communityId], references: [id], onDelete: Cascade)
+  communityId   String
+  comments      Comment[]
+
+  @@index([communityId])
+  @@index([createdAt])
+}
+
+model Comment {
+  id            String   @id @default(cuid())
+  content       String
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @default(now())
+  author        Wallet   @relation(fields: [authorAddress], references: [address], onDelete: Cascade)
+  authorAddress String
+  post          Post     @relation(fields: [postId], references: [id], onDelete: Cascade)
+  postId        String
+  parentId      String?  @unique
+  parent        Comment? @relation("CommentReplies", fields: [parentId], references: [id])
+  child         Comment? @relation("CommentReplies")
+
+  @@index([postId])
+  @@index([createdAt])
+  @@index([authorAddress])
 }

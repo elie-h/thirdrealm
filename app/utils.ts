@@ -1,7 +1,7 @@
 import { useMatches } from "@remix-run/react";
 import { useMemo } from "react";
 
-import type { User } from "~/models/wallet.server";
+import type { Wallet } from "~/models/wallet.server";
 
 const DEFAULT_REDIRECT = "/";
 
@@ -44,11 +44,11 @@ export function useMatchesData(
   return route?.data;
 }
 
-function isUser(user: any): user is User {
+function isUser(user: any): user is Wallet {
   return user && typeof user === "object" && typeof user.address === "string";
 }
 
-export function useOptionalUser(): User | undefined {
+export function useOptionalUser(): Wallet | undefined {
   const data = useMatchesData("root");
   if (!data || !isUser(data.user)) {
     return undefined;
@@ -56,7 +56,7 @@ export function useOptionalUser(): User | undefined {
   return data.user;
 }
 
-export function useUser(): User {
+export function useUser(): Wallet {
   const maybeUser = useOptionalUser();
   if (!maybeUser) {
     throw new Error(
@@ -89,4 +89,34 @@ export const truncateEthAddress = (address: string) => {
   const match = address.match(truncateRegex);
   if (!match) return address;
   return `${match[1]}…${match[2]}`;
+};
+
+export const friendlyDate = (date: Date) => {
+  const now = new Date();
+  const then = new Date(date);
+  const diff = Math.abs(then.getTime() - now.getTime());
+  const hour = 1000 * 60 * 60;
+  const day = 1000 * 60 * 60 * 24;
+  const week = day * 7;
+  const month = day * 30;
+  const year = day * 365;
+  if (diff < hour) {
+    const minutes = Math.round(diff / 1000 / 60);
+    return `${minutes} minutes ago`;
+  } else if (diff < day) {
+    const hours = Math.round(diff / (1000 * 60 * 60));
+    return `${hours} hours ago`;
+  } else if (diff < week) {
+    const days = Math.round(diff / (1000 * 60 * 60 * 24));
+    return `${days} days ago`;
+  } else if (diff < month) {
+    const weeks = Math.round(diff / (1000 * 60 * 60 * 24 * 7));
+    return `${weeks} weeks ago`;
+  } else if (diff < year) {
+    const months = Math.round(diff / (1000 * 60 * 60 * 24 * 30));
+    return `${months} months ago`;
+  } else {
+    const years = Math.round(diff / (1000 * 60 * 60 * 24 * 365));
+    return `${years} years ago`;
+  }
 };

@@ -1,9 +1,9 @@
-import { ActionFunction, redirect } from "@remix-run/server-runtime";
+import { type ActionFunction, redirect } from "@remix-run/server-runtime";
 import { SiweMessage } from "siwe";
 import invariant from "tiny-invariant";
 import {
   createWallet,
-  getWalletByAddress,
+  getWallet,
   updateLastSeen,
 } from "~/models/wallet.server";
 import { createUserSession } from "~/session.server";
@@ -17,29 +17,29 @@ export const action: ActionFunction = async ({ request, params }) => {
   invariant(message, "Message is required");
   invariant(signature, "Signature is required");
   const siweMessage = new SiweMessage(message.toString());
-  const redirectTo = safeRedirect(form.get("redirectTo"), "/spaces");
+  const redirectTo = safeRedirect(form.get("redirectTo"), "/home");
 
   try {
     await siweMessage.validate(signature.toString());
-    const existingWallet = await getWalletByAddress(siweMessage.address);
+    const existingWallet = await getWallet(siweMessage.address);
 
-    if (!!!existingWallet) {
+    if (!existingWallet) {
       const newWallet = await createWallet(siweMessage.address);
-      userId = newWallet.id;
+      userId = newWallet.address;
     } else {
-      await updateLastSeen(existingWallet.id);
-      userId = existingWallet.id;
+      await updateLastSeen(existingWallet.address);
+      userId = existingWallet.address;
     }
 
     return createUserSession({
       request,
-      userId: userId,
+      userId,
       remember: false,
       redirectTo,
     });
   } catch (error) {
     console.log(error);
-    throw new Response("Error", { status: 400 });
+    throw new Response("Error - Something went wrong", { status: 400 });
   }
 };
 

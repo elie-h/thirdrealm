@@ -7,7 +7,6 @@ export const action: ActionFunction = async ({ request }) => {
   return logout(request);
 };
 
-export const loader: LoaderFunction = async () => {
-  return true;
+export const loader: LoaderFunction = async ({ request }) => {
   return redirect("/");
 };

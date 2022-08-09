@@ -42,7 +42,7 @@ export default function AddressSearch() {
                 Invalid wallet address
               </h3>
               <div className="mt-2 text-sm text-red-700">
-                <ul role="list" className="list-disc space-y-1 pl-5">
+                <ul className="list-disc space-y-1 pl-5">
                   <li>Only Ethereum and Polygon addresses are supported!</li>
                 </ul>
               </div>

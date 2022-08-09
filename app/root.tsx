@@ -11,24 +11,24 @@ import {
   Outlet,
   Scripts,
   ScrollRestoration,
-  useCatch,
 } from "@remix-run/react";
-import React from "react";
 import { getUser } from "./session.server";
 
 import rainbowKitStylesheetUrl from "@rainbow-me/rainbowkit/styles.css";
 import tailwindStylesheetUrl from "./styles/tailwind.css";
+import rendererStylesheetUrl from "./styles/editorjs.css";
 
 export const links: LinksFunction = () => {
   return [
     { rel: "stylesheet", href: tailwindStylesheetUrl },
     { rel: "stylesheet", href: rainbowKitStylesheetUrl },
+    { rel: "stylesheet", href: rendererStylesheetUrl },
   ];
 };
 
 export const meta: MetaFunction = () => ({
   charset: "utf-8",
-  title: "3L",
+  title: "Third Realm",
   viewport: "width=device-width,initial-scale=1",
 });
 
@@ -42,28 +42,15 @@ export const loader: LoaderFunction = async ({ request }) => {
   });
 };
 
-export function ErrorBoundary({ error }: any) {
-  return (
-    <html lang="en" className="h-full">
-      <head>
-        <meta name="description" content="W3B" />
-        <Meta />
-        <Links />
-      </head>
-      <body className="h-full">Somebody hurt!</body>
-    </html>
-  );
-}
-
 export default function App() {
   return (
-    <html lang="en" className="h-full">
+    <html lang="en">
       <head>
-        <meta name="description" content="W3B" />
+        <meta name="description" content="Third Realm" />
         <Meta />
         <Links />
       </head>
-      <body className="h-full font-body">
+      <body className="font-body">
         <Outlet />
         <ScrollRestoration />
         <Scripts />

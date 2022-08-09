@@ -1,28 +1,49 @@
-import type { Wallet } from "@prisma/client";
+import type { Prisma, Wallet } from "@prisma/client";
 
 import { prisma } from "~/db.server";
 
 export type { Wallet } from "@prisma/client";
 
-export async function getWalletById(id: Wallet["id"]) {
-  return prisma.wallet.findUnique({ where: { id } });
+export async function getWallet(address: Wallet["address"]) {
+  return await prisma.wallet.findUnique({
+    where: { address: address.toLowerCase() },
+    include: {
+      memberships: {
+        include: {
+          community: true,
+        },
+      },
+    },
+  });
 }
 
-export async function getWalletByAddress(address: Wallet["address"]) {
-  return prisma.wallet.findUnique({ where: { address } });
-}
+export type WalletWithMemberships = Prisma.PromiseReturnType<typeof getWallet>;
 
 export async function createWallet(address: Wallet["address"]) {
-  return prisma.wallet.create({
+  return await prisma.wallet.create({
     data: { address: address.toLowerCase() },
   });
 }
 
-export async function updateLastSeen(id: Wallet["id"]) {
-  return prisma.wallet.update({
+export async function updateLastSeen(address: Wallet["address"]) {
+  return await prisma.wallet.update({
     where: {
-      id,
+      address: address.toLowerCase(),
     },
     data: { lastSeen: new Date() },
+  });
+}
+
+export async function updateProfile(
+  address: Wallet["address"],
+  name: Wallet["name"],
+  bio: Wallet["bio"],
+  image: Wallet["image"]
+) {
+  return await prisma.wallet.update({
+    where: {
+      address: address.toLowerCase(),
+    },
+    data: { name, bio, image },
   });
 }

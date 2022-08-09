@@ -24,7 +24,7 @@ export default function WalletHero({
                   <Jazzicon diameter={100} seed={jsNumberForAddress(address)} />
                 </div>
               </div>
-              <div className="ml-4 w-32">
+              <div className="ml-4">
                 <h3 className="text-lg font-medium leading-6 text-gray-900">
                   {loading ? (
                     <div className="h-8 bg-gray-200 group-hover:opacity-75">

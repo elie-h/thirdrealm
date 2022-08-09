@@ -1,8 +1,13 @@
-import type { Space, Collection } from "@prisma/client";
+import type { Community, Wallet } from "@prisma/client";
 
-export interface SpaceWithCollection extends Space {
-  collection: Collection;
+export interface CommunityWithMembersCount extends Community {
   _count: {
     members: number;
   };
+}
+
+export interface WalletWithMemberships extends Wallet {
+  memberships: {
+    community: Community;
+  }[];
 }

@@ -10,7 +10,7 @@ export default function Wallet() {
   const walletFetcher = useFetcher();
   useEffect(() => {
     walletFetcher.load("/api/wallet?address=" + params.address);
-  }, []);
+  }, [params.address]);
 
   const walletData = walletFetcher.data;
   const loading =
