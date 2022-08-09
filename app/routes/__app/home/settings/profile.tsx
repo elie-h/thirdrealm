@@ -23,7 +23,7 @@ type inferSafeParseErrors<T extends z.ZodType<any, any, any>, U = string> = {
 const ProfileFields = z.object({
   name: z.string().min(1).max(30),
   bio: z.string().min(1).max(140),
-  image: z.string().optional(),
+  image: z.string(),
 });
 
 type ProfileFieldsSchema = z.infer<typeof ProfileFields>;
