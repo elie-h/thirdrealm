@@ -6,7 +6,7 @@ Third Realm is an exploration of an idea: A platform which hosts token gated soc
 
 Communication across web3 communities is currently disjointed as discord/telegram servers are not contextual to user wallets and the tokens they hold. They are also plagued with spam, scammers and are quite disorganised. It’s also difficult to find and reach fellow holders of a token and find official announcements from the project maintainers.
 
-Usecase examples:
+### Usecase examples:
 
 Social:
 
