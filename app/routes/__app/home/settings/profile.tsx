@@ -1,9 +1,10 @@
 import { json, LoaderFunction, type ActionFunction } from "@remix-run/node";
 import { Form, Link, useActionData, useLoaderData } from "@remix-run/react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { UploadButton } from "react-uploader";
 import { Uploader } from "uploader";
 import { z } from "zod";
+import { updateProfile } from "~/models/wallet.server";
 import { requireUser } from "~/session.server";
 
 const uploader = new Uploader({
@@ -21,7 +22,8 @@ type inferSafeParseErrors<T extends z.ZodType<any, any, any>, U = string> = {
 
 const ProfileFields = z.object({
   name: z.string().min(1).max(30),
-  about: z.string().min(1).max(140),
+  bio: z.string().min(1).max(140),
+  image: z.string().optional(),
 });
 
 type ProfileFieldsSchema = z.infer<typeof ProfileFields>;
@@ -38,8 +40,8 @@ type LoaderData = {
 
 const badRequest = (data: ActionData) => json(data, { status: 400 });
 
-export const action: ActionFunction = async ({ request, params }) => {
-  await requireUser(request);
+export const action: ActionFunction = async ({ request }) => {
+  const wallet = await requireUser(request);
   const fields = Object.fromEntries(
     await request.formData()
   ) as ProfileFieldsSchema;
@@ -50,16 +52,18 @@ export const action: ActionFunction = async ({ request, params }) => {
       errors: validationResult.error.flatten(),
     });
   }
-
+  console.log(fields.image);
+  await updateProfile(wallet.address, fields.name, fields.bio, fields.image);
   return json({ fields });
 };
 
 export const loader: LoaderFunction = async ({ request }) => {
-  await requireUser(request);
+  const wallet = await requireUser(request);
+
   const fields = {
-    name: "jamba",
-    about: "hohbohboh",
-    profileImage: "",
+    name: wallet.name,
+    bio: wallet.bio,
+    image: wallet.image,
   } as ProfileFieldsSchema;
   return json({ fields });
 };
@@ -68,6 +72,12 @@ export default function Profile() {
   const [profileImage, setProfileImage] = useState("");
   const actionData = useActionData<ActionData>();
   const loaderData = useLoaderData<LoaderData>();
+
+  useEffect(() => {
+    if (loaderData.fields.image) {
+      setProfileImage(loaderData.fields.image);
+    }
+  });
 
   return (
     <div>
@@ -124,35 +134,35 @@ export default function Profile() {
 
               <div className="sm:grid sm:grid-cols-3 sm:items-start sm:gap-4 sm:border-t sm:border-gray-200 sm:pt-5">
                 <label
-                  htmlFor="about"
+                  htmlFor="bio"
                   className="block text-sm font-medium text-gray-700 sm:mt-px sm:pt-2"
                 >
                   About
                 </label>
                 <div className="mt-1 sm:col-span-2 sm:mt-0">
                   <textarea
-                    id="about"
-                    name="about"
+                    id="bio"
+                    name="bio"
                     rows={3}
                     className={`${
-                      actionData?.errors?.fieldErrors.about
+                      actionData?.errors?.fieldErrors.bio
                         ? "border-red-300"
                         : "border-gray-300"
                     } block w-full max-w-lg rounded-md border shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm`}
                     defaultValue={
                       actionData
-                        ? actionData.fields.about
+                        ? actionData.fields.bio
                         : loaderData
-                        ? loaderData.fields.about
+                        ? loaderData.fields.bio
                         : ""
                     }
-                    key={actionData?.fields.about}
+                    key={actionData?.fields.bio}
                   />
                   <p className="mt-2 text-sm text-gray-500">
                     Write a few sentences about yourself.
                   </p>
                   <span className="text-sm text-red-500">
-                    {actionData?.errors?.fieldErrors.about}
+                    {actionData?.errors?.fieldErrors.bio}
                   </span>
                 </div>
               </div>
@@ -166,11 +176,7 @@ export default function Profile() {
                 </label>
                 <div className="mt-1 sm:col-span-2 sm:mt-0">
                   <div className="flex items-center">
-                    <input
-                      type="hidden"
-                      value={profileImage}
-                      name="profileImage"
-                    />
+                    <input type="hidden" value={profileImage} name="image" />
                     <UploadButton
                       uploader={uploader}
                       options={{

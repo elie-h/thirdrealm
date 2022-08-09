@@ -33,3 +33,17 @@ export async function updateLastSeen(address: Wallet["address"]) {
     data: { lastSeen: new Date() },
   });
 }
+
+export async function updateProfile(
+  address: Wallet["address"],
+  name: Wallet["name"],
+  bio: Wallet["bio"],
+  image: Wallet["image"]
+) {
+  return await prisma.wallet.update({
+    where: {
+      address: address.toLowerCase(),
+    },
+    data: { name, bio, image },
+  });
+}

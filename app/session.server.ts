@@ -54,7 +54,7 @@ export async function requireUser(request: Request) {
   const userId = await requireUserId(request);
   const wallet = await getWallet(userId);
   if (wallet) {
-    return { address: wallet.address.toLowerCase() };
+    return wallet;
   }
   throw await logout(request);
 }

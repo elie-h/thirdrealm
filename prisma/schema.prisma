@@ -41,6 +41,9 @@ model CollectionOwner {
 
 model Wallet {
   address     String                      @id
+  name        String?
+  bio         String?
+  image       String?
   createdAt   DateTime                    @default(now())
   updatedAt   DateTime                    @default(now())
   lastSeen    DateTime                    @updatedAt
@@ -63,17 +66,16 @@ model CommunityCollectionRules {
 }
 
 model Community {
-  id          String                      @id @default(cuid())
-  name        String
-  description String
-  coverImage  String
-  rules       CommunityCollectionRules[]
-  createdAt   DateTime                    @default(now())
-  updatedAt   DateTime                    @default(now())
-  members     WalletCommunityMembership[]
-  posts       Post[]
-  membershipSetting MembershipSetting @default(public)
-
+  id                String                      @id @default(cuid())
+  name              String
+  description       String
+  coverImage        String
+  rules             CommunityCollectionRules[]
+  createdAt         DateTime                    @default(now())
+  updatedAt         DateTime                    @default(now())
+  members           WalletCommunityMembership[]
+  posts             Post[]
+  membershipSetting MembershipSetting           @default(public)
 }
 
 model WalletCommunityMembership {

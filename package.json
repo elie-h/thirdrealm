@@ -49,7 +49,7 @@
     "@editorjs/warning": "^1.2.0",
     "@headlessui/react": "^1.6.4",
     "@isaacs/ttlcache": "^1.0.5",
-    "@prisma/client": "^4.1.0",
+    "@prisma/client": "^4.1.1",
     "@rainbow-me/rainbowkit": "^0.4.4",
     "@remix-run/node": "*",
     "@remix-run/react": "*",
